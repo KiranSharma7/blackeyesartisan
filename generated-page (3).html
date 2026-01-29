@@ -1,0 +1,806 @@
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Male Elixir | Arovell Decants</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+
+<script>
+tailwind.config = {
+theme: {
+extend: {
+colors: {
+ink: '#18181B',
+paper: '#FEF8E7',
+acid: '#D63D42',
+stone: '#E8DCCA',
+sun: '#FCCA46',
+},
+fontFamily: {
+display: ['Dela Gothic One', 'cursive'],
+sans: ['Space Grotesk', 'sans-serif'],
+},
+boxShadow: {
+'hard': '4px 4px 0px 0px #18181B',
+'hard-sm': '2px 2px 0px 0px #18181B',
+'hard-xl': '8px 8px 0px 0px #18181B',
+'hard-acid': '4px 4px 0px 0px #D63D42',
+'hard-sun': '4px 4px 0px 0px #FCCA46',
+},
+animation: {
+'marquee': 'marquee 25s linear infinite',
+'float': 'float 4s ease-in-out infinite',
+'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+},
+keyframes: {
+marquee: {
+'0%': { transform: 'translateX(0%)' },
+'100%': { transform: 'translateX(-100%)' },
+},
+float: {
+'0%, 100%': { transform: 'translateY(0)' },
+'50%': { transform: 'translateY(-10px)' },
+}
+}
+}
+}
+}
+</script>
+<style>
+body { background-color: #FEF8E7; color: #18181B; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.text-outline { -webkit-text-stroke: 1.5px #18181B; color: transparent; }
+.text-outline-acid { -webkit-text-stroke: 1px #D63D42; color: transparent; }
+.text-outline-paper { -webkit-text-stroke: 1px #FEF8E7; color: transparent; }
+.text-shadow-sm { text-shadow: 2px 2px 0px #18181B; }
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+/* Custom Checkbox Design */
+input[type="radio"]:checked + div { background-color: #18181B; color: #FEF8E7; box-shadow: 4px 4px 0px 0px #18181B; }
+iconify-icon { display: inline-block; vertical-align: middle; }
+</style></head>
+<body class="font-sans antialiased selection:bg-acid selection:text-white pb-24 md:pb-0 bg-paper">
+
+    <!-- Top Marquee -->
+    <div class="bg-acid text-white overflow-hidden py-3 border-b-2 border-ink relative z-20">
+        <div class="flex animate-marquee whitespace-nowrap">
+            <div class="flex items-center gap-12 mx-4 font-display uppercase text-sm tracking-widest">
+                <span>✸ Don't buy blind</span>
+                <span>✸ 100% Authentic Juice</span>
+                <span>✸ Free Shipping $50+</span>
+                <span>✸ Decants, not debts</span>
+                <span>✸ Smell Expensive for cheap</span>
+                <span>✸ Don't buy blind</span>
+                <span>✸ 100% Authentic Juice</span>
+                <span>✸ Free Shipping $50+</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-4 z-50 px-4 md:px-8 mb-8">
+        <div class="bg-paper/90 backdrop-blur-md border-2 border-ink rounded-xl shadow-hard flex justify-between items-center p-4">
+            <button class="md:hidden p-2 hover:bg-sun rounded-lg border border-transparent hover:border-ink transition-all flex items-center justify-center">
+                <iconify-icon icon="solar:hamburger-menu-linear" width="24" stroke-width="1.5"></iconify-icon>
+            </button>
+
+            <a href="#" class="text-2xl md:text-3xl font-display tracking-tighter flex items-center gap-1">
+                ARO<span class="text-acid text-shadow-sm" style="-webkit-text-stroke: 1px #18181B;">VELL</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 font-semibold text-sm tracking-tight">
+                <a href="#" class="hover:text-acid hover:underline decoration-2 decoration-acid underline-offset-4 transition-all">NEW DROPS</a>
+                <a href="#" class="hover:text-acid hover:underline decoration-2 decoration-acid underline-offset-4 transition-all">BESTSELLERS</a>
+                <a href="#" class="hover:text-acid hover:underline decoration-2 decoration-acid underline-offset-4 transition-all">BRANDS</a>
+                <a href="#" class="hover:text-acid hover:underline decoration-2 decoration-acid underline-offset-4 transition-all">BUNDLES</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button class="hidden md:block hover:bg-sun rounded-lg p-2 border border-transparent hover:border-ink transition-all">
+                    <iconify-icon icon="solar:magnifer-linear" width="22" stroke-width="1.5"></iconify-icon>
+                </button>
+                <button class="bg-ink text-white px-4 py-2 rounded-lg font-display text-sm border-2 border-ink hover:bg-acid transition-colors flex items-center gap-2 group shadow-hard-sm hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
+                    CART (1)
+                    <div class="w-2 h-2 bg-acid rounded-full group-hover:bg-white animate-pulse"></div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Main Section -->
+    <main class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+        
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 text-sm font-semibold opacity-60 mb-8 overflow-x-auto whitespace-nowrap">
+            <a href="#" class="hover:text-ink hover:underline">Home</a>
+            <iconify-icon icon="solar:alt-arrow-right-linear" width="16"></iconify-icon>
+            <a href="#" class="hover:text-ink hover:underline">Men's Cologne</a>
+            <iconify-icon icon="solar:alt-arrow-right-linear" width="16"></iconify-icon>
+            <span class="text-ink opacity-100 border-b-2 border-acid">Le Male Elixir</span>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-12 items-start">
+            
+            <!-- Left Column: Images -->
+            <div class="lg:col-span-7 sticky top-32">
+                <div class="relative bg-white border-2 border-ink rounded-[2rem] shadow-hard-xl overflow-hidden aspect-square md:aspect-[4/3] group mb-6">
+                    <div class="absolute top-6 left-6 z-20 -rotate-6">
+                        <div class="bg-sun text-ink px-4 py-2 rounded-lg border-2 border-ink shadow-md flex items-center gap-2">
+                            <iconify-icon icon="solar:cup-star-linear" width="18"></iconify-icon>
+                            <span class="font-display text-xs tracking-wider">Top Rated</span>
+                        </div>
+                    </div>
+                    <img src="image.png" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute bottom-6 right-6 z-20">
+                         <button class="bg-paper p-3 rounded-full border-2 border-ink shadow-hard hover:bg-sun transition-colors flex items-center justify-center">
+                            <iconify-icon icon="solar:maximize-square-3-linear" width="20"></iconify-icon>
+                         </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-4 gap-4">
+                    <button class="relative rounded-xl border-2 border-ink overflow-hidden aspect-square bg-acid shadow-hard-sm hover:-translate-y-1 transition-transform">
+                        <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/4734259a-bad7-422f-981e-ce01e79184f2_1600w.jpg" class="w-full h-full object-cover opacity-80 hover:opacity-100">
+                    </button>
+                    <button class="relative rounded-xl border-2 border-ink overflow-hidden aspect-square bg-white hover:-translate-y-1 transition-transform opacity-60 hover:opacity-100">
+                         <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c543a9e1-f226-4ced-80b0-feb8445a75b9_1600w.jpg" class="w-full h-full object-cover">
+                    </button>
+                    <button class="relative rounded-xl border-2 border-ink overflow-hidden aspect-square bg-white hover:-translate-y-1 transition-transform opacity-60 hover:opacity-100 flex items-center justify-center">
+                        <iconify-icon icon="solar:play-circle-linear" width="32" class="opacity-50"></iconify-icon>
+                    </button>
+                    <button class="relative rounded-xl border-2 border-ink overflow-hidden aspect-square bg-white hover:-translate-y-1 transition-transform opacity-60 hover:opacity-100 flex items-center justify-center">
+                        <span class="font-display text-lg opacity-30">+3</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Product Details -->
+            <div class="lg:col-span-5 flex flex-col gap-8">
+                
+                <div class="border-b-2 border-ink/10 pb-6">
+                    <div class="flex justify-between items-start mb-2">
+                        <h2 class="text-xs font-bold uppercase tracking-widest opacity-60">Jean Paul Gaultier</h2>
+                        <div class="flex items-center gap-1 text-ink bg-sun px-2 py-1 rounded text-xs font-bold border border-ink shadow-sm">
+                            <iconify-icon icon="solar:star-bold" width="12" class="text-ink"></iconify-icon>
+                            4.9 (124 reviews)
+                        </div>
+                    </div>
+                    <h1 class="font-display text-4xl md:text-5xl leading-none text-ink mb-4 tracking-tight">LE MALE ELIXIR</h1>
+                    <div class="flex items-center gap-4">
+                        <span class="font-display text-3xl text-acid">$19.00</span>
+                        <span class="bg-ink text-paper text-xs font-bold px-2 py-1 rounded">IN STOCK</span>
+                    </div>
+                </div>
+
+                <!-- Decant Info -->
+                <div class="bg-stone border-2 border-ink rounded-xl p-4 flex gap-4 items-center relative overflow-hidden">
+                    <div class="absolute right-0 top-0 bottom-0 w-1/3 bg-gradient-to-l from-paper/50 to-transparent pointer-events-none"></div>
+                    <div class="bg-white border-2 border-ink p-2 rounded-lg shrink-0 shadow-sm rotate-3">
+                        <iconify-icon icon="solar:test-tube-linear" width="24" class="text-acid"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-sm flex items-center gap-2">WHAT IS A DECANT?</h3>
+                        <p class="text-xs font-medium opacity-80 mt-1 leading-snug">
+                            You receive a <span class="font-bold underline decoration-acid decoration-2">smaller glass atomizer</span> filled with the original fragrance. Not the full bottle. 100% Authentic.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- The Vibe Card -->
+                <div class="bg-white border-2 border-ink rounded-xl p-6 relative shadow-sm">
+                    <div class="absolute -top-3 left-4 bg-acid text-white border-2 border-ink px-3 py-1 rounded-full flex items-center gap-2 shadow-sm">
+                        <iconify-icon icon="solar:magic-stick-3-linear" width="14" stroke-width="2"></iconify-icon>
+                        <span class="text-xs font-bold uppercase tracking-wide">The Vibe</span>
+                    </div>
+                    <p class="text-sm md:text-base leading-relaxed font-medium mt-2">
+                        A honey-drenched tobacco dream. Imagine a golden sunset, but you can smell it, and it makes you 10x more attractive. Pure dopamine.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="border border-ink rounded-full px-3 py-1 text-xs font-bold hover:bg-ink hover:text-paper transition-colors cursor-default">Sweet</span>
+                        <span class="border border-ink rounded-full px-3 py-1 text-xs font-bold hover:bg-ink hover:text-paper transition-colors cursor-default">Vanilla</span>
+                        <span class="border border-ink rounded-full px-3 py-1 text-xs font-bold hover:bg-ink hover:text-paper transition-colors cursor-default">Tobacco</span>
+                    </div>
+                </div>
+
+                <!-- Size Selection -->
+                <div>
+                    <div class="flex justify-between items-end mb-4">
+                        <h3 class="font-display text-lg">CHOOSE SIZE</h3>
+                        <button class="text-xs font-bold underline decoration-2 decoration-acid hover:text-acid hover:bg-ink hover:no-underline transition-all px-1">Size Guide</button>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-3 mb-3">
+                        <label class="cursor-pointer relative group">
+                            <input type="radio" name="size" class="peer sr-only">
+                            <div class="border-2 border-ink rounded-xl p-3 hover:shadow-hard transition-all bg-paper h-full flex flex-col items-center justify-center text-center">
+                                <span class="font-display text-lg">3ml</span>
+                                <div class="text-[9px] uppercase font-bold mt-1 opacity-60 peer-checked:text-sun peer-checked:opacity-100">Sample</div>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer relative group">
+                            <input type="radio" name="size" class="peer sr-only" checked="">
+                            <div class="border-2 border-ink rounded-xl p-3 hover:shadow-hard transition-all bg-paper h-full flex flex-col items-center justify-center text-center">
+                                <span class="font-display text-lg">5ml</span>
+                                <div class="text-[9px] uppercase font-bold mt-1 opacity-60 peer-checked:text-sun peer-checked:opacity-100">Starter</div>
+                            </div>
+                        </label>
+
+                        <label class="cursor-pointer relative group">
+                            <input type="radio" name="size" class="peer sr-only">
+                            <div class="border-2 border-ink rounded-xl p-3 hover:shadow-hard transition-all bg-paper h-full flex flex-col items-center justify-center text-center">
+                                <div class="absolute -top-3 right-0 left-0 mx-auto w-max bg-acid text-white border-2 border-ink px-2 py-0.5 text-[9px] font-bold rounded-md z-10 shadow-sm">POPULAR</div>
+                                <span class="font-display text-lg">10ml</span>
+                                <div class="text-[9px] uppercase font-bold mt-1 opacity-60 peer-checked:text-sun peer-checked:opacity-100">Travel</div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                         <label class="cursor-pointer relative group">
+                            <input type="radio" name="size" class="peer sr-only">
+                            <div class="border-2 border-ink rounded-xl p-3 hover:shadow-hard transition-all bg-paper h-full flex flex-col items-center justify-center text-center">
+                                <span class="font-display text-lg">15ml</span>
+                                <div class="text-[9px] uppercase font-bold mt-1 opacity-60 peer-checked:text-sun peer-checked:opacity-100">Enthusiast</div>
+                            </div>
+                        </label>
+
+                         <label class="cursor-pointer relative group">
+                            <input type="radio" name="size" class="peer sr-only">
+                            <div class="border-2 border-ink rounded-xl p-3 hover:shadow-hard transition-all bg-paper h-full flex flex-col items-center justify-center text-center">
+                                <span class="font-display text-lg">30ml</span>
+                                <div class="text-[9px] uppercase font-bold mt-1 opacity-60 peer-checked:text-sun peer-checked:opacity-100">Signature</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4 pt-2">
+                    <div class="flex gap-4">
+                        <div class="flex items-center border-2 border-ink rounded-xl bg-white h-14 w-32 shrink-0">
+                            <button class="flex-1 h-full hover:bg-stone rounded-l-lg transition-colors flex items-center justify-center font-bold text-lg">-</button>
+                            <span class="font-display text-xl w-8 text-center">1</span>
+                            <button class="flex-1 h-full hover:bg-stone rounded-r-lg transition-colors flex items-center justify-center font-bold text-lg">+</button>
+                        </div>
+                        <button class="flex-1 bg-acid text-white border-2 border-ink rounded-xl font-display text-lg tracking-wide hover:shadow-hard hover:-translate-y-1 hover:-translate-x-1 transition-all flex items-center justify-center gap-3 shadow-hard-sm">
+                            ADD TO CART <iconify-icon icon="solar:bag-5-linear" width="20"></iconify-icon>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-2 text-[10px] md:text-xs font-bold text-center opacity-70">
+                        <div class="flex items-center justify-center gap-1"><iconify-icon icon="solar:shield-check-linear" width="14"></iconify-icon> Authentic Juice</div>
+                        <div class="flex items-center justify-center gap-1"><iconify-icon icon="solar:delivery-linear" width="14"></iconify-icon> Fast Shipping</div>
+                        <div class="flex items-center justify-center gap-1"><iconify-icon icon="solar:lock-keyhole-linear" width="14"></iconify-icon> Secure Pay</div>
+                    </div>
+                </div>
+
+                <!-- Accordions -->
+                <div class="space-y-4">
+                    <details class="group bg-paper border-2 border-ink rounded-xl overflow-hidden cursor-pointer">
+                        <summary class="flex items-center justify-between p-4 font-bold select-none hover:bg-white transition-colors">
+                            <span class="flex items-center gap-3"><iconify-icon icon="solar:bottle-linear" width="20" class="text-ink"></iconify-icon> What You Receive</span>
+                            <iconify-icon icon="solar:add-circle-linear" width="20" class="transition-transform group-open:rotate-45"></iconify-icon>
+                        </summary>
+                        <div class="p-6 pt-0 border-t-2 border-dashed border-ink/10 mt-2 bg-white">
+                            <div class="flex items-center justify-between gap-4 py-4">
+                                <div class="text-center flex flex-col items-center gap-2">
+                                    <div class="w-12 h-12 border-2 border-ink rounded-full flex items-center justify-center bg-gray-100">
+                                        <iconify-icon icon="solar:wineglass-triangle-linear" width="20" class="opacity-50"></iconify-icon>
+                                    </div>
+                                    <span class="text-[10px] font-bold uppercase w-16 leading-tight">Original Bottle</span>
+                                </div>
+                                <div class="flex-1 h-[2px] bg-ink/20 relative">
+                                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-ink">
+                                        <iconify-icon icon="solar:arrow-right-linear" width="16"></iconify-icon>
+                                    </div>
+                                </div>
+                                <div class="text-center flex flex-col items-center gap-2">
+                                    <div class="w-12 h-12 border-2 border-ink rounded-full flex items-center justify-center bg-acid shadow-hard-sm">
+                                        <iconify-icon icon="solar:cosmetic-linear" width="20" class="text-white"></iconify-icon>
+                                    </div>
+                                    <span class="text-[10px] font-bold uppercase w-16 leading-tight">Your Decant</span>
+                                </div>
+                            </div>
+                            <p class="text-sm opacity-80 leading-relaxed text-center">
+                                We manually transfer the fragrance from the original manufacturer's bottle into our premium travel atomizers. You get the exact same juice, just in a travel-friendly size.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="group bg-white border-2 border-ink rounded-xl overflow-hidden cursor-pointer">
+                        <summary class="flex items-center justify-between p-4 font-bold select-none hover:bg-gray-50 transition-colors">
+                            <span class="flex items-center gap-3"><iconify-icon icon="solar:document-text-linear" width="20" class="text-ink/60"></iconify-icon> Full Description</span>
+                            <iconify-icon icon="solar:add-circle-linear" width="20" class="transition-transform group-open:rotate-45"></iconify-icon>
+                        </summary>
+                        <div class="p-4 pt-0 text-sm leading-relaxed opacity-80 border-t-2 border-dashed border-ink/10 mt-2">
+                            Le Male Elixir Parfum by Jean Paul Gaultier is a Oriental Fougere fragrance for men. Top notes are Lavender and Mint; middle notes are Vanilla and Benzoin; base notes are Honey, Tonka Bean and Tobacco.
+                        </div>
+                    </details>
+                    
+                    <details class="group bg-white border-2 border-ink rounded-xl overflow-hidden cursor-pointer">
+                        <summary class="flex items-center justify-between p-4 font-bold select-none hover:bg-gray-50 transition-colors">
+                            <span class="flex items-center gap-3"><iconify-icon icon="solar:drop-linear" width="20" class="text-ink/60"></iconify-icon> Scent Profile</span>
+                            <iconify-icon icon="solar:add-circle-linear" width="20" class="transition-transform group-open:rotate-45"></iconify-icon>
+                        </summary>
+                        <div class="p-4 pt-0 border-t-2 border-dashed border-ink/10 mt-2">
+                            <div class="grid grid-cols-1 gap-4 text-sm mt-2">
+                                <div class="flex items-center gap-4">
+                                    <span class="w-16 font-bold text-xs uppercase opacity-50">Top</span>
+                                    <div class="flex-1 flex gap-2">
+                                        <span class="bg-paper border border-ink px-2 py-1 rounded-md text-xs font-semibold">Lavender</span>
+                                        <span class="bg-paper border border-ink px-2 py-1 rounded-md text-xs font-semibold">Mint</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="w-16 font-bold text-xs uppercase opacity-50">Heart</span>
+                                    <div class="flex-1 flex gap-2">
+                                        <span class="bg-paper border border-ink px-2 py-1 rounded-md text-xs font-semibold">Vanilla</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="w-16 font-bold text-xs uppercase opacity-50">Base</span>
+                                    <div class="flex-1 flex gap-2">
+                                        <span class="bg-stone border border-ink px-2 py-1 rounded-md text-xs font-semibold">Honey</span>
+                                        <span class="bg-stone border border-ink px-2 py-1 rounded-md text-xs font-semibold">Tobacco</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Why Us Section (New) -->
+    <section class="py-16 bg-white border-y-2 border-ink">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex flex-col items-start gap-4 p-6 bg-paper border-2 border-ink rounded-2xl shadow-hard hover:shadow-hard-acid transition-all duration-300">
+                    <div class="w-12 h-12 bg-acid text-white rounded-lg border-2 border-ink flex items-center justify-center shadow-sm">
+                        <iconify-icon icon="solar:dropper-minimalistic-2-linear" width="24" stroke-width="2"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-xl mb-2">No Fake Stuff</h3>
+                        <p class="text-sm font-medium opacity-70 leading-relaxed">We buy retail bottles just like you. We just decant them. 100% verified authentic juice, every single time.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col items-start gap-4 p-6 bg-paper border-2 border-ink rounded-2xl shadow-hard hover:shadow-hard-sun transition-all duration-300">
+                     <div class="w-12 h-12 bg-sun text-ink rounded-lg border-2 border-ink flex items-center justify-center shadow-sm">
+                        <iconify-icon icon="solar:wallet-money-linear" width="24" stroke-width="2"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-xl mb-2">Wallet Friendly</h3>
+                        <p class="text-sm font-medium opacity-70 leading-relaxed">Why spend $200 on a blind buy? Spend $15, wear it for a week, and decide if it's worth the full bottle.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col items-start gap-4 p-6 bg-paper border-2 border-ink rounded-2xl shadow-hard hover:shadow-hard-xl transition-all duration-300">
+                     <div class="w-12 h-12 bg-ink text-white rounded-lg border-2 border-ink flex items-center justify-center shadow-sm">
+                        <iconify-icon icon="solar:box-minimalistic-linear" width="24" stroke-width="2"></iconify-icon>
+                    </div>
+                    <div>
+                        <h3 class="font-display text-xl mb-2">Premium Glass</h3>
+                        <p class="text-sm font-medium opacity-70 leading-relaxed">No cheap plastic leakers here. We use thick, medical-grade glass atomizers with snappy sprayers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creative Upsell: Bundle Builder -->
+    <section class="bg-ink text-paper py-16 border-b-2 border-ink overflow-hidden relative">
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#F8F4E8 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+                <div>
+                    <div class="inline-block bg-acid text-white text-xs font-bold px-3 py-1 rounded-full mb-3 border border-paper shadow-[4px_4px_0px_0px_#FCCA46]">🔥 SAVE 20% INSTANTLY</div>
+                    <h2 class="font-display text-3xl md:text-5xl tracking-tighter text-outline-paper text-sun">BUILD YOUR TRINITY</h2>
+                </div>
+                <div class="text-right">
+                     <p class="text-sm md:text-base font-bold text-sun mb-1">
+                        Minimum 10ml per scent required
+                    </p>
+                    <p class="text-xs opacity-60 max-w-sm ml-auto">
+                        Customize your 3-piece rotation. Swap scents to match your vibe.
+                    </p>
+                </div>
+            </div>
+
+            <!-- The 3-Slot Bundle Builder -->
+            <div class="bg-paper text-ink rounded-2xl p-2 md:p-4 shadow-hard-acid border-2 border-acid">
+                <div class="border-2 border-dashed border-ink/20 rounded-xl p-4 md:p-6 bg-stone/20">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 relative">
+                        <!-- Connecting Lines (Desktop) -->
+                        <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-ink/10 -z-10 -translate-y-1/2"></div>
+
+                        <!-- Slot 1 (Locked Main) -->
+                        <div class="bg-white p-4 rounded-xl border-2 border-ink shadow-sm relative group">
+                            <div class="absolute -top-3 left-4 bg-ink text-paper text-[10px] font-bold px-2 py-1 rounded">SLOT 1</div>
+                            <div class="flex flex-col items-center text-center gap-3 pt-2">
+                                <div class="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden border border-ink shrink-0">
+                                    <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/917d6f93-fb36-439a-8c48-884b67b35381_1600w.jpg" class="w-full h-full object-cover">
+                                </div>
+                                <div class="w-full">
+                                    <h3 class="font-display text-sm truncate">Le Male Elixir</h3>
+                                    <div class="flex items-center justify-center gap-2 mt-2">
+                                        <span class="text-[10px] font-bold bg-stone px-2 py-0.5 rounded border border-ink/20">10ml</span>
+                                        <span class="text-xs font-bold">$19.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Swap Button -->
+                            <button class="absolute top-2 right-2 p-1.5 hover:bg-sun rounded-md border border-transparent hover:border-ink transition-all opacity-50 hover:opacity-100 flex items-center justify-center">
+                                <iconify-icon icon="solar:refresh-circle-linear" width="16"></iconify-icon>
+                            </button>
+                        </div>
+
+                        <!-- Slot 2 (Customizable) -->
+                        <div class="bg-white p-4 rounded-xl border-2 border-ink shadow-sm relative group hover:border-acid transition-colors cursor-pointer">
+                            <div class="absolute -top-3 left-4 bg-acid text-white border border-ink text-[10px] font-bold px-2 py-1 rounded">SLOT 2</div>
+                            <div class="flex flex-col items-center text-center gap-3 pt-2">
+                                <div class="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden border border-ink shrink-0 relative">
+                                    <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/5bab247f-35d9-400d-a82b-fd87cfe913d2_1600w.webp" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
+                                    <div class="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <iconify-icon icon="solar:refresh-circle-linear" width="24" class="text-white drop-shadow-md"></iconify-icon>
+                                    </div>
+                                </div>
+                                <div class="w-full">
+                                    <h3 class="font-display text-sm truncate">Bleu de Chanel</h3>
+                                    <p class="text-[10px] font-bold text-ink/40 mb-1">Recommended: Fresh</p>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <select class="text-[10px] font-bold bg-white px-1 py-0.5 rounded border border-ink cursor-pointer outline-none hover:bg-gray-50">
+                                            <option>10ml</option>
+                                            <option>15ml</option>
+                                            <option>30ml</option>
+                                        </select>
+                                        <span class="text-xs font-bold">$16.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slot 3 (Customizable) -->
+                        <div class="bg-white p-4 rounded-xl border-2 border-ink shadow-sm relative group hover:border-acid transition-colors cursor-pointer">
+                            <div class="absolute -top-3 left-4 bg-acid text-white border border-ink text-[10px] font-bold px-2 py-1 rounded">SLOT 3</div>
+                            <div class="flex flex-col items-center text-center gap-3 pt-2">
+                                <div class="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden border border-ink shrink-0 relative">
+                                    <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&amp;w=400&amp;auto=format&amp;fit=crop" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
+                                    <div class="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <iconify-icon icon="solar:refresh-circle-linear" width="24" class="text-white drop-shadow-md"></iconify-icon>
+                                    </div>
+                                </div>
+                                <div class="w-full">
+                                    <h3 class="font-display text-sm truncate">YSL Y EDP</h3>
+                                    <p class="text-[10px] font-bold text-ink/40 mb-1">Recommended: Daily</p>
+                                    <div class="flex items-center justify-center gap-2">
+                                        <select class="text-[10px] font-bold bg-white px-1 py-0.5 rounded border border-ink cursor-pointer outline-none hover:bg-gray-50">
+                                            <option>10ml</option>
+                                            <option>15ml</option>
+                                            <option>30ml</option>
+                                        </select>
+                                        <span class="text-xs font-bold">$14.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Total Bar -->
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-6 bg-ink text-paper p-4 rounded-xl shadow-md border border-ink/10 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-acid/10 pointer-events-none"></div>
+                        
+                        <div class="flex items-center gap-4 z-10">
+                            <div class="p-3 bg-acid text-white rounded-lg border-2 border-paper shadow-sm hidden md:block flex items-center justify-center">
+                                <iconify-icon icon="solar:gift-linear" width="24"></iconify-icon>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <p class="text-xs font-bold text-sun uppercase tracking-wider mb-0.5">Bundle Savings Unlocked</p>
+                                <div class="flex items-baseline gap-3 justify-center md:justify-start">
+                                    <span class="text-sm font-bold opacity-50 line-through decoration-acid decoration-2">$49.00</span>
+                                    <span class="font-display text-3xl md:text-4xl text-paper">$39.20</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full md:w-auto bg-acid text-white hover:bg-white hover:text-ink border-2 border-transparent hover:border-ink px-8 py-3 rounded-xl font-display text-lg transition-all shadow-hard-sun hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] flex items-center justify-center gap-2 whitespace-nowrap z-10">
+                            ADD 3-PIECE SET <iconify-icon icon="solar:arrow-right-linear" width="20"></iconify-icon>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials: The Hype Wall -->
+    <section class="py-20 bg-stone">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex items-center gap-4 mb-12">
+                <iconify-icon icon="solar:chat-round-dots-linear" width="40" class="text-ink fill-ink stroke-2"></iconify-icon>
+                <h2 class="font-display text-3xl md:text-4xl tracking-tighter text-ink uppercase">The Word On The Street</h2>
+            </div>
+
+            <!-- Masonry Grid Layout -->
+            <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                
+                <!-- Review 1 -->
+                <div class="break-inside-avoid bg-white p-6 border-2 border-ink rounded-2xl shadow-hard hover:-rotate-1 transition-transform duration-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-acid text-white rounded-full border border-ink flex items-center justify-center font-bold text-xs">JD</div>
+                            <div>
+                                <p class="font-bold text-sm leading-none">John Doe</p>
+                                <p class="text-[10px] text-ink/50 font-bold uppercase flex items-center gap-1">
+                                    <iconify-icon icon="solar:check-circle-bold" width="12" class="text-acid"></iconify-icon> Verified
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex text-sun">
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                        </div>
+                    </div>
+                    <p class="font-medium text-sm leading-relaxed">"Honestly, I bought the 5ml just to test it, and I'm mad I didn't get the 30ml. This stuff smells like pure confidence. The honey note is insane."</p>
+                    <div class="mt-4 pt-4 border-t border-dashed border-ink/20 text-xs font-bold opacity-50">Reviewed 2 days ago</div>
+                </div>
+
+                <!-- Review 2 (Highlighted) -->
+                <div class="break-inside-avoid bg-ink text-paper p-6 border-2 border-ink rounded-2xl shadow-hard-acid hover:rotate-1 transition-transform duration-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-paper text-ink rounded-full border border-paper flex items-center justify-center font-bold text-xs">SK</div>
+                            <div>
+                                <p class="font-bold text-sm leading-none text-acid">Sarah K.</p>
+                                <p class="text-[10px] text-paper/50 font-bold uppercase">Verified Buyer</p>
+                            </div>
+                        </div>
+                        <div class="flex text-acid">
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                        </div>
+                    </div>
+                    <p class="font-medium text-sm leading-relaxed">"Packaging is 10/10. Atomizer is better than the original bottle lol. Will def buy again."</p>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="break-inside-avoid bg-white p-6 border-2 border-ink rounded-2xl shadow-hard hover:translate-y-1 transition-transform duration-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-blue-200 rounded-full border border-ink flex items-center justify-center font-bold text-xs">MK</div>
+                            <div>
+                                <p class="font-bold text-sm leading-none">Mike K.</p>
+                                <p class="text-[10px] text-ink/50 font-bold uppercase">Verified Buyer</p>
+                            </div>
+                        </div>
+                        <div class="flex text-ink">
+                             <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-bold" width="16"></iconify-icon>
+                            <iconify-icon icon="solar:star-linear" width="16"></iconify-icon>
+                        </div>
+                    </div>
+                    <p class="font-medium text-sm leading-relaxed">"Great scent, distinct honey and tobacco. Shipping took 4 days which is okay. The decant bottle is very sturdy."</p>
+                </div>
+
+                <!-- Review 4 -->
+                <div class="break-inside-avoid bg-acid text-white p-6 border-2 border-ink rounded-2xl shadow-hard hover:scale-[1.02] transition-transform duration-300">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-2">
+                            <div class="w-8 h-8 bg-white text-ink rounded-full border border-ink flex items-center justify-center font-bold text-xs">AL</div>
+                            <div>
+                                <p class="font-bold text-sm leading-none">Alex L.</p>
+                                <p class="text-[10px] text-white/50 font-bold uppercase">Verified Buyer</p>
+                            </div>
+                        </div>
+                        <div class="bg-ink text-sun text-[10px] px-2 py-1 rounded font-bold">5.0</div>
+                    </div>
+                    <p class="font-medium text-sm leading-relaxed">"Date night weapon. My girlfriend won't stop smelling my neck. Arovell is legit."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Collection: The Rotation -->
+    <section class="py-20 border-t-2 border-ink bg-paper">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+                <div>
+                    <h2 class="font-display text-3xl md:text-5xl tracking-tighter text-ink">BUILD YOUR ROTATION</h2>
+                    <p class="font-medium opacity-60 mt-2">Don't be the guy who wears one scent.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="w-10 h-10 border-2 border-ink rounded-full flex items-center justify-center hover:bg-ink hover:text-paper transition-colors">
+                        <iconify-icon icon="solar:arrow-left-linear" width="20"></iconify-icon>
+                    </button>
+                    <button class="w-10 h-10 border-2 border-ink rounded-full flex items-center justify-center hover:bg-ink hover:text-paper transition-colors">
+                        <iconify-icon icon="solar:arrow-right-linear" width="20"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                
+                <!-- Product Card 1 -->
+                <div class="group relative bg-white border-2 border-ink rounded-2xl overflow-hidden hover:shadow-hard-xl transition-all duration-300">
+                    <div class="absolute top-3 left-3 z-10">
+                        <span class="bg-paper border border-ink px-2 py-0.5 text-[10px] font-bold rounded uppercase">Fresh</span>
+                    </div>
+                    <div class="aspect-[4/5] bg-stone/20 border-b-2 border-ink relative overflow-hidden p-6 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&amp;w=400&amp;auto=format&amp;fit=crop" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                        <!-- Hover Action -->
+                        <div class="absolute inset-x-4 bottom-4 translate-y-20 group-hover:translate-y-0 transition-transform duration-300">
+                            <button class="w-full bg-ink text-white font-display text-sm py-3 rounded-xl shadow-md flex items-center justify-center gap-2 hover:bg-acid transition-colors">
+                                Add <span class="font-sans font-bold">$14</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-display text-lg leading-none mb-1">YSL Y EDP</h3>
+                        <div class="flex gap-1 text-[10px] font-bold text-ink/50 uppercase">
+                            <span>Apple</span> • <span>Sage</span> • <span>Wood</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2 -->
+                <div class="group relative bg-white border-2 border-ink rounded-2xl overflow-hidden hover:shadow-hard-xl transition-all duration-300">
+                    <div class="absolute top-3 left-3 z-10 flex gap-1">
+                         <span class="bg-acid text-white border border-ink px-2 py-0.5 text-[10px] font-bold rounded uppercase">Hot</span>
+                    </div>
+                    <div class="aspect-[4/5] bg-stone/20 border-b-2 border-ink relative overflow-hidden p-6 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?q=80&amp;w=400&amp;auto=format&amp;fit=crop" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-x-4 bottom-4 translate-y-20 group-hover:translate-y-0 transition-transform duration-300">
+                            <button class="w-full bg-ink text-white font-display text-sm py-3 rounded-xl shadow-md flex items-center justify-center gap-2 hover:bg-acid transition-colors">
+                                Add <span class="font-sans font-bold">$18</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-display text-lg leading-none mb-1">Sauvage Elixir</h3>
+                        <div class="flex gap-1 text-[10px] font-bold text-ink/50 uppercase">
+                            <span>Spicy</span> • <span>Lavender</span> • <span>Licorice</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3 -->
+                <div class="group relative bg-white border-2 border-ink rounded-2xl overflow-hidden hover:shadow-hard-xl transition-all duration-300">
+                    <div class="absolute top-3 left-3 z-10">
+                        <span class="bg-paper border border-ink px-2 py-0.5 text-[10px] font-bold rounded uppercase">Sweet</span>
+                    </div>
+                    <div class="aspect-[4/5] bg-stone/20 border-b-2 border-ink relative overflow-hidden p-6 flex items-center justify-center">
+                        <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/917d6f93-fb36-439a-8c48-884b67b35381_1600w.jpg" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                         <div class="absolute inset-x-4 bottom-4 translate-y-20 group-hover:translate-y-0 transition-transform duration-300">
+                            <button class="w-full bg-ink text-white font-display text-sm py-3 rounded-xl shadow-md flex items-center justify-center gap-2 hover:bg-acid transition-colors">
+                                Add <span class="font-sans font-bold">$12</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-display text-lg leading-none mb-1">Azzaro Wanted</h3>
+                        <div class="flex gap-1 text-[10px] font-bold text-ink/50 uppercase">
+                            <span>Lemon</span> • <span>Ginger</span> • <span>Tonka</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4 -->
+                <div class="group relative bg-white border-2 border-ink rounded-2xl overflow-hidden hover:shadow-hard-xl transition-all duration-300">
+                    <div class="absolute top-3 left-3 z-10">
+                        <span class="bg-paper border border-ink px-2 py-0.5 text-[10px] font-bold rounded uppercase">Classy</span>
+                    </div>
+                    <div class="aspect-[4/5] bg-stone/20 border-b-2 border-ink relative overflow-hidden p-6 flex items-center justify-center">
+                        <img src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/5bab247f-35d9-400d-a82b-fd87cfe913d2_1600w.webp" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                         <div class="absolute inset-x-4 bottom-4 translate-y-20 group-hover:translate-y-0 transition-transform duration-300">
+                            <button class="w-full bg-ink text-white font-display text-sm py-3 rounded-xl shadow-md flex items-center justify-center gap-2 hover:bg-acid transition-colors">
+                                Add <span class="font-sans font-bold">$16</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-display text-lg leading-none mb-1">Bleu de Chanel</h3>
+                        <div class="flex gap-1 text-[10px] font-bold text-ink/50 uppercase">
+                            <span>Citrus</span> • <span>Mint</span> • <span>Cedar</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter (New) -->
+    <section class="bg-acid border-t-2 border-ink py-16 text-white overflow-hidden relative">
+         <div class="absolute top-0 left-0 w-full h-full opacity-10 font-display text-9xl leading-none whitespace-nowrap select-none pointer-events-none -translate-y-12">
+             SUBSCRIBE SUBSCRIBE SUBSCRIBE
+         </div>
+         <div class="max-w-2xl mx-auto px-4 relative z-10 text-center">
+             <div class="inline-flex items-center gap-2 bg-ink text-sun px-3 py-1 rounded-full border border-paper shadow-sm mb-4">
+                 <iconify-icon icon="solar:letter-linear" width="16"></iconify-icon>
+                 <span class="text-xs font-bold uppercase">The Scent Club</span>
+             </div>
+             <h2 class="font-display text-4xl md:text-5xl mb-4">DON'T SMELL BORING.</h2>
+             <p class="font-medium opacity-90 mb-8 text-lg">Join 15,000+ others getting weekly scent guides and exclusive drops.</p>
+             <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                 <input type="email" placeholder="your@email.com" class="flex-1 bg-white text-ink border-2 border-ink rounded-xl px-4 py-3 font-bold focus:outline-none focus:shadow-hard-sun transition-all placeholder:text-ink/40">
+                 <button type="button" class="bg-ink text-white border-2 border-ink rounded-xl px-6 py-3 font-display hover:bg-sun hover:text-ink transition-all shadow-hard-sm hover:translate-x-[2px] hover:translate-y-[2px]">JOIN</button>
+             </form>
+         </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-ink text-paper pt-16 pb-8 border-t-2 border-ink">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+                <div class="col-span-2 md:col-span-1">
+                    <a href="#" class="text-3xl font-display tracking-tighter flex items-center gap-1 mb-4">
+                        ARO<span class="text-transparent text-outline-acid">VELL</span>
+                    </a>
+                    <p class="text-sm opacity-60 max-w-[200px]">
+                        Making niche fragrance accessible to everyone. Except your ex.
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="font-display text-lg text-sun mb-4">SHOP</h4>
+                    <ul class="space-y-2 text-sm font-medium opacity-80">
+                        <li><a href="#" class="hover:text-acid">New Arrivals</a></li>
+                        <li><a href="#" class="hover:text-acid">Men's Cologne</a></li>
+                        <li><a href="#" class="hover:text-acid">Women's Perfume</a></li>
+                        <li><a href="#" class="hover:text-acid">Unisex</a></li>
+                        <li><a href="#" class="hover:text-acid">Discovery Sets</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-display text-lg text-sun mb-4">SUPPORT</h4>
+                    <ul class="space-y-2 text-sm font-medium opacity-80">
+                        <li><a href="#" class="hover:text-acid">Track Order</a></li>
+                        <li><a href="#" class="hover:text-acid">Shipping Info</a></li>
+                        <li><a href="#" class="hover:text-acid">Returns</a></li>
+                        <li><a href="#" class="hover:text-acid">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-display text-lg text-sun mb-4">SOCIALS</h4>
+                    <div class="flex gap-3">
+                        <a href="#" class="bg-paper text-ink p-2 rounded-lg hover:bg-acid hover:text-white transition-colors flex items-center justify-center"><iconify-icon icon="ri:instagram-line" width="20"></iconify-icon></a>
+                        <a href="#" class="bg-paper text-ink p-2 rounded-lg hover:bg-acid hover:text-white transition-colors flex items-center justify-center"><iconify-icon icon="ri:twitter-x-line" width="20"></iconify-icon></a>
+                        <a href="#" class="bg-paper text-ink p-2 rounded-lg hover:bg-acid hover:text-white transition-colors flex items-center justify-center"><iconify-icon icon="ri:youtube-line" width="20"></iconify-icon></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-paper/20 text-xs font-bold opacity-40">
+                <p>© 2024 Arovell Scents. Est. 2024.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fixed Bottom Bar for Mobile Only -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-paper border-t-2 border-ink md:hidden z-40">
+        <button class="w-full bg-acid text-white border-2 border-ink rounded-xl font-display text-lg py-3 shadow-hard-sm flex items-center justify-center gap-2">
+            ADD TO CART - $19.00
+        </button>
+    </div>
+
+
+</body></html>
