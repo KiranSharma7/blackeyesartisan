@@ -3,6 +3,7 @@
 **Feature Branch**: `001-mvp-storefront`
 **Created**: 2026-01-29
 **Status**: Draft
+**Base Template**: [Solace Medusa Starter](https://github.com/rigby-sh/solace-medusa-starter) (fork with customizations)
 **Input**: User description: "B2C ecommerce storefront for handmade glass pipes with age gate, international checkout, sold-out portfolio display, and newsletter signup"
 
 ## Clarifications
@@ -11,6 +12,14 @@
 
 - Q: What is the shipping zone structure? → A: Single flat rate for all international destinations
 - Q: Should "Notify Me" and newsletter signups use the same or separate lists? → A: Single unified newsletter list (both signups go to same list)
+
+### Session 2026-01-30
+
+- Q: Which Solace Starter features to retain vs. disable? → A: Retain all Solace features (user profiles, order history, product search, promo codes, blog, dark/light theming) except DigitalOcean Spaces (use Cloudinary instead)
+- Q: Age gate integration approach? → A: Next.js middleware with cookie check (edge-level blocking, redirects to /age-gate page)
+- Q: Payment provider? → A: Stripe (Solace default, already integrated)
+- Q: Newsletter list management provider? → A: Resend Audiences (unified transactional + newsletter in one service)
+- Q: Where to store age gate configuration in CMS? → A: Extend Strapi Global Settings single type with ageGateTtlDays (number) and ageGateEnabled (boolean) fields
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -180,9 +189,10 @@ A visitor can access shipping policy, return policy, privacy policy, and terms o
 
 **Age Gate**
 - **FR-001**: System MUST display age verification gate before any site content is accessible to new visitors
-- **FR-002**: System MUST persist age verification status with configurable TTL (managed via CMS)
+- **FR-002**: System MUST persist age verification status with configurable TTL (via Strapi Global Settings `ageGateTtlDays` field)
 - **FR-003**: System MUST re-verify age status at checkout initiation
 - **FR-004**: System MUST redirect users who decline age verification to an exit page
+- **FR-040**: Age gate MUST be implemented via Next.js middleware (edge-level blocking) that checks cookie and redirects unverified visitors to `/age-gate` page before any content renders
 
 **Product Display**
 - **FR-005**: System MUST display all products (available and sold-out) in collection views
@@ -199,14 +209,14 @@ A visitor can access shipping policy, return policy, privacy policy, and terms o
 - **FR-014**: System MUST display a single flat-rate shipping cost for all international destinations
 - **FR-015**: System MUST display duties/taxes disclaimer during checkout
 - **FR-016**: System MUST validate inventory availability before payment processing
-- **FR-017**: System MUST process payments securely (USD only)
+- **FR-017**: System MUST process payments securely via Stripe (USD only, inherited from Solace)
 
 **Email & Notifications**
-- **FR-018**: System MUST send order confirmation email upon successful purchase
-- **FR-019**: System MUST send shipping notification email with tracking link when order ships
-- **FR-020**: System MUST support newsletter subscription with email validation
-- **FR-021**: System MUST send welcome email upon newsletter signup
-- **FR-022**: System MUST allow "notify me" signup on sold-out product pages
+- **FR-018**: System MUST send order confirmation email upon successful purchase (via Resend)
+- **FR-019**: System MUST send shipping notification email with tracking link when order ships (via Resend)
+- **FR-020**: System MUST support newsletter subscription with email validation (via Resend Audiences)
+- **FR-021**: System MUST send welcome email upon newsletter signup (via Resend)
+- **FR-022**: System MUST allow "notify me" signup on sold-out product pages (adds to Resend Audiences list)
 
 **Content Management**
 - **FR-023**: System MUST display pages and policies managed via CMS
@@ -216,30 +226,60 @@ A visitor can access shipping policy, return policy, privacy policy, and terms o
 **Currency**
 - **FR-026**: System MUST display all prices in USD only
 
+**User Accounts (inherited from Solace Starter)**
+- **FR-027**: Users MUST be able to register and log in to an account
+- **FR-028**: Users MUST be able to view their order history
+- **FR-029**: Users MUST be able to manage profile settings and shipping addresses
+- **FR-030**: Users MUST be able to reset their password
+
+**Product Search (inherited from Solace Starter)**
+- **FR-031**: Users MUST be able to search products by keyword
+- **FR-032**: Search results MUST display matching products with relevance ranking
+
+**Promotional Codes (inherited from Solace Starter)**
+- **FR-033**: Users MUST be able to apply promotional codes at checkout
+- **FR-034**: System MUST validate and apply discounts from valid promo codes
+
+**Blog (inherited from Solace Starter)**
+- **FR-035**: System MUST display blog posts managed via CMS
+- **FR-036**: Blog pages MUST be accessible from navigation
+
+**Theming (inherited from Solace Starter)**
+- **FR-037**: System MUST support dark and light theme modes
+- **FR-038**: Users SHOULD be able to toggle between themes (or respect system preference)
+
+**Image Hosting**
+- **FR-039**: System MUST use Cloudinary for image optimization and delivery (NOT DigitalOcean Spaces)
+
 ### Key Entities
 
 - **Product**: Handmade glass piece with name, description, images, price, inventory status; sourced from commerce backend
 - **Collection**: Grouping of related products for browsing organization
 - **Cart**: Temporary storage of products a visitor intends to purchase; persists across sessions
 - **Order**: Completed purchase with customer details, items, shipping address, payment status, tracking info
-- **Customer**: Person who has completed at least one order; has email, shipping addresses, order history
+- **Customer**: Person who has completed at least one order; has email, shipping addresses, order history; can have registered account
+- **User Account**: Registered customer with login credentials, profile settings, saved addresses, and order history access (inherited from Solace)
 - **Subscriber**: Person who has signed up for newsletter; email and subscription preferences; single unified list for both footer signup and "Notify Me" on sold-out products
 - **Page**: CMS-managed content page (About, policies, etc.)
-- **Global Settings**: CMS-managed site configuration (age gate TTL, handling times, announcement bar)
+- **Blog Post**: CMS-managed blog article with title, content, publish date, and optional featured image (inherited from Solace)
+- **Global Settings**: CMS-managed site configuration including: `ageGateEnabled` (boolean), `ageGateTtlDays` (number), handling times, announcement bar, theme preferences (extends Solace's existing Global Settings single type)
 
 ## Success Criteria *(mandatory)*
 
-### Measurable Outcomes
+### Measurable Outcomes (Launch Criteria)
 
 - **SC-001**: Visitors can complete the full purchase journey (browse → cart → checkout → confirmation) in under 5 minutes
 - **SC-002**: Age gate appears within 1 second of page load for new visitors
 - **SC-003**: 100% of sold-out products display SOLD badge and prevent add-to-cart
 - **SC-004**: 100% of completed orders result in confirmation email delivery
 - **SC-005**: Newsletter signup form captures email with 90%+ success rate on valid submissions
+- **SC-010**: All pages load within 3 seconds on standard connections
+- **SC-011**: Site functions correctly on mobile devices (responsive design)
+- **SC-012**: International buyers can complete checkout without errors
+
+### Post-Launch Tracking Metrics (90-Day)
+
 - **SC-006**: Site achieves 1.5-3% conversion rate within first 90 days
 - **SC-007**: Email capture rate reaches 3-8% of visitors within first 90 days
 - **SC-008**: Support tickets per order remain below 0.15 (shipping clarity metric)
 - **SC-009**: 98%+ of orders are successfully fulfilled with tracking information
-- **SC-010**: All pages load within 3 seconds on standard connections
-- **SC-011**: Site functions correctly on mobile devices (responsive design)
-- **SC-012**: International buyers can complete checkout without errors

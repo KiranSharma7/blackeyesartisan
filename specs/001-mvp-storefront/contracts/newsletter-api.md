@@ -1,36 +1,41 @@
 # Newsletter API Contract
 
-**Provider**: Resend
-**Base URL**: Internal API route (`/api/newsletter`)
-**Authentication**: None (public endpoint with rate limiting)
+**Service**: Next.js API Route → Resend Audiences
+**Endpoint**: `/api/newsletter`
 
 ## Overview
 
-The newsletter functionality handles email subscriptions for:
-1. Footer newsletter signup form
-2. "Notify Me" signup on sold-out product pages
+Internal API route that handles newsletter subscriptions via Resend Audiences. Used by:
+- Footer newsletter form
+- "Notify Me" form on sold-out product pages
 
-Both use the same unified subscriber list (single Resend Audience).
+Both use the same unified audience list.
 
-## Internal API Endpoint
+---
 
-### Subscribe to Newsletter
+## POST /api/newsletter
+
+Subscribe an email to the newsletter audience.
+
+### Request
 
 ```http
-POST /api/newsletter
+POST /api/newsletter HTTP/1.1
 Content-Type: application/json
-```
 
-**Request Body**:
-```json
 {
-  "email": "subscriber@example.com",
-  "source": "footer" | "notify_me",
-  "productId": "prod_01ABC"  // Only when source is "notify_me"
+  "email": "user@example.com"
 }
 ```
 
-**Success Response** (200 OK):
+### Request Schema
+
+| Field | Type | Required | Validation |
+|-------|------|----------|------------|
+| `email` | string | Yes | Valid email format |
+
+### Response - Success (200)
+
 ```json
 {
   "success": true,
@@ -38,414 +43,187 @@ Content-Type: application/json
 }
 ```
 
-**Error Responses**:
+### Response - Already Subscribed (200)
 
-Already Subscribed (409 Conflict):
 ```json
 {
-  "success": false,
-  "error": "already_subscribed",
-  "message": "This email is already subscribed to our newsletter"
+  "success": true,
+  "alreadySubscribed": true,
+  "message": "You're already subscribed"
 }
 ```
 
-Invalid Email (400 Bad Request):
+### Response - Validation Error (400)
+
 ```json
 {
-  "success": false,
-  "error": "invalid_email",
-  "message": "Please enter a valid email address"
+  "error": "Invalid email address"
 }
 ```
 
-Rate Limited (429 Too Many Requests):
+### Response - Server Error (500)
+
 ```json
 {
-  "success": false,
-  "error": "rate_limited",
-  "message": "Too many requests. Please try again later."
+  "error": "Subscription failed"
 }
 ```
 
-Server Error (500 Internal Server Error):
-```json
-{
-  "success": false,
-  "error": "subscription_failed",
-  "message": "Unable to process subscription. Please try again."
-}
-```
+---
 
-## Resend API Integration
-
-### Add Contact to Audience
-
-The internal API route calls Resend's Contacts API:
+## Implementation
 
 ```typescript
-// Implementation in /api/newsletter/route.ts
+// src/app/api/newsletter/route.ts
+import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { z } from 'zod'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID
+const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID!
+
+const schema = z.object({
+  email: z.string().email('Invalid email address'),
+})
 
 export async function POST(request: Request) {
-  const { email, source, productId } = await request.json()
-
-  // Validate email
-  if (!isValidEmail(email)) {
-    return Response.json(
-      { success: false, error: 'invalid_email', message: 'Please enter a valid email address' },
-      { status: 400 }
-    )
-  }
-
   try {
-    // Add to Resend Audience
-    await resend.contacts.create({
+    const body = await request.json()
+    const { email } = schema.parse(body)
+
+    // Add contact to Resend audience
+    const { error } = await resend.contacts.create({
       email,
       audienceId: AUDIENCE_ID,
-      firstName: '', // Optional, collected later
-      lastName: '',
       unsubscribed: false,
     })
+
+    if (error) {
+      // Check if already exists
+      if (error.message?.includes('already exists')) {
+        return NextResponse.json({
+          success: true,
+          alreadySubscribed: true,
+          message: "You're already subscribed",
+        })
+      }
+      throw error
+    }
 
     // Send welcome email
     await resend.emails.send({
       from: 'Black Eyes Artisan <hello@blackeyesartisan.shop>',
       to: email,
-      subject: 'Welcome to Black Eyes Artisan',
-      react: WelcomeEmailTemplate({ email }),
+      subject: 'Welcome to the Black Eyes Artisan family! 🔥',
+      html: `
+        <h1>Welcome!</h1>
+        <p>You're now on the list for exclusive drops and updates.</p>
+        <p>Stay tuned for new handcrafted pieces.</p>
+        <p>— Black Eyes Artisan</p>
+      `,
     })
 
-    return Response.json({ success: true, message: 'Successfully subscribed to newsletter' })
-
+    return NextResponse.json({
+      success: true,
+      message: 'Successfully subscribed to newsletter',
+    })
   } catch (error) {
-    // Handle "contact already exists" error
-    if (error.message?.includes('already exists')) {
-      return Response.json(
-        { success: false, error: 'already_subscribed', message: 'This email is already subscribed' },
-        { status: 409 }
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: 'Invalid email address' },
+        { status: 400 }
       )
     }
 
     console.error('Newsletter subscription error:', error)
-    return Response.json(
-      { success: false, error: 'subscription_failed', message: 'Unable to process subscription' },
+    return NextResponse.json(
+      { error: 'Subscription failed' },
       { status: 500 }
     )
   }
 }
 ```
 
-### Resend Contacts API Reference
-
-**Create Contact**:
-```http
-POST https://api.resend.com/audiences/{audience_id}/contacts
-Authorization: Bearer {RESEND_API_KEY}
-Content-Type: application/json
-
-{
-  "email": "subscriber@example.com",
-  "first_name": "",
-  "last_name": "",
-  "unsubscribed": false
-}
-```
-
-**Response** (201 Created):
-```json
-{
-  "object": "contact",
-  "id": "479e3145-dd38-476b-932c-529ceb705947"
-}
-```
-
-**Error** (409 Conflict - Already Exists):
-```json
-{
-  "statusCode": 409,
-  "message": "Contact already exists",
-  "name": "conflict"
-}
-```
-
-## Email Templates
-
-### Welcome Email
-
-Sent immediately upon successful subscription.
-
-**Subject**: "Welcome to Black Eyes Artisan"
-
-**Template** (`emails/welcome.tsx`):
-```typescript
-import {
-  Body,
-  Container,
-  Head,
-  Heading,
-  Html,
-  Img,
-  Link,
-  Preview,
-  Section,
-  Text,
-} from '@react-email/components'
-
-interface WelcomeEmailProps {
-  email: string
-}
-
-export function WelcomeEmail({ email }: WelcomeEmailProps) {
-  return (
-    <Html>
-      <Head />
-      <Preview>Welcome to the Black Eyes Artisan family</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          <Img
-            src="https://blackeyesartisan.shop/logo.png"
-            width="150"
-            height="50"
-            alt="Black Eyes Artisan"
-          />
-          <Heading style={heading}>Welcome to Black Eyes Artisan</Heading>
-          <Text style={text}>
-            You're now part of our community of glass art enthusiasts.
-          </Text>
-          <Text style={text}>
-            As a subscriber, you'll be the first to know about:
-          </Text>
-          <ul style={list}>
-            <li>New product drops</li>
-            <li>Exclusive pieces</li>
-            <li>Behind-the-scenes content</li>
-            <li>Special offers</li>
-          </ul>
-          <Section style={buttonContainer}>
-            <Link style={button} href="https://blackeyesartisan.shop">
-              Shop Now
-            </Link>
-          </Section>
-          <Text style={footer}>
-            If you didn't subscribe to this list, you can safely ignore this email.
-          </Text>
-        </Container>
-      </Body>
-    </Html>
-  )
-}
-
-const main = {
-  backgroundColor: '#FEF8E7',
-  fontFamily: "'Space Grotesk', sans-serif",
-}
-
-const container = {
-  margin: '0 auto',
-  padding: '40px 20px',
-  maxWidth: '560px',
-}
-
-const heading = {
-  fontFamily: "'Dela Gothic One', cursive",
-  fontSize: '28px',
-  color: '#18181B',
-  marginBottom: '24px',
-}
-
-const text = {
-  fontSize: '16px',
-  lineHeight: '1.6',
-  color: '#18181B',
-}
-
-const list = {
-  fontSize: '16px',
-  lineHeight: '1.8',
-  color: '#18181B',
-}
-
-const buttonContainer = {
-  textAlign: 'center' as const,
-  marginTop: '32px',
-  marginBottom: '32px',
-}
-
-const button = {
-  backgroundColor: '#D63D42',
-  color: '#FFFFFF',
-  padding: '14px 28px',
-  borderRadius: '12px',
-  textDecoration: 'none',
-  fontWeight: '600',
-  display: 'inline-block',
-}
-
-const footer = {
-  fontSize: '12px',
-  color: '#666666',
-  marginTop: '40px',
-}
-```
-
-## Client-Side Implementation
-
-### Newsletter Form Component
-
-```typescript
-// components/newsletter/newsletter-form.tsx
-'use client'
-
-import { useState } from 'react'
-
-interface NewsletterFormProps {
-  source: 'footer' | 'notify_me'
-  productId?: string
-}
-
-export function NewsletterForm({ source, productId }: NewsletterFormProps) {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [message, setMessage] = useState('')
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setStatus('loading')
-
-    try {
-      const res = await fetch('/api/newsletter', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source, productId }),
-      })
-
-      const data = await res.json()
-
-      if (data.success) {
-        setStatus('success')
-        setMessage(data.message)
-        setEmail('')
-      } else {
-        setStatus('error')
-        setMessage(data.message)
-      }
-    } catch (error) {
-      setStatus('error')
-      setMessage('Something went wrong. Please try again.')
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="your@email.com"
-        required
-        disabled={status === 'loading'}
-      />
-      <button type="submit" disabled={status === 'loading'}>
-        {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
-      </button>
-      {message && (
-        <p className={status === 'success' ? 'text-green-600' : 'text-red-600'}>
-          {message}
-        </p>
-      )}
-    </form>
-  )
-}
-```
-
-## Rate Limiting
-
-Implement rate limiting to prevent abuse:
-
-```typescript
-// lib/rate-limit.ts
-import { headers } from 'next/headers'
-
-const RATE_LIMIT = 5 // requests
-const RATE_WINDOW = 60 * 1000 // 1 minute
-
-const ipRequests = new Map<string, { count: number; resetAt: number }>()
-
-export function checkRateLimit(): { allowed: boolean; remaining: number } {
-  const headersList = headers()
-  const ip = headersList.get('x-forwarded-for') || 'unknown'
-
-  const now = Date.now()
-  const record = ipRequests.get(ip)
-
-  if (!record || now > record.resetAt) {
-    ipRequests.set(ip, { count: 1, resetAt: now + RATE_WINDOW })
-    return { allowed: true, remaining: RATE_LIMIT - 1 }
-  }
-
-  if (record.count >= RATE_LIMIT) {
-    return { allowed: false, remaining: 0 }
-  }
-
-  record.count++
-  return { allowed: true, remaining: RATE_LIMIT - record.count }
-}
-```
+---
 
 ## Environment Variables
 
-```bash
-# .env.local
-RESEND_API_KEY=re_xxxxxxxxxxxxx
-RESEND_AUDIENCE_ID=aud_xxxxxxxxxxxxx
-```
+| Variable | Description |
+|----------|-------------|
+| `RESEND_API_KEY` | Resend API key |
+| `RESEND_AUDIENCE_ID` | ID of the newsletter audience in Resend |
 
-## Testing
+---
 
-### Manual Test Cases
+## Rate Limiting
 
-1. **Valid subscription**: Submit valid email → Success message, email added to Resend
-2. **Duplicate subscription**: Submit same email twice → "Already subscribed" message
-3. **Invalid email**: Submit "notanemail" → Validation error
-4. **Rate limit**: Submit 6+ times rapidly → Rate limit error
-
-### E2E Test (Playwright)
+Consider adding rate limiting to prevent abuse:
 
 ```typescript
-// tests/e2e/newsletter.spec.ts
-import { test, expect } from '@playwright/test'
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis'
 
-test('newsletter signup from footer', async ({ page }) => {
-  await page.goto('/')
-
-  // Scroll to footer
-  await page.locator('footer').scrollIntoViewIfNeeded()
-
-  // Fill email
-  await page.fill('footer input[type="email"]', 'test@example.com')
-
-  // Submit
-  await page.click('footer button[type="submit"]')
-
-  // Verify success message
-  await expect(page.locator('text=Successfully subscribed')).toBeVisible()
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(5, '1 m'), // 5 requests per minute
 })
 
-test('notify me on sold-out product', async ({ page }) => {
-  // Navigate to a sold-out product
-  await page.goto('/products/sold-out-item')
+// In route handler:
+const { success } = await ratelimit.limit(ip)
+if (!success) {
+  return NextResponse.json(
+    { error: 'Too many requests' },
+    { status: 429 }
+  )
+}
+```
 
-  // Verify SOLD badge
-  await expect(page.locator('text=SOLD')).toBeVisible()
+---
 
-  // Fill notify me form
-  await page.fill('input[type="email"]', 'test@example.com')
-  await page.click('button:has-text("Notify Me")')
+## Client Usage
 
-  // Verify success
-  await expect(page.locator('text=subscribed')).toBeVisible()
-})
+### Footer Newsletter Form
+
+```tsx
+const handleSubmit = async (email: string) => {
+  const res = await fetch('/api/newsletter', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  })
+
+  const data = await res.json()
+
+  if (data.success) {
+    if (data.alreadySubscribed) {
+      showMessage("You're already subscribed!")
+    } else {
+      showMessage('Welcome to the family!')
+    }
+  } else {
+    showError(data.error)
+  }
+}
+```
+
+### NotifyMe Form (Sold-out Products)
+
+Same API endpoint, different UI messaging:
+
+```tsx
+const handleNotifyMe = async (email: string) => {
+  const res = await fetch('/api/newsletter', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  })
+
+  const data = await res.json()
+
+  if (data.success) {
+    showMessage("We'll notify you when this drops again!")
+  } else {
+    showError(data.error)
+  }
+}
 ```

@@ -1,191 +1,88 @@
-# Quickstart Guide: MVP B2C Storefront
+# Quickstart: MVP B2C Storefront
 
-**Feature**: 001-mvp-storefront
-**Date**: 2026-01-29
+**Phase**: 1 - Design | **Date**: 2026-01-30 | **Plan**: [plan.md](./plan.md)
 
 ## Prerequisites
 
-- Node.js 20.x LTS
-- pnpm 8.x or later
-- Git
-- Access to Contabo VPS (for backend services)
-- Vercel account (for storefront deployment)
+Before starting development, ensure you have:
 
-## Quick Setup (Development)
+1. **Backend Services Running** (on Contabo VPS 95.111.239.92):
+   - Medusa 2.0 at `https://api.blackeyesartisan.shop`
+   - Strapi CMS at `https://cms.blackeyesartisan.shop`
+   - PostgreSQL database
+   - Redis (Upstash) for sessions
 
-### 1. Clone and Install
+2. **Local Development Environment**:
+   - Node.js 20.x LTS
+   - pnpm (recommended) or npm
+   - Git
+
+3. **External Service Accounts**:
+   - Vercel account (deployment)
+   - Cloudinary account (images)
+   - Resend account (emails)
+   - Stripe account (payments)
+
+## Step 1: Fork Solace Medusa Starter
 
 ```bash
-# Navigate to project directory
-cd C:\Users\black\OneDrive\Desktop\Code\blackeyesartisan.com
+# Clone the Solace starter
+git clone https://github.com/rigby-sh/solace-medusa-starter.git blackeyesartisan-storefront
+cd blackeyesartisan-storefront
 
-# Install pnpm if not already installed
-npm install -g pnpm
+# Remove original git history and reinitialize
+rm -rf .git
+git init
+git remote add origin https://github.com/YOUR_ORG/blackeyesartisan-storefront.git
 
-# Install dependencies (after monorepo setup)
-pnpm install
+# Install dependencies
+npm install
 ```
 
-### 2. Environment Setup
+## Step 2: Configure Environment Variables
 
-Create `.env.local` in `apps/storefront/`:
+Create `.env.local` with the following variables:
 
 ```bash
 # Medusa Backend
-NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9000
-NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_test_xxxxx
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=https://api.blackeyesartisan.shop
+NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY=pk_xxxxxxxxxxxxx
 
 # Strapi CMS
-NEXT_PUBLIC_STRAPI_URL=http://localhost:1337
-NEXT_PUBLIC_STRAPI_READ_TOKEN=xxxxx
+NEXT_PUBLIC_STRAPI_URL=https://cms.blackeyesartisan.shop
+NEXT_PUBLIC_STRAPI_READ_TOKEN=your_strapi_read_token
+STRAPI_WEBHOOK_REVALIDATION_SECRET=your_webhook_secret
 
-# Resend Email
-RESEND_API_KEY=re_test_xxxxx
-RESEND_AUDIENCE_ID=aud_xxxxx
-
-# Cloudinary
+# Cloudinary (replacing DO Spaces)
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dllzefagw
+CLOUDINARY_API_KEY=876936695179845
+CLOUDINARY_API_SECRET=iEYpye-9ptjclcN4cZNKzyePo74
 
-# Site URL
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
+# Resend (Email)
+RESEND_API_KEY=re_dU5PsXha_7Voxe2AEwFz2jixeyJSryv45
+RESEND_AUDIENCE_ID=your_audience_id
 
-# Strapi Webhook (for revalidation)
-STRAPI_WEBHOOK_REVALIDATION_SECRET=xxxxx
+# Stripe (from Solace/Medusa)
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_xxxxxxxxxxxxx
+
+# Site Config
+NEXT_PUBLIC_BASE_URL=https://www.blackeyesartisan.shop
+NEXT_PUBLIC_DEMO_MODE=false
+
+# Age Gate (optional override, default from Strapi)
+# AGE_GATE_TTL_DAYS=30
 ```
 
-### 3. Start Development Servers
+## Step 3: Update Tailwind Configuration
 
-```bash
-# Start all services (from monorepo root)
-pnpm dev
-
-# Or start individually:
-# Storefront: pnpm --filter storefront dev
-# Medusa: pnpm --filter medusa dev
-# Strapi: pnpm --filter strapi dev
-```
-
-### 4. Access Development URLs
-
-| Service | URL |
-|---------|-----|
-| Storefront | http://localhost:3000 |
-| Medusa Backend | http://localhost:9000 |
-| Medusa Admin | http://localhost:9000/app |
-| Strapi Admin | http://localhost:1337/admin |
-
-## Project Initialization (First Time Only)
-
-### Initialize Turborepo Monorepo
-
-```bash
-# Create monorepo structure
-npx create-turbo@latest
-
-# Or initialize manually:
-mkdir -p apps packages
-```
-
-### Initialize Next.js Storefront
-
-```bash
-# Create Next.js app with TypeScript and Tailwind
-cd apps
-npx create-next-app@14 storefront --typescript --tailwind --eslint --app --src-dir=false --import-alias="@/*"
-
-# Install additional dependencies
-cd storefront
-pnpm add @medusajs/medusa-js @tanstack/react-query
-pnpm add libphonenumber-js
-pnpm add resend @react-email/components
-pnpm add -D @types/node
-```
-
-### Initialize Medusa Backend
-
-```bash
-# Create Medusa project
-cd apps
-npx create-medusa-app@latest medusa --skip-db
-
-# Or use the Solace starter
-npx degit rigby-sh/solace-medusa-starter apps/medusa
-```
-
-### Initialize Strapi CMS
-
-```bash
-# Create Strapi project
-cd apps
-npx create-strapi-app@latest strapi --quickstart --typescript
-```
-
-## Monorepo Configuration
-
-### turbo.json
-```json
-{
-  "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
-  "tasks": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
-    "lint": {},
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-    "test": {
-      "dependsOn": ["build"]
-    },
-    "test:e2e": {
-      "dependsOn": ["build"]
-    }
-  }
-}
-```
-
-### pnpm-workspace.yaml
-```yaml
-packages:
-  - "apps/*"
-  - "packages/*"
-```
-
-### Root package.json
-```json
-{
-  "name": "blackeyesartisan",
-  "private": true,
-  "scripts": {
-    "dev": "turbo run dev",
-    "build": "turbo run build",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "test:e2e": "turbo run test:e2e"
-  },
-  "devDependencies": {
-    "turbo": "^2.0.0"
-  },
-  "packageManager": "pnpm@8.15.0"
-}
-```
-
-## Design System Setup
-
-### Tailwind Configuration
+Replace `tailwind.config.ts` with design system tokens:
 
 ```typescript
-// apps/storefront/tailwind.config.ts
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
@@ -210,6 +107,7 @@ const config: Config = {
       animation: {
         'marquee': 'marquee 25s linear infinite',
         'float': 'float 4s ease-in-out infinite',
+        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         marquee: {
@@ -219,9 +117,9 @@ const config: Config = {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
-        },
-      },
-    },
+        }
+      }
+    }
   },
   plugins: [],
 }
@@ -229,184 +127,145 @@ const config: Config = {
 export default config
 ```
 
-### Global Styles
+## Step 4: Add Google Fonts
 
-```css
-/* apps/storefront/styles/globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+Update `src/app/layout.tsx` to include fonts:
 
-@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+```tsx
+import { Dela_Gothic_One, Space_Grotesk } from 'next/font/google'
 
-body {
-  @apply bg-paper text-ink;
-  font-family: 'Space Grotesk', sans-serif;
-}
-
-/* Text outline effects */
-.text-outline {
-  -webkit-text-stroke: 1.5px #18181B;
-  color: transparent;
-}
-
-.text-outline-acid {
-  -webkit-text-stroke: 1px #D63D42;
-  color: transparent;
-}
-
-/* Text shadow */
-.text-shadow-sm {
-  text-shadow: 2px 2px 0px #18181B;
-}
-
-/* Selection */
-::selection {
-  @apply bg-acid text-white;
-}
-
-/* Hide scrollbar */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-```
-
-## Testing Setup
-
-### Playwright Configuration
-
-```typescript
-// playwright.config.ts
-import { defineConfig, devices } from '@playwright/test'
-
-export default defineConfig({
-  testDir: './tests/e2e',
-  fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  reporter: 'html',
-  use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
-    trace: 'on-first-retry',
-  },
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-  ],
-  webServer: process.env.CI ? undefined : {
-    command: 'pnpm --filter storefront dev',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-  },
+const delaGothicOne = Dela_Gothic_One({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-display',
 })
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-sans',
+})
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" className={`${delaGothicOne.variable} ${spaceGrotesk.variable}`}>
+      <body className="font-sans bg-paper text-ink">
+        {children}
+      </body>
+    </html>
+  )
+}
 ```
 
-### Install Playwright
+## Step 5: Update Image Configuration for Cloudinary
+
+Update `next.config.js`:
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/dllzefagw/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.blackeyesartisan.shop',
+      },
+    ],
+  },
+}
+
+module.exports = nextConfig
+```
+
+## Step 6: Configure Strapi Age Gate Fields
+
+In Strapi Admin (`https://cms.blackeyesartisan.shop/admin`):
+
+1. Go to **Content-Type Builder**
+2. Select **Global Settings** (single type)
+3. Add fields:
+   - `ageGateEnabled` (Boolean, default: true)
+   - `ageGateTtlDays` (Number, default: 30)
+   - `ageGateTitle` (Short text, default: "Age Verification Required")
+   - `ageGateMessage` (Long text)
+4. Save and publish changes
+
+## Step 7: Run Development Server
 
 ```bash
-# Install Playwright
-pnpm add -D @playwright/test
-
-# Install browsers
-npx playwright install
+npm run dev
 ```
+
+Visit `http://localhost:3000` to see the storefront.
+
+## Step 8: Deploy to Vercel
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+
+# Set environment variables in Vercel dashboard
+# or via CLI:
+vercel env add NEXT_PUBLIC_MEDUSA_BACKEND_URL production
+# ... add all other env vars
+```
+
+## Verification Checklist
+
+After setup, verify:
+
+- [ ] Homepage loads with products from Medusa
+- [ ] Product images load from Cloudinary
+- [ ] CMS content loads from Strapi
+- [ ] Cart functionality works
+- [ ] Checkout flow completes with Stripe (test mode)
+- [ ] User registration/login works
+- [ ] Age gate redirects unverified visitors (after implementation)
 
 ## Development Workflow
 
-### Daily Development
+1. **Feature branches**: Create from `main` with format `feature/description`
+2. **Local testing**: Run `npm run dev` and test manually
+3. **Type checking**: Run `npm run type-check` before commit
+4. **Build verification**: Run `npm run build` before PR
+5. **Preview deploys**: Vercel auto-deploys PRs for review
+6. **Production deploy**: Merge to `main` triggers production deploy
 
-1. **Start services**: `pnpm dev`
-2. **Make changes**: Edit code in `apps/storefront/`
-3. **Test locally**: Use Playwright MCP or manual testing
-4. **Lint/Type check**: `pnpm lint`
-5. **Commit changes**: Follow commit conventions
-
-### Testing Workflow
-
-```bash
-# Run unit tests
-pnpm test
-
-# Run E2E tests locally
-pnpm test:e2e
-
-# Run E2E tests against production
-PLAYWRIGHT_BASE_URL=https://www.blackeyesartisan.shop pnpm test:e2e
-```
-
-### Deployment Workflow
+## Useful Commands
 
 ```bash
-# 1. Push to feature branch
-git push origin 001-mvp-storefront
+# Development
+npm run dev           # Start dev server
+npm run build         # Production build
+npm run start         # Start production server
+npm run lint          # Run ESLint
+npm run type-check    # TypeScript check
 
-# 2. Vercel creates preview deployment automatically
-
-# 3. Test preview deployment with Playwright
-PLAYWRIGHT_BASE_URL=https://001-mvp-storefront-blackeyesartisan.vercel.app pnpm test:e2e
-
-# 4. Merge to main for production
-git checkout main
-git merge 001-mvp-storefront
-git push origin main
-
-# 5. Test production
-PLAYWRIGHT_BASE_URL=https://www.blackeyesartisan.shop pnpm test:e2e
+# Testing (after Playwright setup)
+npm run test:e2e      # Run E2E tests
 ```
-
-## Common Commands
-
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start all services in development |
-| `pnpm build` | Build all packages |
-| `pnpm lint` | Run linting |
-| `pnpm test` | Run unit tests |
-| `pnpm test:e2e` | Run Playwright E2E tests |
-| `pnpm --filter storefront dev` | Start only storefront |
-| `pnpm --filter storefront build` | Build only storefront |
 
 ## Troubleshooting
 
-### Common Issues
+**Images not loading?**
+- Check Cloudinary cloud name in env vars
+- Verify `next.config.js` remotePatterns
 
-**Port already in use**:
-```bash
-# Find and kill process on port 3000
-npx kill-port 3000
-```
+**Medusa API errors?**
+- Verify backend URL and publishable key
+- Check CORS settings on Medusa backend
 
-**Medusa connection failed**:
-- Ensure Medusa is running on port 9000
-- Check `NEXT_PUBLIC_MEDUSA_BACKEND_URL` env var
-- Verify publishable API key is correct
+**Strapi content not loading?**
+- Verify Strapi URL and read token
+- Check content permissions in Strapi admin
 
-**Strapi connection failed**:
-- Ensure Strapi is running on port 1337
-- Check `NEXT_PUBLIC_STRAPI_URL` env var
-- Verify read token has correct permissions
-
-**Tailwind styles not applying**:
-- Check `content` paths in tailwind.config.ts
-- Restart dev server after config changes
-- Clear `.next` cache: `rm -rf .next`
-
-## Next Steps
-
-After completing the quickstart:
-
-1. **Run `/speckit.tasks`** to generate the implementation task list
-2. **Start with Task 1** (usually monorepo initialization)
-3. **Follow the testing workflow** for each feature
-4. **Deploy incrementally** to catch issues early
+**Stripe checkout failing?**
+- Use test mode keys during development
+- Check Stripe webhook configuration

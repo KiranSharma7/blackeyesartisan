@@ -1,9 +1,10 @@
 # Tasks: MVP B2C Storefront
 
 **Input**: Design documents from `/specs/001-mvp-storefront/`
-**Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/
+**Prerequisites**: plan.md, spec.md, data-model.md, contracts/, research.md
+**Base**: Fork of [Solace Medusa Starter](https://github.com/rigby-sh/solace-medusa-starter)
 
-**Tests**: E2E tests included as final phase (Playwright configured in project).
+**Workflow**: Each task follows: Code → Test Local (Playwright MCP) → Deploy → Test Production (Playwright MCP)
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -15,93 +16,106 @@
 
 ## Path Conventions
 
-- **Monorepo**: `apps/storefront/` for Next.js, `packages/ui/` for shared components
-- **Backend configs**: `backend/` for Medusa/Strapi deployment configs
-- **Tests**: `tests/e2e/` for Playwright tests
+Based on Solace Medusa Starter structure:
+- **Storefront**: `src/` at repository root (forked from solace-medusa-starter)
+- **Components**: `src/components/`
+- **Lib/Utils**: `src/lib/`
+- **API Routes**: `src/app/api/`
+- **Pages**: `src/app/(main)/` and `src/app/(content)/`
 
 ---
 
-## Phase 1: Setup (Shared Infrastructure)
+## Phase 0.5: Starter Audit & Upgrade (Required)
 
-**Purpose**: Initialize Turborepo monorepo with Next.js storefront and shared packages
+**Purpose**: Solace starter repos haven't been updated in ~2 years. Audit and upgrade before implementation.
 
-- [ ] T001 Initialize Turborepo monorepo with pnpm workspaces in root `package.json`, `pnpm-workspace.yaml`, and `turbo.json`
-- [ ] T002 Create Next.js 14 storefront app with TypeScript and App Router in `apps/storefront/`
-- [ ] T003 [P] Create shared UI package structure in `packages/ui/`
-- [ ] T004 [P] Create shared Tailwind config package in `packages/config-tailwind/`
-- [ ] T005 [P] Create shared TypeScript config package in `packages/config-typescript/`
-- [ ] T006 [P] Configure Tailwind with design system tokens (colors, fonts, shadows) in `apps/storefront/tailwind.config.ts`
-- [ ] T007 [P] Add global styles with fonts and custom utilities in `apps/storefront/styles/globals.css`
-- [ ] T008 Create environment configuration with `.env.example` at repository root
-- [ ] T009 [P] Install core dependencies: `@medusajs/medusa-js`, `@tanstack/react-query`, `libphonenumber-js`, `resend` in `apps/storefront/`
+**Decision Gate**: If upgrade effort exceeds 2-3 days, pivot to building from scratch with Turborepo.
 
----
+- [ ] T001 Clone solace-medusa-starter, solace-medusa-starter-api, and solace-medusa-starter-strapi repos locally
+- [ ] T002 Run `pnpm outdated` on each repo and document stale dependencies
+- [ ] T003 [P] Check Medusa 2.0 migration guide for breaking changes in solace-medusa-starter-api
+- [ ] T004 [P] Verify Next.js 14 App Router patterns in solace-medusa-starter match current best practices
+- [ ] T005 [P] Check Strapi 4.x/5.x compatibility in solace-medusa-starter-strapi
+- [ ] T006 Upgrade dependencies in all three repos and verify builds succeed
+- [ ] T007 Document required code changes for compatibility in `specs/001-mvp-storefront/upgrade-notes.md`
+- [ ] T008 **DECISION CHECKPOINT**: Evaluate if Solace fork is viable or pivot to Turborepo
 
-## Phase 2: Foundational (Blocking Prerequisites)
-
-**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
-
-**CRITICAL**: No user story work can begin until this phase is complete
-
-- [ ] T010 Create Medusa client wrapper with retry logic in `apps/storefront/lib/medusa/client.ts`
-- [ ] T011 [P] Create Strapi client wrapper with ISR caching in `apps/storefront/lib/strapi/client.ts`
-- [ ] T012 [P] Create cookie management utilities in `apps/storefront/lib/cookies/index.ts`
-- [ ] T013 Define TypeScript types for Medusa commerce entities in `apps/storefront/lib/medusa/types.ts`
-- [ ] T014 [P] Define TypeScript types for Strapi CMS entities in `apps/storefront/lib/strapi/types.ts`
-- [ ] T015 Create root layout with HTML structure and metadata in `apps/storefront/app/layout.tsx`
-- [ ] T016 Create QueryClientProvider wrapper for React Query in `apps/storefront/lib/providers/query-provider.tsx`
-- [ ] T017 Create CartContext and CartProvider for cart state management in `apps/storefront/lib/providers/cart-provider.tsx`
-- [ ] T018 Create combined Providers component wrapping all contexts in `apps/storefront/lib/providers/index.tsx`
-- [ ] T019 [P] Create utility functions for price formatting and inventory checks in `apps/storefront/lib/utils/index.ts`
-- [ ] T020 [P] Create reusable Button component in `packages/ui/src/button.tsx`
-- [ ] T021 [P] Create reusable Badge component in `packages/ui/src/badge.tsx`
-- [ ] T022 [P] Create reusable Input component in `packages/ui/src/input.tsx`
-- [ ] T023 [P] Create reusable Card component in `packages/ui/src/card.tsx`
-- [ ] T024 Export all UI components from `packages/ui/src/index.ts`
-
-**Checkpoint**: Foundation ready - user story implementation can now begin
+**Checkpoint**: Starter repos are upgraded and validated, or decision made to build from scratch
 
 ---
 
-## Phase 3: User Story 1 - Browse and Purchase Available Product (Priority: P1)
+## Phase 1: Setup (Fork & Configure)
+
+**Purpose**: Fork Solace Starter and configure for BlackEyesArtisan
+
+- [ ] T009 Fork solace-medusa-starter to blackeyesartisan-storefront repository
+- [ ] T010 [P] Fork solace-medusa-starter-api to blackeyesartisan-api repository
+- [ ] T011 [P] Fork solace-medusa-starter-strapi to blackeyesartisan-cms repository
+- [ ] T012 Configure environment variables in `.env.example` with Cloudinary, Resend, Upstash Redis URLs
+- [ ] T013 [P] Update `next.config.js` to use Cloudinary image loader instead of DigitalOcean Spaces
+- [ ] T014 [P] Install additional dependencies: `resend`, `@upstash/ratelimit`, `@upstash/redis` in storefront
+- [ ] T015 Configure Tailwind with design system tokens (colors, fonts, shadows) in `tailwind.config.ts`
+- [ ] T016 Add global styles with fonts (Dela Gothic One, Space Grotesk) and custom utilities in `src/styles/globals.css`
+
+**Checkpoint**: Forked repos configured with BlackEyesArtisan settings, ready for customization
+
+---
+
+## Phase 2: Foundational (Backend Deployment)
+
+**Purpose**: Deploy backend services to VPS before storefront development
+
+**CRITICAL**: Storefront cannot function without Medusa API and Strapi CMS running
+
+- [ ] T017 Deploy solace-medusa-starter-api to VPS at `/var/www/medusa` via SSH
+- [ ] T018 Configure PostgreSQL database for Medusa on VPS
+- [ ] T019 Configure PM2 to run Medusa service and verify API responds at `https://api.blackeyesartisan.shop`
+- [ ] T020 Deploy solace-medusa-starter-strapi to VPS at `/var/www/strapi` via SSH
+- [ ] T021 [P] Configure PostgreSQL database for Strapi on VPS
+- [ ] T022 Configure PM2 to run Strapi service and verify CMS responds at `https://cms.blackeyesartisan.shop`
+- [ ] T023 Extend Strapi Global Settings content type with age gate fields (`ageGateEnabled`, `ageGateTtlDays`, `ageGateTitle`, `ageGateMessage`) via Strapi admin
+- [ ] T024 [P] Add shipping info fields to Strapi Global Settings (`handlingTimeDays`, `dutiesDisclaimer`)
+- [ ] T025 Create sample products in Medusa admin (at least 3 available, 1 sold-out for testing)
+- [ ] T026 [P] Create sample content in Strapi (About page, policy pages, announcement bar)
+- [ ] T027 Verify Medusa Store API responds correctly: `GET /store/products`, `GET /store/collections`
+- [ ] T028 [P] Verify Strapi API responds correctly: `GET /api/global-settings`, `GET /api/pages`
+
+**Checkpoint**: Backend services deployed and accessible, sample data created
+
+---
+
+## Phase 3: User Story 1 - Browse and Purchase Available Product (Priority: P1) - MVP Core
 
 **Goal**: Enable visitors to browse products, add to cart, and complete checkout
 
-**Independent Test**: Navigate from homepage to collection to product detail, add to cart, complete checkout with order confirmation
+**Independent Test**: Navigate from homepage → collection → product detail → add to cart → checkout → order confirmation
 
 ### Implementation for User Story 1
 
-- [ ] T025 [P] [US1] Create product data fetching functions in `apps/storefront/lib/medusa/products.ts`
-- [ ] T026 [P] [US1] Create collection data fetching functions in `apps/storefront/lib/medusa/collections.ts`
-- [ ] T027 [P] [US1] Create cart operations (create, add, update, remove) in `apps/storefront/lib/medusa/cart.ts`
-- [ ] T028 [P] [US1] Create order fetching functions in `apps/storefront/lib/medusa/orders.ts`
-- [ ] T029 [P] [US1] Create ProductImage component with Cloudinary optimization in `apps/storefront/components/products/product-image.tsx`
-- [ ] T030 [P] [US1] Create ProductCard component for grid display in `apps/storefront/components/products/product-card.tsx`
-- [ ] T031 [P] [US1] Create ProductGrid component for collections in `apps/storefront/components/products/product-grid.tsx`
-- [ ] T032 [US1] Create ProductDetail component with image gallery in `apps/storefront/components/products/product-detail.tsx`
-- [ ] T033 [US1] Create AddToCartButton component with loading state in `apps/storefront/components/cart/add-to-cart-button.tsx`
-- [ ] T034 [US1] Create CartDrawer component for slide-out cart in `apps/storefront/components/cart/cart-drawer.tsx`
-- [ ] T035 [P] [US1] Create CartItem component for line items in `apps/storefront/components/cart/cart-item.tsx`
-- [ ] T036 [P] [US1] Create CartSummary component for totals in `apps/storefront/components/cart/cart-summary.tsx`
-- [ ] T037 [US1] Create Header component with cart icon and count in `apps/storefront/components/layout/header.tsx`
-- [ ] T038 [P] [US1] Create Footer component with navigation links in `apps/storefront/components/layout/footer.tsx`
-- [ ] T039 [US1] Create shop layout with Header/Footer in `apps/storefront/app/(shop)/layout.tsx`
-- [ ] T040 [US1] Create homepage with featured products in `apps/storefront/app/(shop)/page.tsx`
-- [ ] T041 [US1] Create product detail page with SSR data fetching in `apps/storefront/app/(shop)/products/[handle]/page.tsx`
-- [ ] T042 [US1] Create cart page for full cart view in `apps/storefront/app/(shop)/cart/page.tsx`
-- [ ] T043 [US1] Create checkout page shell in `apps/storefront/app/(shop)/checkout/page.tsx`
-- [ ] T044 [US1] Create CheckoutForm component with multi-step flow in `apps/storefront/components/checkout/checkout-form.tsx`
-- [ ] T045 [P] [US1] Create ShippingForm component for address entry in `apps/storefront/components/checkout/shipping-form.tsx`
-- [ ] T046 [P] [US1] Create PaymentForm component for payment selection in `apps/storefront/components/checkout/payment-form.tsx`
-- [ ] T047 [US1] Create OrderReview component for final review in `apps/storefront/components/checkout/order-review.tsx`
-- [ ] T048 [US1] Create checkout server actions for cart completion in `apps/storefront/app/(shop)/checkout/actions.ts`
-- [ ] T049 [US1] Create order confirmation page in `apps/storefront/app/(shop)/checkout/confirmation/page.tsx`
+- [ ] T029 [US1] Verify Solace Medusa client wrapper works in `src/lib/medusa/client.ts`
+- [ ] T030 [P] [US1] Verify Solace Strapi client wrapper works in `src/lib/strapi/client.ts`
+- [ ] T031 [US1] Restyle Header component with design system (ink/paper colors, hard shadows) in `src/components/layout/Header.tsx`
+- [ ] T032 [P] [US1] Restyle Footer component with design system in `src/components/layout/Footer.tsx`
+- [ ] T033 [US1] Restyle ProductCard component with design system (2px borders, hard shadows) in `src/components/products/ProductCard.tsx`
+- [ ] T034 [P] [US1] Restyle ProductGrid component for collections in `src/components/products/ProductGrid.tsx`
+- [ ] T035 [US1] Update ProductCard to use Cloudinary image URLs in `src/components/products/ProductCard.tsx`
+- [ ] T036 [US1] Restyle ProductDetail component with design system in `src/components/products/ProductDetail.tsx`
+- [ ] T037 [US1] Verify AddToCartButton component works in `src/components/cart/AddToCartButton.tsx`
+- [ ] T038 [P] [US1] Restyle CartDrawer component with design system in `src/components/cart/CartDrawer.tsx`
+- [ ] T039 [P] [US1] Restyle CartItem component in `src/components/cart/CartItem.tsx`
+- [ ] T040 [US1] Restyle homepage with design system in `src/app/(main)/page.tsx`
+- [ ] T041 [US1] Verify product detail page loads data from Medusa in `src/app/(main)/products/[handle]/page.tsx`
+- [ ] T042 [US1] Verify cart page works in `src/app/(main)/cart/page.tsx`
+- [ ] T043 [US1] Restyle checkout page with design system in `src/app/(main)/checkout/page.tsx`
+- [ ] T044 [US1] Verify Stripe payment integration works in checkout flow
+- [ ] T045 [US1] Verify order confirmation page displays order details in `src/app/(main)/checkout/confirmation/page.tsx`
+- [ ] T046 [US1] Deploy storefront to Vercel and test full purchase flow via Playwright MCP
 
-**Checkpoint**: User Story 1 complete - visitors can browse and purchase products
+**Checkpoint**: User Story 1 complete - visitors can browse and purchase products (MVP functional)
 
 ---
 
-## Phase 4: User Story 2 - Age Verification Gate (Priority: P1)
+## Phase 4: User Story 2 - Age Verification Gate (Priority: P1) - Legal Compliance
 
 **Goal**: Require 18+ verification before any site content is accessible
 
@@ -109,16 +123,19 @@
 
 ### Implementation for User Story 2
 
-- [ ] T050 [US2] Create age verification middleware checking cookie in `apps/storefront/middleware.ts`
-- [ ] T051 [US2] Fetch global settings (ageGateTtl) from Strapi in `apps/storefront/lib/strapi/settings.ts`
-- [ ] T052 [P] [US2] Create AgeGate component with styled modal in `apps/storefront/components/age-gate/age-gate.tsx`
-- [ ] T053 [P] [US2] Create ExitPage component for under-18 redirect in `apps/storefront/components/age-gate/exit-page.tsx`
-- [ ] T054 [US2] Create age gate page route in `apps/storefront/app/age-gate/page.tsx`
-- [ ] T055 [US2] Create exit page route in `apps/storefront/app/age-gate/exit/page.tsx`
-- [ ] T056 [US2] Create server actions for age verification with cookie setting in `apps/storefront/app/age-gate/actions.ts`
-- [ ] T057 [US2] Add checkout age re-verification in `apps/storefront/app/(shop)/checkout/actions.ts`
+- [ ] T047 [US2] Create age verification cookie utilities in `src/lib/cookies/age-verification.ts`
+- [ ] T048 [US2] Fetch global settings (ageGateTtl, ageGateEnabled) from Strapi in `src/lib/strapi/settings.ts`
+- [ ] T049 [US2] Create age verification middleware checking cookie in `middleware.ts` (root level)
+- [ ] T050 [P] [US2] Create AgeGate component with styled modal (design system) in `src/components/age-gate/AgeGate.tsx`
+- [ ] T051 [P] [US2] Create ExitPage component for under-18 redirect in `src/components/age-gate/ExitPage.tsx`
+- [ ] T052 [US2] Create age gate page route in `src/app/age-gate/page.tsx`
+- [ ] T053 [US2] Create exit page route in `src/app/age-gate/exit/page.tsx`
+- [ ] T054 [US2] Create server actions for age verification with cookie setting in `src/app/age-gate/actions.ts`
+- [ ] T055 [US2] Add checkout age re-verification check in `src/app/(main)/checkout/page.tsx`
+- [ ] T056 [US2] Test age gate flow via Playwright MCP: new visitor → gate → confirm → browse
+- [ ] T057 [US2] Deploy to Vercel and test age gate in production via Playwright MCP
 
-**Checkpoint**: User Story 2 complete - age gate blocks underage visitors
+**Checkpoint**: User Story 2 complete - age gate blocks underage visitors (legal compliance met)
 
 ---
 
@@ -130,11 +147,14 @@
 
 ### Implementation for User Story 3
 
-- [ ] T058 [P] [US3] Create isProductSoldOut and isVariantSoldOut utility functions in `apps/storefront/lib/utils/inventory.ts`
-- [ ] T059 [P] [US3] Create SoldBadge component with styled overlay in `apps/storefront/components/products/sold-badge.tsx`
-- [ ] T060 [US3] Update ProductCard to show SoldBadge when inventory is zero in `apps/storefront/components/products/product-card.tsx`
-- [ ] T061 [US3] Update ProductDetail to show disabled state and NotifyMe form when sold out in `apps/storefront/components/products/product-detail.tsx`
-- [ ] T062 [US3] Create NotifyMeForm component for sold-out products in `apps/storefront/components/newsletter/notify-me-form.tsx`
+- [ ] T058 [P] [US3] Create isProductSoldOut utility function in `src/lib/utils/inventory.ts`
+- [ ] T059 [P] [US3] Create SoldBadge component with styled overlay in `src/components/products/SoldBadge.tsx`
+- [ ] T060 [US3] Update ProductCard to show SoldBadge when inventory is zero in `src/components/products/ProductCard.tsx`
+- [ ] T061 [US3] Update ProductDetail to show disabled state when sold out in `src/components/products/ProductDetail.tsx`
+- [ ] T062 [US3] Create NotifyMeForm component for sold-out products in `src/components/newsletter/NotifyMeForm.tsx`
+- [ ] T063 [US3] Integrate NotifyMeForm into ProductDetail for sold-out products in `src/components/products/ProductDetail.tsx`
+- [ ] T064 [US3] Test sold-out display via Playwright MCP with test product
+- [ ] T065 [US3] Deploy and test sold-out display in production
 
 **Checkpoint**: User Story 3 complete - sold-out products display as portfolio with newsletter signup
 
@@ -148,12 +168,13 @@
 
 ### Implementation for User Story 4
 
-- [ ] T063 [US4] Create newsletter API route with Resend integration in `apps/storefront/app/api/newsletter/route.ts`
-- [ ] T064 [P] [US4] Create rate limiting utility for API routes in `apps/storefront/lib/utils/rate-limit.ts`
-- [ ] T065 [P] [US4] Create email validation utility in `apps/storefront/lib/utils/validation.ts`
-- [ ] T066 [P] [US4] Create WelcomeEmail template with React Email in `apps/storefront/emails/welcome.tsx`
-- [ ] T067 [US4] Create NewsletterForm component for footer in `apps/storefront/components/newsletter/newsletter-form.tsx`
-- [ ] T068 [US4] Update Footer to include NewsletterForm in `apps/storefront/components/layout/footer.tsx`
+- [ ] T066 [P] [US4] Create email validation utility in `src/lib/utils/validation.ts`
+- [ ] T067 [P] [US4] Create rate limiting utility for API routes in `src/lib/utils/rate-limit.ts`
+- [ ] T068 [US4] Create newsletter API route with Resend integration in `src/app/api/newsletter/route.ts`
+- [ ] T069 [US4] Create NewsletterForm component for footer in `src/components/newsletter/NewsletterForm.tsx`
+- [ ] T070 [US4] Update Footer to include NewsletterForm in `src/components/layout/Footer.tsx`
+- [ ] T071 [US4] Test newsletter signup via Playwright MCP (footer form)
+- [ ] T072 [US4] Deploy and test newsletter in production
 
 **Checkpoint**: User Story 4 complete - newsletter signup works from footer and sold-out products
 
@@ -167,11 +188,13 @@
 
 ### Implementation for User Story 5
 
-- [ ] T069 [P] [US5] Create OrderConfirmation component with order details display in `apps/storefront/components/checkout/order-confirmation.tsx`
-- [ ] T070 [P] [US5] Create TrackingInfo component for fulfillment display in `apps/storefront/components/orders/tracking-info.tsx`
-- [ ] T071 [P] [US5] Create OrderConfirmationEmail template with React Email in `apps/storefront/emails/order-confirmation.tsx`
-- [ ] T072 [P] [US5] Create ShippingNotificationEmail template with FedEx tracking in `apps/storefront/emails/shipping-notification.tsx`
-- [ ] T073 [US5] Fetch global settings for dutiesDisclaimer and handlingTime in order confirmation in `apps/storefront/app/(shop)/checkout/confirmation/page.tsx`
+- [ ] T073 [P] [US5] Create Resend email client wrapper in `src/lib/resend/client.ts`
+- [ ] T074 [P] [US5] Create OrderConfirmationEmail template in `src/emails/order-confirmation.tsx`
+- [ ] T075 [P] [US5] Create ShippingNotificationEmail template with FedEx tracking in `src/emails/shipping-notification.tsx`
+- [ ] T076 [US5] Enhance order confirmation page with duties disclaimer and handling time from Strapi in `src/app/(main)/checkout/confirmation/page.tsx`
+- [ ] T077 [US5] Configure Medusa to send order confirmation emails via Resend
+- [ ] T078 [US5] Test order confirmation flow and email delivery via Playwright MCP
+- [ ] T079 [US5] Deploy and verify emails work in production
 
 **Checkpoint**: User Story 5 complete - order confirmation and emails work
 
@@ -185,13 +208,14 @@
 
 ### Implementation for User Story 6
 
-- [ ] T074 [P] [US6] Create phone validation with libphonenumber-js in `apps/storefront/lib/utils/phone-validation.ts`
-- [ ] T075 [P] [US6] Create CountrySelect component with ISO country codes in `apps/storefront/components/checkout/country-select.tsx`
-- [ ] T076 [P] [US6] Create PhoneInput component with country-aware validation in `apps/storefront/components/checkout/phone-input.tsx`
-- [ ] T077 [US6] Update ShippingForm to include phone validation and country selector in `apps/storefront/components/checkout/shipping-form.tsx`
-- [ ] T078 [P] [US6] Create ShippingOptions component displaying flat-rate options in `apps/storefront/components/checkout/shipping-options.tsx`
-- [ ] T079 [P] [US6] Create DutiesDisclaimer component with CMS content in `apps/storefront/components/checkout/duties-disclaimer.tsx`
-- [ ] T080 [US6] Integrate ShippingOptions and DutiesDisclaimer into checkout flow in `apps/storefront/components/checkout/checkout-form.tsx`
+- [ ] T080 [P] [US6] Create phone validation with libphonenumber-js in `src/lib/utils/phone-validation.ts`
+- [ ] T081 [P] [US6] Create CountrySelect component with ISO country codes in `src/components/checkout/CountrySelect.tsx`
+- [ ] T082 [P] [US6] Create PhoneInput component with country-aware validation in `src/components/checkout/PhoneInput.tsx`
+- [ ] T083 [US6] Update ShippingForm to require phone and use country selector in `src/components/checkout/ShippingForm.tsx`
+- [ ] T084 [P] [US6] Create DutiesDisclaimer component with CMS content in `src/components/checkout/DutiesDisclaimer.tsx`
+- [ ] T085 [US6] Integrate DutiesDisclaimer into checkout flow in `src/app/(main)/checkout/page.tsx`
+- [ ] T086 [US6] Test international checkout via Playwright MCP with various countries
+- [ ] T087 [US6] Deploy and test international checkout in production
 
 **Checkpoint**: User Story 6 complete - international checkout with phone validation works
 
@@ -205,11 +229,13 @@
 
 ### Implementation for User Story 7
 
-- [ ] T081 [P] [US7] Create CollectionCard component for collection grid in `apps/storefront/components/collections/collection-card.tsx`
-- [ ] T082 [P] [US7] Create CollectionGrid component for listing collections in `apps/storefront/components/collections/collection-grid.tsx`
-- [ ] T083 [US7] Create collections listing page in `apps/storefront/app/(shop)/collections/page.tsx`
-- [ ] T084 [US7] Create collection detail page with products in `apps/storefront/app/(shop)/collections/[handle]/page.tsx`
-- [ ] T085 [US7] Update homepage to include collections section in `apps/storefront/app/(shop)/page.tsx`
+- [ ] T088 [P] [US7] Restyle CollectionCard component in `src/components/collections/CollectionCard.tsx`
+- [ ] T089 [P] [US7] Restyle CollectionGrid component in `src/components/collections/CollectionGrid.tsx`
+- [ ] T090 [US7] Restyle collections listing page in `src/app/(main)/collections/page.tsx`
+- [ ] T091 [US7] Restyle collection detail page in `src/app/(main)/collections/[handle]/page.tsx`
+- [ ] T092 [US7] Update homepage to include collections section in `src/app/(main)/page.tsx`
+- [ ] T093 [US7] Test collection browsing via Playwright MCP
+- [ ] T094 [US7] Deploy and test collections in production
 
 **Checkpoint**: User Story 7 complete - collection browsing works
 
@@ -223,10 +249,12 @@
 
 ### Implementation for User Story 8
 
-- [ ] T086 [P] [US8] Create page data fetching from Strapi in `apps/storefront/lib/strapi/pages.ts`
-- [ ] T087 [P] [US8] Create PageContent component for rich text rendering in `apps/storefront/components/content/page-content.tsx`
-- [ ] T088 [US8] Create content routes layout in `apps/storefront/app/(content)/layout.tsx`
-- [ ] T089 [US8] Create About page route with CMS content in `apps/storefront/app/(content)/about/page.tsx`
+- [ ] T095 [P] [US8] Create page data fetching from Strapi in `src/lib/strapi/pages.ts`
+- [ ] T096 [P] [US8] Create PageContent component for rich text rendering in `src/components/content/PageContent.tsx`
+- [ ] T097 [US8] Create content routes layout in `src/app/(content)/layout.tsx`
+- [ ] T098 [US8] Create About page route with CMS content in `src/app/(content)/about/page.tsx`
+- [ ] T099 [US8] Test About page via Playwright MCP
+- [ ] T100 [US8] Deploy and test About page in production
 
 **Checkpoint**: User Story 8 complete - About page displays CMS content
 
@@ -240,9 +268,11 @@
 
 ### Implementation for User Story 9
 
-- [ ] T090 [P] [US9] Create policy data fetching from Strapi in `apps/storefront/lib/strapi/policies.ts`
-- [ ] T091 [US9] Create dynamic policy page route in `apps/storefront/app/(content)/policies/[slug]/page.tsx`
-- [ ] T092 [US9] Update Footer with policy page links in `apps/storefront/components/layout/footer.tsx`
+- [ ] T101 [P] [US9] Create policy data fetching from Strapi in `src/lib/strapi/policies.ts`
+- [ ] T102 [US9] Create dynamic policy page route in `src/app/(content)/policies/[slug]/page.tsx`
+- [ ] T103 [US9] Update Footer with policy page links in `src/components/layout/Footer.tsx`
+- [ ] T104 [US9] Test all policy pages via Playwright MCP
+- [ ] T105 [US9] Deploy and test policy pages in production
 
 **Checkpoint**: User Story 9 complete - all policy pages accessible
 
@@ -252,19 +282,19 @@
 
 **Purpose**: Error handling, SEO, and final refinements
 
-- [ ] T093 [P] Create 404 not-found page in `apps/storefront/app/not-found.tsx`
-- [ ] T094 [P] Create global error boundary page in `apps/storefront/app/error.tsx`
-- [ ] T095 [P] Create loading states for route transitions in `apps/storefront/app/loading.tsx`
-- [ ] T096 [P] Create AnnouncementBar component with CMS content in `apps/storefront/components/layout/announcement-bar.tsx`
-- [ ] T097 Update root layout to include AnnouncementBar in `apps/storefront/app/layout.tsx`
-- [ ] T098 [P] Create revalidation API route for Strapi webhooks in `apps/storefront/app/api/revalidate/route.ts`
-- [ ] T099 [P] Add metadata generation for SEO on all pages in `apps/storefront/lib/utils/metadata.ts`
-- [ ] T100 Create Playwright configuration in `playwright.config.ts`
-- [ ] T101 [P] Create E2E test for age gate flow in `tests/e2e/age-gate.spec.ts`
-- [ ] T102 [P] Create E2E test for purchase flow in `tests/e2e/purchase-flow.spec.ts`
-- [ ] T103 [P] Create E2E test for sold-out display in `tests/e2e/sold-out-display.spec.ts`
-- [ ] T104 [P] Create E2E test for newsletter signup in `tests/e2e/newsletter.spec.ts`
-- [ ] T105 Run quickstart.md validation and fix any setup issues
+- [ ] T106 [P] Create 404 not-found page with design system in `src/app/not-found.tsx`
+- [ ] T107 [P] Create global error boundary page in `src/app/error.tsx`
+- [ ] T108 [P] Create loading states for route transitions in `src/app/loading.tsx`
+- [ ] T109 [P] Create AnnouncementBar component with CMS content in `src/components/layout/AnnouncementBar.tsx`
+- [ ] T110 Update root layout to include AnnouncementBar in `src/app/layout.tsx`
+- [ ] T111 [P] Verify Strapi revalidation webhook works in `src/app/api/strapi-revalidate/route.ts`
+- [ ] T112 [P] Add metadata generation for SEO on all pages in `src/lib/utils/metadata.ts`
+- [ ] T113 Smoke test inherited Solace features: user accounts, search, promo codes, blog, theme toggle
+- [ ] T114 Final production E2E test: complete purchase journey via Playwright MCP
+- [ ] T115 Final production E2E test: age gate flow via Playwright MCP
+- [ ] T116 Performance audit: verify <3s page load, <1s age gate appearance
+
+**Checkpoint**: MVP complete and production-ready
 
 ---
 
@@ -272,75 +302,91 @@
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: No dependencies - can start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
-- **User Stories (Phase 3+)**: All depend on Foundational phase completion
-  - User Story 1 (P1) and User Story 2 (P1) form the MVP core
-  - User stories can proceed in parallel (if staffed)
-  - Or sequentially in priority order (P1 → P2 → P3)
-- **Polish (Final Phase)**: Depends on all desired user stories being complete
+```
+Phase 0.5 (Audit) → Phase 1 (Setup) → Phase 2 (Backend) → User Stories
+                                                              ↓
+                                           ┌──────────────────┴──────────────────┐
+                                           │                                      │
+                                      Phase 3 (US1)                         Phase 4 (US2)
+                                      Browse/Purchase                       Age Gate
+                                           │                                      │
+                                           └──────────────────┬──────────────────┘
+                                                              ↓
+                                               Both P1 stories complete = MVP
+                                                              ↓
+                                        ┌─────────┬─────────┬─────────┐
+                                        ↓         ↓         ↓         ↓
+                                   Phase 5    Phase 6   Phase 7   Phase 8
+                                   (US3)      (US4)     (US5)     (US6)
+                                   Sold-Out   Newsletter Emails   Intl Checkout
+                                        └─────────┴─────────┴─────────┘
+                                                       ↓
+                                        ┌─────────┬─────────┐
+                                        ↓         ↓         ↓
+                                   Phase 9    Phase 10  Phase 11
+                                   (US7)      (US8)     (US9)
+                                   Collections About     Policies
+                                        └─────────┴─────────┘
+                                                  ↓
+                                            Phase 12 (Polish)
+```
 
 ### User Story Dependencies
 
-- **User Story 1 (P1)**: Can start after Foundational (Phase 2) - Core shopping flow
-- **User Story 2 (P1)**: Can start after Foundational (Phase 2) - Can run parallel with US1
-- **User Story 3 (P2)**: Depends on US1 components (ProductCard, ProductDetail) - Extends sold-out handling
-- **User Story 4 (P2)**: Can start after Foundational - Standalone newsletter feature
-- **User Story 5 (P2)**: Depends on US1 checkout completion - Extends order flow
-- **User Story 6 (P2)**: Depends on US1 checkout form - Extends address/phone handling
-- **User Story 7 (P3)**: Can start after Foundational - Standalone collections feature
-- **User Story 8 (P3)**: Can start after Foundational - Standalone CMS page
-- **User Story 9 (P3)**: Can start after Foundational - Standalone CMS pages
+- **US1 (Browse/Purchase)**: Can start after Phase 2 - Core shopping flow
+- **US2 (Age Gate)**: Can start after Phase 2 - Can run parallel with US1
+- **US3 (Sold-Out Display)**: Depends on US1 ProductCard/ProductDetail components
+- **US4 (Newsletter)**: Can start after Phase 2 - Standalone feature
+- **US5 (Order Emails)**: Depends on US1 checkout completion
+- **US6 (Intl Checkout)**: Depends on US1 checkout form
+- **US7 (Collections)**: Can start after Phase 2 - Standalone feature
+- **US8 (About Page)**: Can start after Phase 2 - Standalone CMS feature
+- **US9 (Policy Pages)**: Can start after Phase 2 - Standalone CMS feature
 
 ### Within Each User Story
 
-- Models/utilities before components
+- Utilities/lib functions before components
 - Components before pages
 - Pages before integration
-- Story complete before moving to next priority
-
-### Parallel Opportunities
-
-**Setup Phase (T001-T009)**:
-- T003, T004, T005 can run in parallel (package creation)
-- T006, T007 can run in parallel (styling setup)
-
-**Foundational Phase (T010-T024)**:
-- T010, T011, T012 can run in parallel (client setup)
-- T013, T014 can run in parallel (type definitions)
-- T019-T024 can run in parallel (utilities and UI components)
-
-**User Story Parallel Execution**:
-- US1 and US2 can run in parallel (both P1)
-- US4, US7, US8, US9 can all run in parallel (no dependencies)
+- Deploy and test before marking story complete
 
 ---
 
-## Parallel Example: Foundation Setup
+## Parallel Opportunities
 
-```bash
-# Launch all client wrappers together:
-Task: "Create Medusa client wrapper in apps/storefront/lib/medusa/client.ts"
-Task: "Create Strapi client wrapper in apps/storefront/lib/strapi/client.ts"
-Task: "Create cookie management utilities in apps/storefront/lib/cookies/index.ts"
-
-# Launch all type definitions together:
-Task: "Define TypeScript types for Medusa in apps/storefront/lib/medusa/types.ts"
-Task: "Define TypeScript types for Strapi in apps/storefront/lib/strapi/types.ts"
+### Phase 0.5 (Audit)
+```
+T003, T004, T005 can run in parallel (different repos)
 ```
 
-## Parallel Example: User Story 1
+### Phase 1 (Setup)
+```
+T010, T011 can run in parallel (fork backend repos)
+T013, T014 can run in parallel (config changes)
+```
 
-```bash
-# Launch all data fetching functions together:
-Task: "Create product data fetching in apps/storefront/lib/medusa/products.ts"
-Task: "Create collection data fetching in apps/storefront/lib/medusa/collections.ts"
-Task: "Create cart operations in apps/storefront/lib/medusa/cart.ts"
+### Phase 2 (Backend)
+```
+T020, T021 can run in parallel (Strapi deployment)
+T023, T024 can run in parallel (Strapi fields)
+T025, T026 can run in parallel (sample data)
+T027, T028 can run in parallel (API verification)
+```
 
-# Launch all product components together:
-Task: "Create ProductImage component in apps/storefront/components/products/product-image.tsx"
-Task: "Create ProductCard component in apps/storefront/components/products/product-card.tsx"
-Task: "Create ProductGrid component in apps/storefront/components/products/product-grid.tsx"
+### User Stories (P1)
+```
+US1 and US2 can run in parallel after Phase 2 (both P1)
+```
+
+### User Stories (P2)
+```
+US3, US4, US5, US6 can start in parallel (different features)
+Note: US3 depends on US1 components, US5/US6 depend on US1 checkout
+```
+
+### User Stories (P3)
+```
+US7, US8, US9 can all run in parallel (independent CMS features)
 ```
 
 ---
@@ -349,20 +395,21 @@ Task: "Create ProductGrid component in apps/storefront/components/products/produ
 
 ### MVP First (User Stories 1 + 2 Only)
 
-1. Complete Phase 1: Setup
-2. Complete Phase 2: Foundational (CRITICAL - blocks all stories)
-3. Complete Phase 3: User Story 1 (Browse & Purchase)
-4. Complete Phase 4: User Story 2 (Age Gate)
-5. **STOP and VALIDATE**: Test both stories independently
-6. Deploy/demo if ready - this is the minimal viable product
+1. Complete Phase 0.5: Starter Audit
+2. Complete Phase 1: Setup (fork repos)
+3. Complete Phase 2: Backend Deployment (CRITICAL - blocks all stories)
+4. Complete Phase 3: User Story 1 (Browse & Purchase)
+5. Complete Phase 4: User Story 2 (Age Gate)
+6. **STOP and VALIDATE**: Test both stories independently via Playwright MCP
+7. Deploy to production - this is the **Minimum Viable Product**
 
 ### Incremental Delivery
 
-1. Complete Setup + Foundational → Foundation ready
-2. Add US1 + US2 → Test independently → Deploy/Demo (**MVP!**)
+1. Setup + Backend → Foundation ready
+2. Add US1 + US2 → Test → Deploy (**MVP!**)
 3. Add US3 (Sold-Out Display) → Enhances product viewing
 4. Add US4 (Newsletter) → Captures leads
-5. Add US5 + US6 (Order Confirmation, Intl Checkout) → Enhances checkout
+5. Add US5 + US6 (Order Emails, Intl Checkout) → Enhances checkout
 6. Add US7, US8, US9 (Collections, About, Policies) → Content pages
 7. Add Polish phase → Production-ready
 
@@ -370,8 +417,8 @@ Task: "Create ProductGrid component in apps/storefront/components/products/produ
 
 With multiple developers:
 
-1. Team completes Setup + Foundational together
-2. Once Foundational is done:
+1. Team completes Setup + Backend together
+2. Once Backend is deployed:
    - Developer A: User Story 1 (Browse & Purchase)
    - Developer B: User Story 2 (Age Gate)
 3. After MVP complete:
@@ -379,6 +426,18 @@ With multiple developers:
    - Developer B: US3 + US4 (Sold-out + Newsletter)
    - Developer C: US7, US8, US9 (Content pages)
 4. All developers: Polish phase together
+
+---
+
+## Task Completion Criteria
+
+Per the Implementation Workflow in plan.md, each task is COMPLETE only when:
+
+1. Code implemented and committed
+2. Local Playwright MCP tests pass
+3. Deployed to production (Vercel/VPS as appropriate)
+4. Production Playwright MCP tests pass
+5. No console errors in production
 
 ---
 
@@ -390,3 +449,4 @@ With multiple developers:
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - **MVP Scope**: User Stories 1 + 2 (Phase 3 + Phase 4) deliver a working storefront with age gate
+- Most Solace features are kept as-is; tasks focus on **restyling** and **new features**

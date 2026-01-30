@@ -1,4 +1,4 @@
-﻿# CLAUDE.md
+# CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -11,7 +11,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Key Business Rules
 - **Age gate**: Mandatory 18+ verification at entry (persisted with TTL; re-checked at checkout)
 - **Currency**: USD only (MVP)
-- **Shipping**: Nepal-based, FedEx partner (flat-rate zones; manual label purchase in MVP)
 - **Inventory**:
   - Sold-out items remain visible in collections and product pages (portfolio display)
   - SOLD badge shown; add-to-cart disabled

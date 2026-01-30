@@ -1,162 +1,132 @@
 # Data Model: MVP B2C Storefront
 
-**Feature**: 001-mvp-storefront
-**Date**: 2026-01-29
-**Status**: Complete
+**Phase**: 1 - Design | **Date**: 2026-01-30 | **Plan**: [plan.md](./plan.md)
 
 ## Overview
 
-This document defines the data entities, their relationships, and state management patterns for the BlackEyesArtisan storefront. Data is distributed across three systems per the constitution's Data Source Integrity principle.
+This document describes the data entities used by the storefront. Most entities are **inherited from Solace Starter** and managed by external systems (Medusa, Strapi). Custom additions are marked with 🆕.
 
 ## Data Sources
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         STOREFRONT (Next.js)                        │
-│                         Vercel Deployment                           │
-│                                                                     │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐          │
-│  │  UI State    │    │  Cart State  │    │  Age Gate    │          │
-│  │  (React)     │    │  (Medusa)    │    │  (Cookie)    │          │
-│  └──────────────┘    └──────────────┘    └──────────────┘          │
-└─────────────────────────────────────────────────────────────────────┘
-           │                    │                    │
-           │ REST API           │ REST API           │ Cookie
-           ▼                    ▼                    ▼
-┌─────────────────────┐  ┌─────────────────────┐  ┌──────────────┐
-│   STRAPI CMS        │  │   MEDUSA BACKEND    │  │   BROWSER    │
-│   (Content)         │  │   (Commerce)        │  │   (State)    │
-│                     │  │                     │  │              │
-│  • Pages            │  │  • Products         │  │  • age_ver.. │
-│  • Policies         │  │  • Collections      │  │    cookie    │
-│  • GlobalSettings   │  │  • Variants         │  │  • cart_id   │
-│  • Announcement     │  │  • Cart             │  │    cookie    │
-│                     │  │  • Order            │  │              │
-│                     │  │  • Customer         │  │              │
-│                     │  │  • Region           │  │              │
-└─────────────────────┘  └─────────────────────┘  └──────────────┘
-         │                        │
-         │                        │
-         ▼                        ▼
-┌─────────────────────┐  ┌─────────────────────┐
-│   PostgreSQL        │  │   PostgreSQL        │
-│   (Strapi DB)       │  │   (Medusa DB)       │
-└─────────────────────┘  └─────────────────────┘
-```
+| Source | Entities | Access |
+|--------|----------|--------|
+| **Medusa 2.0** | Products, Collections, Cart, Orders, Customers, Regions, Shipping | REST API (`/store/*`) |
+| **Strapi CMS** | Pages, Blog Posts, Global Settings, Policies | REST API |
+| **Resend** | Newsletter Subscribers | Audiences API |
+| **Browser** | Age Verification Status | HTTP-only Cookie |
 
-## Entity Definitions
+---
 
-### Commerce Entities (Medusa - Source of Truth)
+## Medusa Entities (Inherited from Solace)
 
-#### Product
+### Product
+
 ```typescript
 interface Product {
   id: string
   title: string
-  subtitle: string | null
-  description: string
-  handle: string                    // URL slug
-  status: "draft" | "published"
+  handle: string
+  description: string | null
   thumbnail: string | null
   images: ProductImage[]
   variants: ProductVariant[]
   collection: Collection | null
-  collection_id: string | null
   created_at: string
   updated_at: string
-  metadata: Record<string, unknown>
 }
 
-interface ProductImage {
-  id: string
-  url: string
-  metadata: Record<string, unknown>
-}
-```
-
-#### ProductVariant
-```typescript
 interface ProductVariant {
   id: string
   title: string
+  prices: Price[]
+  inventory_quantity: number  // Used for SOLD badge logic
   sku: string | null
-  barcode: string | null
-  inventory_quantity: number        // Key for sold-out detection
-  allow_backorder: boolean
-  manage_inventory: boolean
-  prices: MoneyAmount[]
-  options: ProductOptionValue[]
-  created_at: string
-  updated_at: string
 }
 
-interface MoneyAmount {
-  id: string
-  amount: number                    // In cents (e.g., 4500 = $45.00)
-  currency_code: string             // "usd" only for MVP
+interface Price {
+  currency_code: string  // Always "usd" in our case
+  amount: number         // In cents (e.g., 4999 = $49.99)
 }
 ```
 
-**Sold-Out Logic**:
-```typescript
-function isProductSoldOut(product: Product): boolean {
-  return product.variants.every(v => v.inventory_quantity <= 0)
-}
+**Custom Logic**:
+- **SOLD badge rule**: Show SOLD badge and disable Add to Cart when **ALL** variants have `inventory_quantity === 0`
+- For products with single variant: Check `variants[0].inventory_quantity === 0`
+- For products with multiple variants: Check `variants.every(v => v.inventory_quantity === 0)`
 
-function isVariantSoldOut(variant: ProductVariant): boolean {
-  return variant.inventory_quantity <= 0
-}
-```
+### Collection
 
-#### Collection
 ```typescript
 interface Collection {
   id: string
   title: string
-  handle: string                    // URL slug
-  metadata: Record<string, unknown>
-  products?: Product[]              // When expanded
-  created_at: string
-  updated_at: string
+  handle: string
+  products: Product[]
 }
 ```
 
-#### Cart
+### Cart
+
 ```typescript
 interface Cart {
   id: string
-  email: string | null
-  billing_address: Address | null
-  shipping_address: Address | null
   items: LineItem[]
   region: Region
+  shipping_address: Address | null
   shipping_methods: ShippingMethod[]
   payment_session: PaymentSession | null
+  total: number
   subtotal: number
   shipping_total: number
   tax_total: number
-  total: number
-  created_at: string
-  updated_at: string
 }
 
 interface LineItem {
   id: string
-  cart_id: string
   title: string
-  description: string | null
-  thumbnail: string | null
   quantity: number
   unit_price: number
-  variant_id: string
   variant: ProductVariant
-  subtotal: number
-  total: number
+  thumbnail: string | null
 }
 ```
 
-#### Address
+### Order
+
 ```typescript
+interface Order {
+  id: string
+  display_id: number
+  status: 'pending' | 'completed' | 'archived' | 'canceled'
+  fulfillment_status: 'not_fulfilled' | 'fulfilled' | 'shipped'
+  payment_status: 'not_paid' | 'awaiting' | 'captured' | 'refunded'
+  items: LineItem[]
+  shipping_address: Address
+  total: number
+  created_at: string
+  fulfillments: Fulfillment[]
+}
+
+interface Fulfillment {
+  id: string
+  tracking_numbers: string[]  // FedEx tracking
+  tracking_links: TrackingLink[]
+}
+```
+
+### Customer
+
+```typescript
+interface Customer {
+  id: string
+  email: string
+  first_name: string | null
+  last_name: string | null
+  phone: string | null
+  shipping_addresses: Address[]
+  orders: Order[]
+}
+
 interface Address {
   id: string
   first_name: string
@@ -164,370 +134,317 @@ interface Address {
   address_1: string
   address_2: string | null
   city: string
-  province: string | null           // State/Province
+  province: string | null
   postal_code: string
-  country_code: string              // ISO 2-letter code
-  phone: string                     // REQUIRED for FedEx
-  metadata: Record<string, unknown>
+  country_code: string
+  phone: string  // Required for FedEx
 }
 ```
 
-#### Order
+---
+
+## Strapi Entities
+
+### Global Settings (Extended) 🆕
+
 ```typescript
-interface Order {
-  id: string
-  display_id: number                // Human-readable order number
-  status: OrderStatus
-  email: string
-  billing_address: Address
-  shipping_address: Address
-  items: LineItem[]
-  payments: Payment[]
-  fulfillments: Fulfillment[]
-  subtotal: number
-  shipping_total: number
-  tax_total: number
-  total: number
-  currency_code: string
-  created_at: string
-  updated_at: string
-}
-
-type OrderStatus =
-  | "pending"
-  | "completed"
-  | "archived"
-  | "canceled"
-  | "requires_action"
-
-interface Fulfillment {
-  id: string
-  tracking_numbers: string[]
-  tracking_links: TrackingLink[]
-  shipped_at: string | null
-  created_at: string
-}
-
-interface TrackingLink {
-  tracking_number: string
-  url: string                       // FedEx tracking URL
-}
-```
-
-#### Customer
-```typescript
-interface Customer {
-  id: string
-  email: string
-  first_name: string
-  last_name: string
-  phone: string | null
-  billing_address: Address | null
-  shipping_addresses: Address[]
-  orders: Order[]
-  created_at: string
-  updated_at: string
-}
-```
-
-#### Region
-```typescript
-interface Region {
-  id: string
-  name: string
-  currency_code: string             // "usd"
-  countries: Country[]
-  shipping_options: ShippingOption[]
-}
-
-interface ShippingOption {
-  id: string
-  name: string                      // "International Flat Rate"
-  amount: number                    // Fixed shipping cost in cents
-  is_return: boolean
-}
-```
-
-### Content Entities (Strapi - Source of Truth)
-
-#### Page
-```typescript
-interface StrapiPage {
-  id: number
-  attributes: {
-    title: string
-    slug: string                    // URL path
-    content: string                 // Rich text (markdown or HTML)
-    seo: {
-      metaTitle: string
-      metaDescription: string
-      ogImage: StrapiMedia | null
-    } | null
-    createdAt: string
-    updatedAt: string
-    publishedAt: string | null
+interface GlobalSettings {
+  // Existing Solace fields
+  siteName: string
+  siteDescription: string
+  announcement: {
+    enabled: boolean
+    text: string
+    link: string | null
   }
+  socialLinks: SocialLink[]
+
+  // NEW: Age Gate fields
+  ageGateEnabled: boolean        // Default: true
+  ageGateTtlDays: number         // Default: 30
+  ageGateTitle: string           // Default: "Age Verification Required"
+  ageGateMessage: string         // Rich text
+
+  // NEW: Shipping info
+  handlingTimeDays: number       // Default: 3-5
+  dutiesDisclaimer: string       // "Duties and taxes are buyer's responsibility"
 }
 ```
 
-#### Policy
+### Page
+
 ```typescript
-interface StrapiPolicy {
+interface Page {
   id: number
-  attributes: {
-    title: string
-    slug: string                    // "shipping", "returns", "privacy", "terms"
-    content: string                 // Rich text
-    category: "shipping" | "returns" | "privacy" | "terms"
-    createdAt: string
-    updatedAt: string
-    publishedAt: string | null
-  }
+  title: string
+  slug: string
+  content: RichTextBlock[]
+  seo: SEO | null
+  publishedAt: string
 }
 ```
 
-#### GlobalSettings
+### Blog Post
+
 ```typescript
-interface StrapiGlobalSettings {
+interface BlogPost {
   id: number
-  attributes: {
-    ageGateTtl: number              // Days to remember age verification
-    handlingTime: string            // e.g., "5-7 business days"
-    dutiesDisclaimer: string        // Duties/taxes disclaimer text
-    currencySymbol: string          // "$"
-    siteTitle: string
-    siteDescription: string
-    createdAt: string
-    updatedAt: string
-  }
+  title: string
+  slug: string
+  excerpt: string
+  content: RichTextBlock[]
+  featuredImage: Media | null
+  publishedAt: string
+  author: string | null
 }
 ```
 
-#### AnnouncementBar
+### Policy
+
 ```typescript
-interface StrapiAnnouncementBar {
+interface Policy {
   id: number
-  attributes: {
-    message: string
-    isActive: boolean
-    linkUrl: string | null
-    linkText: string | null
-    backgroundColor: string | null  // Optional custom color
-    createdAt: string
-    updatedAt: string
-  }
+  type: 'shipping' | 'returns' | 'privacy' | 'terms'
+  title: string
+  content: RichTextBlock[]
+  lastUpdated: string
 }
 ```
 
-### Client-Side State
+---
 
-#### Age Verification State
+## Browser State
+
+### Age Verification Cookie 🆕
+
 ```typescript
-// Cookie-based (HTTP-only)
+// Cookie structure (stored as simple value)
 interface AgeVerificationCookie {
-  name: "age_verified"
-  value: "true"
-  maxAge: number                    // From Strapi ageGateTtl (seconds)
+  name: 'age_verified'
+  value: 'true'
   httpOnly: true
-  secure: boolean                   // true in production
-  sameSite: "lax"
+  secure: true  // In production
+  sameSite: 'lax'
+  maxAge: number  // TTL in seconds (from Strapi ageGateTtlDays)
+  path: '/'
 }
 ```
 
-#### Cart Context
+**Cookie Lifecycle**:
+1. New visitor → No cookie → Redirect to `/age-gate`
+2. Confirms 18+ → Cookie set with TTL from Strapi
+3. Within TTL → Cookie present → Access granted
+4. TTL expires → Cookie gone → Re-verify required
+5. At checkout → Server validates cookie still present
+
+---
+
+## Resend Entities
+
+### Newsletter Subscriber
+
 ```typescript
-// React Context for cart UI state
+// Resend Audience Contact
+interface Subscriber {
+  id: string
+  email: string
+  created_at: string
+  unsubscribed: boolean
+}
+```
+
+**Note**: Both footer newsletter and "Notify Me" signups go to the same audience.
+
+---
+
+## State Management
+
+### Client-Side State (React Context)
+
+```typescript
+// Cart Context (Solace pattern)
 interface CartContext {
   cart: Cart | null
   isLoading: boolean
-  isOpen: boolean                   // Cart drawer state
+  addItem: (variantId: string, quantity: number) => Promise<void>
+  updateItem: (lineId: string, quantity: number) => Promise<void>
+  removeItem: (lineId: string) => Promise<void>
+}
 
-  // Actions
-  addItem: (variantId: string, quantity?: number) => Promise<void>
-  updateQuantity: (lineItemId: string, quantity: number) => Promise<void>
-  removeItem: (lineItemId: string) => Promise<void>
-  setCartOpen: (open: boolean) => void
+// UI Context (Solace pattern)
+interface UIContext {
+  isCartOpen: boolean
+  isSearchOpen: boolean
+  theme: 'light' | 'dark'
+  toggleCart: () => void
+  toggleSearch: () => void
+  setTheme: (theme: 'light' | 'dark') => void
 }
 ```
 
-#### Newsletter Form State
-```typescript
-interface NewsletterFormState {
-  email: string
-  status: "idle" | "loading" | "success" | "error" | "already_subscribed"
-  errorMessage: string | null
-}
+### Server-Side State
+
+- **Product data**: Fetched via SSR, cached with ISR (revalidate on Strapi webhook)
+- **Cart data**: Fetched per-request, not cached (uses Medusa cart ID from cookie)
+- **CMS content**: Fetched via SSR, cached with ISR
+- **Age verification**: Checked in middleware via cookie
+
+---
+
+## Data Flow Diagrams
+
+### Age Gate Flow
+
+```
+Visitor Request
+      │
+      ▼
+┌─────────────┐
+│ Middleware  │
+└─────────────┘
+      │
+      ▼
+Cookie present? ──No──▶ Redirect to /age-gate
+      │
+     Yes
+      │
+      ▼
+┌─────────────┐
+│ Route loads │
+└─────────────┘
 ```
 
-## State Transitions
+### Product Display Flow
 
-### Cart Lifecycle
 ```
-┌─────────────┐     addItem()      ┌─────────────┐
-│   Empty     │ ─────────────────▶ │  Has Items  │
-│   (null)    │                    │             │
-└─────────────┘                    └─────────────┘
-                                          │
-                                          │ checkout()
-                                          ▼
-                                   ┌─────────────┐
-                                   │  Checkout   │
-                                   │  In Progress│
-                                   └─────────────┘
-                                          │
-                                          │ complete()
-                                          ▼
-                                   ┌─────────────┐
-                                   │   Order     │
-                                   │  Created    │
-                                   └─────────────┘
-```
-
-### Age Verification Flow
-```
+Collection Page
+      │
+      ▼
 ┌─────────────────┐
-│  New Visitor    │
-│  (no cookie)    │
-└────────┬────────┘
-         │
-         │ visits any page
-         ▼
-┌─────────────────┐
-│   Age Gate      │
-│   Modal/Page    │
-└────────┬────────┘
-         │
-    ┌────┴────┐
-    │         │
-    ▼         ▼
-┌────────┐  ┌────────────────┐
-│Under 18│  │  18+ Confirmed │
-│        │  │                │
-└────┬───┘  └───────┬────────┘
-     │              │
-     │              │ set cookie (TTL days)
-     ▼              ▼
-┌────────┐  ┌────────────────┐
-│ Exit   │  │   Verified     │
-│ Page   │  │   (can browse) │
-└────────┘  └───────┬────────┘
-                    │
-                    │ TTL expires
-                    ▼
-            ┌────────────────┐
-            │  Re-verify     │
-            │  Required      │
-            └────────────────┘
+│ Fetch products  │
+│ from Medusa API │
+└─────────────────┘
+      │
+      ▼
+For each product:
+      │
+      ▼
+inventory_quantity === 0? ──Yes──▶ Show SOLD badge
+      │                           Disable Add to Cart
+      No                          Show NotifyMe form
+      │
+      ▼
+Show normal ProductCard
+Enable Add to Cart
 ```
 
-### Order Status Flow
+### Newsletter Signup Flow
+
 ```
-┌─────────┐      ┌───────────┐      ┌───────────┐
-│ Pending │ ───▶ │ Completed │ ───▶ │ Fulfilled │
-└─────────┘      └───────────┘      └───────────┘
-     │                                    │
-     │                                    │ tracking added
-     ▼                                    ▼
-┌─────────┐                         ┌───────────┐
-│Canceled │                         │  Shipped  │
-└─────────┘                         │(w/tracking)│
-                                    └───────────┘
+User submits email
+      │
+      ▼
+┌────────────────┐
+│ POST /api/     │
+│ newsletter     │
+└────────────────┘
+      │
+      ▼
+┌────────────────┐
+│ Resend API:    │
+│ Create contact │
+└────────────────┘
+      │
+      ▼
+Already exists? ──Yes──▶ Return "already subscribed"
+      │
+      No
+      │
+      ▼
+┌────────────────┐
+│ Resend API:    │
+│ Send welcome   │
+│ email          │
+└────────────────┘
+      │
+      ▼
+Return success
 ```
+
+---
 
 ## Validation Rules
 
-### Address Validation
-| Field | Rule | Error Message |
-|-------|------|---------------|
-| first_name | Required, 1-50 chars | "First name is required" |
-| last_name | Required, 1-50 chars | "Last name is required" |
-| address_1 | Required, 1-200 chars | "Street address is required" |
-| city | Required, 1-100 chars | "City is required" |
-| postal_code | Required, valid format | "Valid postal code required" |
-| country_code | Required, valid ISO code | "Please select a country" |
-| phone | Required, valid format | "Valid phone number required for delivery" |
-
 ### Email Validation
-| Context | Rule | Error Message |
-|---------|------|---------------|
-| Newsletter | Valid email format | "Please enter a valid email" |
-| Checkout | Valid email format | "Please enter a valid email" |
 
-### Cart Validation (at checkout)
-| Rule | Action |
-|------|--------|
-| Empty cart | Block checkout, show message |
-| Item out of stock | Show error, offer removal |
-| Quantity exceeds inventory | Reduce to available, show notice |
-
-## Relationships
-
-```
-Product ─────┬───── has many ───── ProductVariant
-             │
-             └───── belongs to ───── Collection
-
-Cart ────────┬───── has many ───── LineItem
-             │
-             └───── belongs to ───── Region
-
-LineItem ────────── references ───── ProductVariant
-
-Order ───────┬───── has many ───── LineItem
-             │
-             ├───── has many ───── Payment
-             │
-             ├───── has many ───── Fulfillment
-             │
-             └───── belongs to ───── Customer
-
-Customer ────┬───── has many ───── Order
-             │
-             └───── has many ───── Address
-
-StrapiGlobalSettings ───── singleton ───── (one record)
-StrapiAnnouncementBar ───── singleton ───── (one record)
-```
-
-## Data Fetching Patterns
-
-### Server Components (SSR)
 ```typescript
-// Fetch in Server Component, pass to Client Components
-async function ProductPage({ handle }: { handle: string }) {
-  const product = await medusa.products.list({
-    handle,
-    expand: "variants,images,collection"
-  })
+// Used for newsletter and customer registration
+const emailSchema = z.string().email()
+```
 
-  return <ProductDetail product={product} />
+### Phone Validation (International)
+
+```typescript
+// Required for FedEx shipping
+import { isValidPhoneNumber } from 'libphonenumber-js'
+
+const validatePhone = (phone: string, country: string): boolean => {
+  return phone && isValidPhoneNumber(phone, country)
 }
 ```
 
-### Client Components (Interactive)
+### Address Validation
+
 ```typescript
-// Use React Query or SWR for client-side data
-function CartDrawer() {
-  const { cart, isLoading } = useCart()
-
-  if (isLoading) return <Spinner />
-  if (!cart) return <EmptyCart />
-
-  return <CartItems items={cart.items} />
-}
+const addressSchema = z.object({
+  first_name: z.string().min(1),
+  last_name: z.string().min(1),
+  address_1: z.string().min(1),
+  address_2: z.string().optional(),
+  city: z.string().min(1),
+  province: z.string().optional(),
+  postal_code: z.string().min(1),
+  country_code: z.string().length(2),
+  phone: z.string().min(1),  // Required
+})
 ```
 
-### ISR for CMS Content
-```typescript
-// Strapi content with revalidation
-async function AboutPage() {
-  const page = await fetchStrapi<StrapiPage>("/pages", {
-    "filters[slug][$eq]": "about"
-  })
+---
 
-  return <PageContent content={page.attributes.content} />
-}
+## Entity Relationships
 
-// In page file
-export const revalidate = 60 // Revalidate every 60 seconds
+```
+┌─────────────┐     ┌─────────────┐
+│  Customer   │────▶│   Order     │
+└─────────────┘     └─────────────┘
+      │                   │
+      │                   ▼
+      │             ┌─────────────┐
+      │             │  LineItem   │
+      │             └─────────────┘
+      │                   │
+      ▼                   ▼
+┌─────────────┐     ┌─────────────┐
+│   Address   │     │  Product    │
+└─────────────┘     └─────────────┘
+                          │
+                          ▼
+                    ┌─────────────┐
+                    │ Collection  │
+                    └─────────────┘
+
+┌─────────────┐     ┌─────────────┐
+│   Strapi    │────▶│GlobalSettings│
+│   (CMS)     │     └─────────────┘
+└─────────────┘           │
+      │                   ▼
+      │             ┌─────────────┐
+      │             │ Age Gate    │
+      │             │ Config      │
+      │             └─────────────┘
+      ▼
+┌─────────────┐
+│  Pages/     │
+│  Policies   │
+└─────────────┘
 ```
