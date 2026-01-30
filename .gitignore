@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.medusa/
+
+# Environment files (keep .example files)
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+.turbo/
+*.tsbuildinfo
+
+# Temporary
+tmp/
+temp/
+*.tmp
+
+# Database
+*.sqlite
+*.db
+
+# Strapi uploads (local only)
+cms/public/uploads/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/

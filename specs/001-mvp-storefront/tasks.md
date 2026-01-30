@@ -25,39 +25,39 @@ Based on Solace Medusa Starter structure:
 
 ---
 
-## Phase 0.5: Starter Audit & Upgrade (Required)
+## Phase 0.5: Starter Audit & Upgrade (Required) ✅ COMPLETE
 
 **Purpose**: Solace starter repos haven't been updated in ~2 years. Audit and upgrade before implementation.
 
 **Decision Gate**: If upgrade effort exceeds 2-3 days, pivot to building from scratch with Turborepo.
 
-- [ ] T001 Clone solace-medusa-starter, solace-medusa-starter-api, and solace-medusa-starter-strapi repos locally
-- [ ] T002 Run `pnpm outdated` on each repo and document stale dependencies
-- [ ] T003 [P] Check Medusa 2.0 migration guide for breaking changes in solace-medusa-starter-api
-- [ ] T004 [P] Verify Next.js 14 App Router patterns in solace-medusa-starter match current best practices
-- [ ] T005 [P] Check Strapi 4.x/5.x compatibility in solace-medusa-starter-strapi
-- [ ] T006 Upgrade dependencies in all three repos and verify builds succeed
-- [ ] T007 Document required code changes for compatibility in `specs/001-mvp-storefront/upgrade-notes.md`
-- [ ] T008 **DECISION CHECKPOINT**: Evaluate if Solace fork is viable or pivot to Turborepo
+- [X] T001 Clone solace-medusa-starter, solace-medusa-starter-api, and solace-medusa-starter-strapi repos locally
+- [X] T002 Run `pnpm outdated` on each repo and document stale dependencies
+- [X] T003 [P] Check Medusa 2.0 migration guide for breaking changes in solace-medusa-starter-api
+- [X] T004 [P] Verify Next.js 14 App Router patterns in solace-medusa-starter match current best practices
+- [X] T005 [P] Check Strapi 4.x/5.x compatibility in solace-medusa-starter-strapi
+- [X] T006 Upgrade dependencies in all three repos and verify builds succeed
+- [X] T007 Document required code changes for compatibility in `specs/001-mvp-storefront/upgrade-notes.md`
+- [X] T008 **DECISION CHECKPOINT**: Evaluate if Solace fork is viable or pivot to Turborepo → **PROCEED WITH SOLACE FORK**
 
-**Checkpoint**: Starter repos are upgraded and validated, or decision made to build from scratch
+**Checkpoint**: ✅ Starter repos are upgraded and validated. Decision: PROCEED WITH SOLACE FORK (repos are well-maintained, <1 day upgrade effort)
 
 ---
 
-## Phase 1: Setup (Fork & Configure)
+## Phase 1: Setup (Fork & Configure) ✅ COMPLETE
 
 **Purpose**: Fork Solace Starter and configure for BlackEyesArtisan
 
-- [ ] T009 Fork solace-medusa-starter to blackeyesartisan-storefront repository
-- [ ] T010 [P] Fork solace-medusa-starter-api to blackeyesartisan-api repository
-- [ ] T011 [P] Fork solace-medusa-starter-strapi to blackeyesartisan-cms repository
-- [ ] T012 Configure environment variables in `.env.example` with Cloudinary, Resend, Upstash Redis URLs
-- [ ] T013 [P] Update `next.config.js` to use Cloudinary image loader instead of DigitalOcean Spaces
-- [ ] T014 [P] Install additional dependencies: `resend`, `@upstash/ratelimit`, `@upstash/redis` in storefront
-- [ ] T015 Configure Tailwind with design system tokens (colors, fonts, shadows) in `tailwind.config.ts`
-- [ ] T016 Add global styles with fonts (Dela Gothic One, Space Grotesk) and custom utilities in `src/styles/globals.css`
+- [X] T009 Fork solace-medusa-starter to blackeyesartisan-storefront repository
+- [X] T010 [P] Fork solace-medusa-starter-api to blackeyesartisan-api repository
+- [X] T011 [P] Fork solace-medusa-starter-strapi to blackeyesartisan-cms repository
+- [X] T012 Configure environment variables in `.env.example` with Cloudinary, Resend, Upstash Redis URLs
+- [X] T013 [P] Update `next.config.js` to use Cloudinary image loader instead of DigitalOcean Spaces
+- [X] T014 [P] Install additional dependencies: `resend`, `@upstash/ratelimit`, `@upstash/redis` in storefront
+- [X] T015 Configure Tailwind with design system tokens (colors, fonts, shadows) in `tailwind.config.js`
+- [X] T016 Add global styles with fonts (Dela Gothic One, Space Grotesk) and custom utilities in `src/styles/globals.css`
 
-**Checkpoint**: Forked repos configured with BlackEyesArtisan settings, ready for customization
+**Checkpoint**: ✅ Forked repos configured with BlackEyesArtisan settings, ready for customization
 
 ---
 
