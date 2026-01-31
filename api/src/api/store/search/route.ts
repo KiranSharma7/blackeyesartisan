@@ -24,7 +24,9 @@ export const GET = async (
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
 
-  const filters: any = {};
+  const filters: any = {
+    status: 'published'
+  };
 
   if (q) {
     filters.q = q;
@@ -64,7 +66,8 @@ export const GET = async (
     }
   }
 
-  const { data: products, metadata } = await query.index({
+  // Use query.graph() instead of query.index() for direct database access
+  const { data: products } = await query.graph({
     entity: 'product',
     fields: req.queryConfig.fields,
     filters,
@@ -92,7 +95,7 @@ export const GET = async (
 
   res.json({
     products,
-    count: metadata?.estimate_count ?? products.length,
+    count: products.length,
     limit,
     offset
   });

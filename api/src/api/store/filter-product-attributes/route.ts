@@ -10,6 +10,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       .distinct('material')
       .whereNotNull('material')
       .whereNull('deleted_at')
+      .where('status', 'published')
       .pluck('material')
   ]);
 
