@@ -67,18 +67,18 @@ Based on Solace Medusa Starter structure:
 
 **CRITICAL**: Storefront cannot function without Medusa API and Strapi CMS running
 
-- [ ] T017 Deploy solace-medusa-starter-api to VPS at `/var/www/medusa` via SSH
-- [ ] T018 Configure PostgreSQL database for Medusa on VPS
-- [ ] T019 Configure PM2 to run Medusa service and verify API responds at `https://api.blackeyesartisan.shop`
-- [ ] T020 Deploy solace-medusa-starter-strapi to VPS at `/var/www/strapi` via SSH
-- [ ] T021 [P] Configure PostgreSQL database for Strapi on VPS
-- [ ] T022 Configure PM2 to run Strapi service and verify CMS responds at `https://cms.blackeyesartisan.shop`
-- [ ] T023 Extend Strapi Global Settings content type with age gate fields (`ageGateEnabled`, `ageGateTtlDays`, `ageGateTitle`, `ageGateMessage`) via Strapi admin
-- [ ] T024 [P] Add shipping info fields to Strapi Global Settings (`handlingTimeDays`, `dutiesDisclaimer`)
+- [X] T017 Deploy solace-medusa-starter-api to VPS at `/var/www/medusa` via SSH
+- [X] T018 Configure PostgreSQL database for Medusa on VPS
+- [X] T019 Configure PM2 to run Medusa service and verify API responds at `https://api.blackeyesartisan.shop`
+- [X] T020 Deploy solace-medusa-starter-strapi to VPS at `/var/www/strapi` via SSH
+- [X] T021 [P] Configure PostgreSQL database for Strapi on VPS
+- [X] T022 Configure PM2 to run Strapi service and verify CMS responds at `https://cms.blackeyesartisan.shop`
+- [X] T023 Extend Strapi Global Settings content type with age gate fields (`ageGateEnabled`, `ageGateTtlDays`, `ageGateTitle`, `ageGateMessage`) via Strapi admin
+- [X] T024 [P] Add shipping info fields to Strapi Global Settings (`handlingTimeDays`, `dutiesDisclaimer`)
 - [ ] T025 Create sample products in Medusa admin (at least 3 available, 1 sold-out for testing)
-- [ ] T026 [P] Create sample content in Strapi (About page, policy pages, announcement bar)
-- [ ] T027 Verify Medusa Store API responds correctly: `GET /store/products`, `GET /store/collections`
-- [ ] T028 [P] Verify Strapi API responds correctly: `GET /api/global-settings`, `GET /api/pages`
+- [X] T026 [P] Create sample content in Strapi (About page, policy pages, announcement bar)
+- [X] T027 Verify Medusa Store API responds correctly: `GET /store/products`, `GET /store/collections`
+- [X] T028 [P] Verify Strapi API responds correctly: `GET /api/global-settings`, `GET /api/pages`
 
 **Checkpoint**: Backend services deployed and accessible, sample data created
 
