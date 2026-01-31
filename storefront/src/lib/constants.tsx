@@ -1,15 +1,6 @@
 import React from 'react'
 
-import { CreditCard } from '@medusajs/icons'
 import { StoreCollection, StoreProductCategory } from '@medusajs/types'
-import {
-  BancontactIcon,
-  BlikIcon,
-  IdealIcon,
-  PayPalIcon,
-  Przelewy24Icon,
-  StripeIcon,
-} from '@modules/common/icons'
 
 // Product filters
 export const FILTER_KEYS = {
@@ -61,35 +52,35 @@ export const storeSortOptions = [
 /* Map of payment provider_id to their title and icon. Add in any payment providers you want to use. */
 export const paymentInfoMap: Record<
   string,
-  { title: string; icon: React.JSX.Element }
+  { title: string; icon: React.JSX.Element | null }
 > = {
   pp_stripe_stripe: {
     title: 'Credit card',
-    icon: <StripeIcon />,
+    icon: null,
   },
   'pp_stripe-blik_stripe': {
     title: 'BLIK',
-    icon: <BlikIcon size={26} />,
+    icon: null,
   },
   'pp_stripe-przelewy24_stripe': {
     title: 'Przelewy24',
-    icon: <Przelewy24Icon size={34} />,
+    icon: null,
   },
   'pp_stripe-ideal_stripe': {
     title: 'iDeal',
-    icon: <IdealIcon />,
+    icon: null,
   },
   'pp_stripe-bancontact_stripe': {
     title: 'Bancontact',
-    icon: <BancontactIcon />,
+    icon: null,
   },
   pp_paypal_paypal: {
     title: 'PayPal',
-    icon: <PayPalIcon />,
+    icon: null,
   },
   pp_system_default: {
     title: 'Manual Payment',
-    icon: <CreditCard />,
+    icon: null,
   },
   // Add more payment providers here
 }

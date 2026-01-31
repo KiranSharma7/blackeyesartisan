@@ -1,22 +1,7 @@
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-
-import { getCustomer } from '@lib/data/customer'
-import { listOrders } from '@lib/data/orders'
-import Overview from '@modules/account/components/overview'
-
-export const metadata: Metadata = {
-  title: 'Account',
-  description: 'Overview of your account activity.',
-}
-
-export default async function OverviewTemplate() {
-  const customer = await getCustomer().catch(() => null)
-  const orders = (await listOrders().catch(() => null)) || null
-
-  if (!customer) {
-    notFound()
-  }
-
-  return <Overview orders={orders} />
+export default function AccountPage() {
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <h1 className="text-2xl">Account - Coming Soon</h1>
+    </div>
+  )
 }

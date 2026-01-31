@@ -1,8 +1,13 @@
 import { HttpTypes } from '@medusajs/types'
-import { SelectedAddressProps } from '@modules/checkout/components/shipping-address/selected-address'
 import { isEqual, pick } from 'lodash'
 
 type FormData = Record<string, string>
+
+// Placeholder type - will be properly defined when checkout is implemented
+type FormikValues = {
+  shipping_address: FormData
+  email?: string
+}
 
 export default function compareAddresses(address1: any, address2: any) {
   return isEqual(
@@ -32,7 +37,7 @@ export default function compareAddresses(address1: any, address2: any) {
 }
 
 export const getShippingAddressDisplay = (
-  formikValues: SelectedAddressProps['formikValues'],
+  formikValues: FormikValues,
   addressesInRegion: HttpTypes.StoreCustomerAddress[] | undefined,
   cart: HttpTypes.StoreCart | null
 ): FormData => {

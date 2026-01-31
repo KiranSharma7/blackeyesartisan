@@ -2,10 +2,12 @@ import { unstable_noStore as noStore } from 'next/cache'
 
 import { sdk } from '@lib/config'
 import { HttpTypes } from '@medusajs/types'
-import { BACKEND_URL, PUBLISHABLE_API_KEY } from '@modules/search/actions'
 import { ProductFilters } from 'types/global'
 
 import { getRegion } from './regions'
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || 'http://localhost:9000'
+const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
 
 export const getProductsById = async function ({
   ids,

@@ -1,5 +1,7 @@
-import { ResetPasswordTemplate } from '@modules/reset-password/templates'
-
 export default function ResetPasswordPage() {
-  return <ResetPasswordTemplate />
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <h1 className="text-2xl">Reset Password - Coming Soon</h1>
+    </div>
+  )
 }

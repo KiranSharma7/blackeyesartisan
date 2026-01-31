@@ -2,9 +2,6 @@ import { Metadata } from 'next'
 import { Dela_Gothic_One, Space_Grotesk } from 'next/font/google'
 
 import { getBaseURL } from '@lib/util/env'
-import { ProgressBar } from '@modules/common/components/progress-bar'
-import { ThemeProvider } from '@modules/common/components/theme-provider'
-import { Toaster } from 'sonner'
 
 import 'styles/globals.css'
 
@@ -36,16 +33,8 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       suppressHydrationWarning
       className={`${delaGothicOne.variable} ${spaceGrotesk.variable}`}
     >
-      <body className="font-sans bg-paper text-ink">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-        >
-          <ProgressBar />
-          <Toaster position="bottom-right" offset={65} closeButton />
-          <main className="relative">{props.children}</main>
-        </ThemeProvider>
+      <body className="font-sans bg-white text-black">
+        <main className="relative">{props.children}</main>
       </body>
     </html>
   )

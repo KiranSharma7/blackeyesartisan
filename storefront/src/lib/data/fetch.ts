@@ -14,15 +14,28 @@ export const fetchStrapiClient = async (
   endpoint: string,
   params?: RequestInit
 ) => {
+  const headers: HeadersInit = {}
+
+  if (process.env.NEXT_PUBLIC_STRAPI_READ_TOKEN) {
+    headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_STRAPI_READ_TOKEN}`
+  }
+
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}${endpoint}`,
     {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_READ_TOKEN}`,
-      },
+      headers,
       ...params,
     }
   )
+
+  // Return null response for 404s to handle missing content gracefully
+  if (response.status === 404) {
+    return {
+      ok: false,
+      status: 404,
+      json: async () => ({ data: null }),
+    } as Response
+  }
 
   if (!response.ok) {
     throw new Error('Failed to fetch data')
