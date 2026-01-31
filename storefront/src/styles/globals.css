@@ -1,0 +1,163 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* ========================================
+   BlackEyesArtisan Design System
+   ======================================== */
+
+@layer base {
+  body {
+    @apply bg-paper text-ink;
+    scroll-behavior: smooth;
+  }
+
+  /* Selection highlight */
+  ::selection {
+    @apply bg-acid text-white;
+  }
+}
+
+@layer components {
+  /* BlackEyesArtisan Button Styles */
+  .btn-primary {
+    @apply bg-acid text-white border-2 border-ink rounded-xl font-display
+           text-lg px-6 py-3 shadow-hard-sm uppercase tracking-wide
+           hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]
+           transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply bg-ink text-white px-4 py-2 rounded-lg font-display text-sm
+           border-2 border-ink shadow-hard-sm uppercase
+           hover:bg-acid hover:shadow-none
+           hover:translate-x-[2px] hover:translate-y-[2px]
+           transition-all duration-200;
+  }
+
+  .btn-outline {
+    @apply border-2 border-ink rounded-xl px-6 py-3 font-display uppercase
+           hover:bg-ink hover:text-paper transition-colors;
+  }
+
+  /* Card Base */
+  .card-hard {
+    @apply bg-white border-2 border-ink rounded-2xl shadow-hard
+           hover:shadow-hard-xl transition-all duration-300;
+  }
+
+  /* Product Card */
+  .product-card {
+    @apply group relative bg-white border-2 border-ink rounded-2xl overflow-hidden
+           hover:shadow-hard-xl transition-all duration-300;
+  }
+
+  /* Badge Styles */
+  .badge {
+    @apply px-2 py-0.5 text-[10px] font-bold rounded uppercase;
+  }
+
+  .badge-default {
+    @apply bg-paper border border-ink;
+  }
+
+  .badge-hot {
+    @apply bg-acid text-white border border-ink;
+  }
+
+  .badge-sold {
+    @apply bg-ink text-paper border border-ink;
+  }
+}
+
+@layer utilities {
+  /* Text outline effects */
+  .text-outline {
+    -webkit-text-stroke: 1.5px #18181B;
+    color: transparent;
+  }
+
+  .text-outline-acid {
+    -webkit-text-stroke: 1px #D63D42;
+    color: transparent;
+  }
+
+  .text-outline-paper {
+    -webkit-text-stroke: 1px #FEF8E7;
+    color: transparent;
+  }
+
+  /* Text shadow */
+  .text-shadow-sm {
+    text-shadow: 2px 2px 0px #18181B;
+  }
+
+  /* Hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* Details/summary reset */
+  details > summary {
+    list-style: none;
+  }
+
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Input focus label animation */
+  input:focus ~ label,
+  input:not(:placeholder-shown) ~ label {
+    font-size: 12px;
+  }
+
+  input:focus ~ label {
+    left: 0;
+  }
+
+  /* Autofill styling */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill::first-line,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus,
+  .dark input:-webkit-autofill::first-line {
+    color: white;
+  }
+
+  .light input:-webkit-autofill,
+  .light input:-webkit-autofill:hover,
+  .light input:-webkit-autofill:focus,
+  .light input:-webkit-autofill::first-line {
+    color: black;
+  }
+
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+}
