@@ -1,0 +1,61 @@
+{
+  "kind": "singleType",
+  "collectionName": "global_settings",
+  "info": {
+    "singularName": "global-setting",
+    "pluralName": "global-settings",
+    "displayName": "Global Settings",
+    "description": "Site-wide configuration including age gate, shipping info, and announcements"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "ageGateEnabled": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "ageGateTtlDays": {
+      "type": "integer",
+      "default": 30,
+      "min": 1,
+      "max": 365,
+      "required": true
+    },
+    "ageGateTitle": {
+      "type": "string",
+      "default": "Age Verification Required"
+    },
+    "ageGateMessage": {
+      "type": "text",
+      "default": "You must be 18 years or older to enter this site. By entering, you confirm that you are of legal age."
+    },
+    "handlingTimeDays": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 30,
+      "required": true
+    },
+    "dutiesDisclaimer": {
+      "type": "text",
+      "default": "International orders may be subject to import duties and taxes, which are the responsibility of the buyer. These charges are determined by your local customs office and are not included in our shipping fees."
+    },
+    "announcementBarEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "announcementBarText": {
+      "type": "string"
+    },
+    "announcementBarLink": {
+      "type": "string"
+    },
+    "shippingPolicyNote": {
+      "type": "text",
+      "default": "All orders ship via FedEx International. A valid phone number is required for delivery."
+    }
+  }
+}
