@@ -24,7 +24,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const salesChannelModuleService = container.resolve(Modules.SALES_CHANNEL);
   const storeModuleService = container.resolve(Modules.STORE);
 
-  const countries = ['gb', 'de', 'dk', 'se', 'fr', 'es', 'it'];
+  const countries = ['us'];
 
   logger.info('Seeding store data...');
   const [store] = await storeModuleService.listStores();
@@ -52,11 +52,8 @@ export default async function seedDemoData({ container }: ExecArgs) {
       update: {
         supported_currencies: [
           {
-            currency_code: 'eur',
+            currency_code: 'usd',
             is_default: true
-          },
-          {
-            currency_code: 'usd'
           }
         ],
         default_sales_channel_id: defaultSalesChannel[0].id
@@ -68,8 +65,8 @@ export default async function seedDemoData({ container }: ExecArgs) {
     input: {
       regions: [
         {
-          name: 'Europe',
-          currency_code: 'eur',
+          name: 'United States',
+          currency_code: 'usd',
           countries,
           payment_providers: ['pp_system_default']
         }
@@ -92,10 +89,10 @@ export default async function seedDemoData({ container }: ExecArgs) {
     input: {
       locations: [
         {
-          name: 'European Warehouse',
+          name: 'US Warehouse',
           address: {
-            city: 'Copenhagen',
-            country_code: 'DK',
+            city: 'Los Angeles',
+            country_code: 'US',
             address_1: ''
           }
         }
@@ -127,12 +124,25 @@ export default async function seedDemoData({ container }: ExecArgs) {
   const shippingProfile = shippingProfileResult[0];
 
   const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
-    name: 'European Warehouse delivery',
+    name: 'US Warehouse delivery',
     type: 'shipping',
     service_zones: [
       {
-        name: 'Europe',
+        name: 'United States',
         geo_zones: [
+          {
+            country_code: 'us',
+            type: 'country'
+          }
+        ]
+      },
+      {
+        name: 'International',
+        geo_zones: [
+          {
+            country_code: 'ca',
+            type: 'country'
+          },
           {
             country_code: 'gb',
             type: 'country'
@@ -142,23 +152,27 @@ export default async function seedDemoData({ container }: ExecArgs) {
             type: 'country'
           },
           {
-            country_code: 'dk',
-            type: 'country'
-          },
-          {
-            country_code: 'se',
-            type: 'country'
-          },
-          {
             country_code: 'fr',
             type: 'country'
           },
           {
-            country_code: 'es',
+            country_code: 'au',
+            type: 'country'
+          },
+          {
+            country_code: 'jp',
+            type: 'country'
+          },
+          {
+            country_code: 'nl',
             type: 'country'
           },
           {
             country_code: 'it',
+            type: 'country'
+          },
+          {
+            country_code: 'es',
             type: 'country'
           }
         ]
@@ -175,6 +189,7 @@ export default async function seedDemoData({ container }: ExecArgs) {
     }
   });
 
+  // Shipping options for US zone
   await createShippingOptionsWorkflow(container).run({
     input: [
       {
@@ -185,16 +200,12 @@ export default async function seedDemoData({ container }: ExecArgs) {
         shipping_profile_id: shippingProfile.id,
         type: {
           label: 'Standard',
-          description: 'Ship in 2-3 days.',
+          description: 'Ship in 3-5 business days.',
           code: 'standard'
         },
         prices: [
           {
             currency_code: 'usd',
-            amount: 10
-          },
-          {
-            currency_code: 'eur',
             amount: 10
           },
           {
@@ -223,21 +234,91 @@ export default async function seedDemoData({ container }: ExecArgs) {
         shipping_profile_id: shippingProfile.id,
         type: {
           label: 'Express',
-          description: 'Ship in 24 hours.',
+          description: 'Ship in 1-2 business days.',
           code: 'express'
         },
         prices: [
           {
             currency_code: 'usd',
-            amount: 10
-          },
-          {
-            currency_code: 'eur',
-            amount: 10
+            amount: 25
           },
           {
             region_id: region.id,
-            amount: 10
+            amount: 25
+          }
+        ],
+        rules: [
+          {
+            attribute: 'enabled_in_store',
+            value: '"true"',
+            operator: 'eq'
+          },
+          {
+            attribute: 'is_return',
+            value: 'false',
+            operator: 'eq'
+          }
+        ]
+      }
+    ]
+  });
+
+  // Shipping options for International zone
+  await createShippingOptionsWorkflow(container).run({
+    input: [
+      {
+        name: 'International Standard',
+        price_type: 'flat',
+        provider_id: 'manual_manual',
+        service_zone_id: fulfillmentSet.service_zones[1].id,
+        shipping_profile_id: shippingProfile.id,
+        type: {
+          label: 'International Standard',
+          description: 'Ship in 7-14 business days.',
+          code: 'international-standard'
+        },
+        prices: [
+          {
+            currency_code: 'usd',
+            amount: 35
+          },
+          {
+            region_id: region.id,
+            amount: 35
+          }
+        ],
+        rules: [
+          {
+            attribute: 'enabled_in_store',
+            value: '"true"',
+            operator: 'eq'
+          },
+          {
+            attribute: 'is_return',
+            value: 'false',
+            operator: 'eq'
+          }
+        ]
+      },
+      {
+        name: 'International Express',
+        price_type: 'flat',
+        provider_id: 'manual_manual',
+        service_zone_id: fulfillmentSet.service_zones[1].id,
+        shipping_profile_id: shippingProfile.id,
+        type: {
+          label: 'International Express',
+          description: 'Ship in 3-5 business days.',
+          code: 'international-express'
+        },
+        prices: [
+          {
+            currency_code: 'usd',
+            amount: 65
+          },
+          {
+            region_id: region.id,
+            amount: 65
           }
         ],
         rules: [
@@ -367,10 +448,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -384,10 +461,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Color: 'White'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -403,10 +476,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -420,10 +489,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Color: 'White'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -439,10 +504,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -456,10 +517,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Color: 'White'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -475,10 +532,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -492,10 +545,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Color: 'White'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -540,10 +589,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -556,10 +601,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Size: 'M'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -574,10 +615,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -590,10 +627,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Size: 'XL'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -638,10 +671,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -654,10 +683,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Size: 'M'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -672,10 +697,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -688,10 +709,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Size: 'XL'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -736,10 +753,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -752,10 +765,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Size: 'M'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'
@@ -770,10 +779,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
               },
               prices: [
                 {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
-                {
                   amount: 15,
                   currency_code: 'usd'
                 }
@@ -786,10 +791,6 @@ export default async function seedDemoData({ container }: ExecArgs) {
                 Size: 'XL'
               },
               prices: [
-                {
-                  amount: 10,
-                  currency_code: 'eur'
-                },
                 {
                   amount: 15,
                   currency_code: 'usd'

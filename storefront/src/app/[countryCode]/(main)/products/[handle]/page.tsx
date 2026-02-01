@@ -1,7 +1,81 @@
-export default function ProductPage() {
+import { Metadata } from 'next'
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { ChevronRight } from 'lucide-react'
+import { getProductByHandle } from '@lib/data/products'
+import { getRegion } from '@lib/data/regions'
+import ProductDetail from '@modules/products/components/product-detail'
+
+interface ProductPageProps {
+  params: Promise<{ countryCode: string; handle: string }>
+}
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const { handle, countryCode } = await params
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    return { title: 'Product Not Found | BlackEyesArtisan' }
+  }
+
+  const product = await getProductByHandle(handle, region.id)
+
+  if (!product) {
+    return { title: 'Product Not Found | BlackEyesArtisan' }
+  }
+
+  return {
+    title: `${product.title} | BlackEyesArtisan`,
+    description: product.description || 'Handcrafted glass art from Nepal.',
+    openGraph: {
+      title: product.title || 'BlackEyesArtisan Product',
+      description: product.description || 'Handcrafted glass art from Nepal.',
+      images: product.thumbnail ? [{ url: product.thumbnail }] : [],
+    },
+  }
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { countryCode, handle } = await params
+  const region = await getRegion(countryCode)
+
+  if (!region) {
+    notFound()
+  }
+
+  const product = await getProductByHandle(handle, region.id)
+
+  if (!product) {
+    notFound()
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-2xl">Product - Coming Soon</h1>
+    <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-sm font-semibold opacity-60 mb-8">
+        <Link
+          href={`/${countryCode}`}
+          className="hover:text-ink hover:opacity-100 transition-opacity"
+        >
+          Home
+        </Link>
+        <ChevronRight className="w-4 h-4" />
+        <Link
+          href={`/${countryCode}/shop`}
+          className="hover:text-ink hover:opacity-100 transition-opacity"
+        >
+          Shop
+        </Link>
+        <ChevronRight className="w-4 h-4" />
+        <span className="text-ink opacity-100 border-b-2 border-acid">
+          {product.title}
+        </span>
+      </nav>
+
+      {/* Product Detail */}
+      <ProductDetail product={product} countryCode={countryCode} />
     </div>
   )
 }

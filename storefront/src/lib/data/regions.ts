@@ -18,31 +18,30 @@ export const retrieveRegion = cache(async function (id: string) {
     .catch(medusaError)
 })
 
-const regionMap = new Map<string, HttpTypes.StoreRegion>()
+// Cached single region - USD only
+let cachedRegion: HttpTypes.StoreRegion | null = null
 
-export const getRegion = cache(async function (countryCode: string) {
+/**
+ * Returns the single US region.
+ * The countryCode parameter is kept for interface compatibility but is ignored.
+ * All requests use the same USD region.
+ */
+export const getRegion = cache(async function (_countryCode?: string) {
   try {
-    if (regionMap.has(countryCode)) {
-      return regionMap.get(countryCode)
+    // Return cached region if available
+    if (cachedRegion) {
+      return cachedRegion
     }
 
     const regions = await listRegions()
 
-    if (!regions) {
+    if (!regions || regions.length === 0) {
       return null
     }
 
-    regions.forEach((region) => {
-      region.countries?.forEach((c) => {
-        regionMap.set(c?.iso_2 ?? '', region)
-      })
-    })
-
-    const region = countryCode
-      ? regionMap.get(countryCode)
-      : regionMap.get('us')
-
-    return region
+    // Always use the first (and only) region - United States / USD
+    cachedRegion = regions[0]
+    return cachedRegion
   } catch (e: any) {
     return null
   }

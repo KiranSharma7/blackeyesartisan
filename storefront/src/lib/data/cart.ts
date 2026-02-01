@@ -426,9 +426,8 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
     return e.message
   }
 
-  redirect(
-    `/${formData.get('shipping_address.country_code') as string}/checkout?step=delivery`
-  )
+  // Always use 'us' country code for redirects (single region)
+  redirect('/us/checkout?step=delivery')
 }
 
 export async function placeOrder() {
@@ -448,35 +447,21 @@ export async function placeOrder() {
     .catch(medusaError)
 
   if (cartRes?.type === 'order') {
-    const countryCode =
-      cartRes.order.shipping_address?.country_code?.toLowerCase()
     removeCartId()
-    redirect(`/${countryCode}/order/confirmed/${cartRes?.order.id}`)
+    // Always use 'us' country code for redirects (single region)
+    redirect(`/us/order/confirmed/${cartRes?.order.id}`)
   }
 
   return cartRes.cart
 }
 
 /**
- * Updates the countrycode param and revalidates the regions cache
- * @param regionId
- * @param countryCode
+ * Simplified for single region (USD only).
+ * Always redirects to /us prefix. No region switching needed.
+ * @param _countryCode - Ignored, always uses 'us'
+ * @param currentPath - The current path to redirect to
  */
-export async function updateRegion(countryCode: string, currentPath: string) {
-  const cartId = await getCartId()
-  const region = await getRegion(countryCode)
-
-  if (!region) {
-    throw new Error(`Region not found for country code: ${countryCode}`)
-  }
-
-  if (cartId) {
-    await updateCart({ region_id: region.id })
-    revalidateTag('cart', 'max')
-  }
-
-  revalidateTag('regions', 'max')
-  revalidateTag('products', 'max')
-
-  redirect(`/${countryCode}${currentPath}`)
+export async function updateRegion(_countryCode: string, currentPath: string) {
+  // Single region: always redirect to /us
+  redirect(`/us${currentPath}`)
 }

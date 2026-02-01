@@ -48,7 +48,7 @@
 
   /* Product Card */
   .product-card {
-    @apply group relative bg-white border-2 border-ink rounded-2xl overflow-hidden
+    @apply relative bg-white border-2 border-ink rounded-2xl overflow-hidden
            hover:shadow-hard-xl transition-all duration-300;
   }
 

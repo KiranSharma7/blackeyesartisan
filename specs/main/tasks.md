@@ -92,23 +92,23 @@ Based on Solace Medusa Starter structure:
 
 ### Implementation for User Story 1
 
-- [ ] T029 [US1] Verify Solace Medusa client wrapper works in `src/lib/medusa/client.ts`
-- [ ] T030 [P] [US1] Verify Solace Strapi client wrapper works in `src/lib/strapi/client.ts`
-- [ ] T031 [US1] Restyle Header component with design system (ink/paper colors, hard shadows) in `src/components/layout/Header.tsx`
-- [ ] T032 [P] [US1] Restyle Footer component with design system in `src/components/layout/Footer.tsx`
-- [ ] T033 [US1] Restyle ProductCard component with design system (2px borders, hard shadows) in `src/components/products/ProductCard.tsx`
-- [ ] T034 [P] [US1] Restyle ProductGrid component for collections in `src/components/products/ProductGrid.tsx`
-- [ ] T035 [US1] Update ProductCard to use Cloudinary image URLs in `src/components/products/ProductCard.tsx`
-- [ ] T036 [US1] Restyle ProductDetail component with design system in `src/components/products/ProductDetail.tsx`
-- [ ] T037 [US1] Verify AddToCartButton component works in `src/components/cart/AddToCartButton.tsx`
-- [ ] T038 [P] [US1] Restyle CartDrawer component with design system in `src/components/cart/CartDrawer.tsx`
-- [ ] T039 [P] [US1] Restyle CartItem component in `src/components/cart/CartItem.tsx`
-- [ ] T040 [US1] Restyle homepage with design system in `src/app/(main)/page.tsx`
-- [ ] T041 [US1] Verify product detail page loads data from Medusa in `src/app/(main)/products/[handle]/page.tsx`
-- [ ] T042 [US1] Verify cart page works in `src/app/(main)/cart/page.tsx`
-- [ ] T043 [US1] Restyle checkout page with design system in `src/app/(main)/checkout/page.tsx`
-- [ ] T044 [US1] Verify Stripe payment integration works in checkout flow
-- [ ] T045 [US1] Verify order confirmation page displays order details in `src/app/(main)/checkout/confirmation/page.tsx`
+- [X] T029 [US1] Verify Solace Medusa client wrapper works in `src/lib/config.ts`
+- [X] T030 [P] [US1] Verify Strapi client wrapper works in `src/lib/data/fetch.ts`
+- [X] T031 [US1] Create Header component with design system (ink/paper colors, hard shadows) in `src/modules/layout/components/header/index.tsx`
+- [X] T032 [P] [US1] Create Footer component with design system in `src/modules/layout/components/footer/index.tsx`
+- [X] T033 [US1] Create ProductCard component with design system (2px borders, hard shadows) in `src/modules/products/components/product-card/index.tsx`
+- [X] T034 [P] [US1] Create ProductGrid component for collections in `src/modules/products/components/product-grid/index.tsx`
+- [X] T035 [US1] Create ProductImageGallery component in `src/modules/products/components/image-gallery/index.tsx`
+- [X] T036 [US1] Create ProductDetail component with design system in `src/modules/products/components/product-detail/index.tsx`
+- [X] T037 [US1] Create AddToCartButton component in `src/modules/products/components/add-to-cart/index.tsx`
+- [X] T038 [P] [US1] Create CartDrawer component with design system in `src/modules/cart/components/cart-drawer/index.tsx`
+- [X] T039 [P] [US1] Create CartItem component in `src/modules/cart/components/cart-item/index.tsx`
+- [X] T040 [US1] Implement homepage with design system in `src/app/[countryCode]/(main)/page.tsx`
+- [X] T041 [US1] Implement product detail page in `src/app/[countryCode]/(main)/products/[handle]/page.tsx`
+- [X] T042 [US1] Implement cart page in `src/app/[countryCode]/(main)/cart/page.tsx`
+- [X] T043 [US1] Implement checkout page with design system in `src/app/[countryCode]/(checkout)/checkout/page.tsx`
+- [X] T044 [US1] Create checkout components (ShippingAddress, ShippingMethod, Payment, Summary)
+- [X] T045 [US1] Create order confirmation page in `src/app/[countryCode]/(main)/order/confirmed/[id]/page.tsx`
 - [ ] T046 [US1] Deploy storefront to Vercel and test full purchase flow via Playwright MCP
 
 **Checkpoint**: User Story 1 complete - visitors can browse and purchase products (MVP functional)

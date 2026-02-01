@@ -1,0 +1,6 @@
+[GET] http://localhost:8000/us/_next/image?url=https%3A%2F%2Fmedusa-public-images.s3.eu-west-1.amazonaws.com%2Ftee-black-front.png&w=1080&q=75 => [404] Not Found
+[GET] http://localhost:8000/us/_next/image?url=https%3A%2F%2Fmedusa-public-images.s3.eu-west-1.amazonaws.com%2Ftee-black-front.png&w=128&q=75 => [404] Not Found
+[GET] http://localhost:8000/us/_next/image?url=https%3A%2F%2Fmedusa-public-images.s3.eu-west-1.amazonaws.com%2Ftee-black-back.png&w=128&q=75 => [404] Not Found
+[GET] http://localhost:8000/us/_next/image?url=https%3A%2F%2Fmedusa-public-images.s3.eu-west-1.amazonaws.com%2Ftee-white-front.png&w=128&q=75 => [404] Not Found
+[GET] http://localhost:8000/us/_next/image?url=https%3A%2F%2Fmedusa-public-images.s3.eu-west-1.amazonaws.com%2Ftee-white-back.png&w=128&q=75 => [404] Not Found
+[POST] http://localhost:8000/us/products/t-shirt => [500] Internal Server Error
