@@ -9,9 +9,15 @@ export default function AgeGateModal() {
     useAgeGateStore()
 
   const handleVerify = async () => {
-    await verifyAge(ttlDays)
-    setVerified(true)
-    setModalOpen(false)
+    try {
+      await verifyAge(ttlDays)
+      setVerified(true)
+      setModalOpen(false)
+      // Force page reload to ensure state sync
+      window.location.reload()
+    } catch (error) {
+      console.error('Age verification failed:', error)
+    }
   }
 
   const handleDecline = () => {
