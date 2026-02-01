@@ -26,17 +26,11 @@ export default function AgeGateModal() {
       className="relative z-50"
       static
     >
-      <DialogBackdrop
-        transition
-        className="fixed inset-0 bg-ink/80 backdrop-blur-sm transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200"
-      />
+      <DialogBackdrop className="fixed inset-0 bg-ink/80 backdrop-blur-sm" />
 
       <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
         <div className="flex min-h-full items-center justify-center p-4">
-          <DialogPanel
-            transition
-            className="relative w-full max-w-md transform overflow-hidden border-4 border-ink bg-paper p-8 shadow-hard-xl transition-all data-[closed]:scale-95 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200"
-          >
+          <DialogPanel className="relative w-full max-w-md transform overflow-hidden border-4 border-ink bg-paper p-8 shadow-hard-xl">
             {/* Logo/Brand */}
             <div className="mb-6 text-center">
               <h1 className="font-display text-2xl uppercase tracking-tight text-ink">
