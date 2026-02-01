@@ -109,7 +109,7 @@ Based on Solace Medusa Starter structure:
 - [X] T043 [US1] Implement checkout page with design system in `src/app/[countryCode]/(checkout)/checkout/page.tsx`
 - [X] T044 [US1] Create checkout components (ShippingAddress, ShippingMethod, Payment, Summary)
 - [X] T045 [US1] Create order confirmation page in `src/app/[countryCode]/(main)/order/confirmed/[id]/page.tsx`
-- [ ] T046 [US1] Deploy storefront to Vercel and test full purchase flow via Playwright MCP
+- [X] T046 [US1] Deploy storefront to Vercel and test full purchase flow via Playwright MCP
 
 **Checkpoint**: User Story 1 complete - visitors can browse and purchase products (MVP functional)
 

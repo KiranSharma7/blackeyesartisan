@@ -29,7 +29,7 @@ export async function fillSignInInputs(page) {
 }
 
 export async function goToSignUpPage(page) {
-  await page.goto('https://solace-medusa-starter.vercel.app/de')
+  await page.goto('/us')
 
   await page.getByTestId('profile-dropdown-button').hover()
 
@@ -37,7 +37,7 @@ export async function goToSignUpPage(page) {
 }
 
 export async function goToSignInPage(page) {
-  await page.goto('https://solace-medusa-starter.vercel.app/de')
+  await page.goto('/us')
 
   await page.getByTestId('profile-dropdown-button').hover()
 
@@ -53,23 +53,19 @@ export async function login(page) {
 }
 
 export async function goToSingleProductPage(page) {
-  await page.goto(
-    'https://solace-medusa-starter.vercel.app/de/products/winsdor-bar-stool'
-  )
+  // Navigate to shop page first to find a product
+  await page.goto('/us/shop')
+  await waitForPageLoad(page)
 
-  await page.waitForURL(
-    'https://solace-medusa-starter.vercel.app/de/products/winsdor-bar-stool'
-  )
-
-  await expect(page).toHaveURL(/products\/winsdor-bar-stool/)
+  // Click on the first available product
+  const firstProduct = page.locator('[data-testid="product-link"]').first()
+  await firstProduct.click()
 
   await waitForPageLoad(page)
 }
 
 export async function goToCartPage(page) {
-  await page.goto('https://solace-medusa-starter.vercel.app/de/cart')
-
-  await page.waitForURL('https://solace-medusa-starter.vercel.app/de/cart')
+  await page.goto('/us/cart')
 
   await expect(page).toHaveURL(/\/cart/)
 
