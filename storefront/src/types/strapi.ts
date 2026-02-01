@@ -156,3 +156,25 @@ export type ContentPage = {
 export type ContentPageData = {
   data: ContentPage
 }
+
+// Global Settings
+export type GlobalSettings = {
+  id: number
+  documentId: string
+  ageGateEnabled: boolean
+  ageGateTtlDays: number
+  ageGateTitle: string
+  ageGateMessage: string
+  handlingTimeDays: number
+  dutiesDisclaimer: string
+  announcementBarEnabled: boolean
+  announcementBarText: string | null
+  announcementBarLink: string | null
+  shippingPolicyNote: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type GlobalSettingsData = {
+  data: GlobalSettings
+}

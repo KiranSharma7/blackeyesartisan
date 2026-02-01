@@ -52,3 +52,29 @@ export const removeCartId = async () => {
   const cookieStore = await cookies()
   cookieStore.set('_medusa_cart_id', '', { maxAge: -1 })
 }
+
+// Age Verification
+const AGE_VERIFIED_COOKIE = '_bea_age_verified'
+
+export const getAgeVerified = async (): Promise<boolean> => {
+  const cookieStore = await cookies()
+  const verified = cookieStore.get(AGE_VERIFIED_COOKIE)?.value
+  return verified === 'true'
+}
+
+export const setAgeVerified = async (ttlDays: number) => {
+  const cookieStore = await cookies()
+  const maxAge = 60 * 60 * 24 * ttlDays // Convert days to seconds
+
+  cookieStore.set(AGE_VERIFIED_COOKIE, 'true', {
+    maxAge,
+    httpOnly: true,
+    sameSite: 'strict',
+    secure: process.env.NODE_ENV === 'production',
+  })
+}
+
+export const removeAgeVerified = async () => {
+  const cookieStore = await cookies()
+  cookieStore.set(AGE_VERIFIED_COOKIE, '', { maxAge: -1 })
+}
