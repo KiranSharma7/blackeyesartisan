@@ -5,7 +5,7 @@ import { useAgeGateStore } from '@lib/store/useAgeGateStore'
 import { verifyAge } from '../actions'
 
 export default function AgeGateModal() {
-  const { isModalOpen, title, message, ttlDays, setVerified, setModalOpen } =
+  const { title, message, ttlDays, setVerified, setModalOpen } =
     useAgeGateStore()
 
   const handleVerify = async () => {
@@ -25,7 +25,7 @@ export default function AgeGateModal() {
 
   return (
     <Dialog
-      open={isModalOpen}
+      open={true}
       onClose={() => {}}
       className="relative z-50"
       static

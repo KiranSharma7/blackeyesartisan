@@ -41,10 +41,12 @@ export default function AgeGateProvider({
     }
   }, [enabled, isVerified, ttlDays, title, message, setVerified, setModalOpen, setConfig])
 
+  const { isModalOpen } = useAgeGateStore()
+
   return (
     <>
       {children}
-      <AgeGateModal />
+      {isModalOpen && <AgeGateModal />}
     </>
   )
 }
