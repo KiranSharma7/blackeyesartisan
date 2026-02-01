@@ -30,9 +30,11 @@ export default function AgeGateProvider({
     // Set verification status from server-side cookie check
     setVerified(isVerified)
 
-    // Show modal if age gate is enabled and user is not verified
-    if (enabled && !isVerified) {
-      setModalOpen(true)
+    // Show/hide modal based on age gate enabled status and verification
+    if (enabled) {
+      setModalOpen(!isVerified)
+    } else {
+      setModalOpen(false)
     }
   }, [enabled, isVerified, ttlDays, title, message, setVerified, setModalOpen, setConfig])
 
