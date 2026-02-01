@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAgeGateStore } from '@lib/store/useAgeGateStore'
 import AgeGateModal from './age-gate-modal'
 
@@ -22,19 +22,22 @@ export default function AgeGateProvider({
   message,
 }: AgeGateProviderProps) {
   const { setVerified, setModalOpen, setConfig } = useAgeGateStore()
+  const initialized = useRef(false)
 
   useEffect(() => {
-    // Set the configuration from server
-    setConfig({ ttlDays, title, message })
+    // Only initialize once - don't override client state changes
+    if (!initialized.current) {
+      setConfig({ ttlDays, title, message })
+      setVerified(isVerified)
 
-    // Set verification status from server-side cookie check
-    setVerified(isVerified)
+      // Show/hide modal based on initial verification status
+      if (enabled) {
+        setModalOpen(!isVerified)
+      } else {
+        setModalOpen(false)
+      }
 
-    // Show/hide modal based on age gate enabled status and verification
-    if (enabled) {
-      setModalOpen(!isVerified)
-    } else {
-      setModalOpen(false)
+      initialized.current = true
     }
   }, [enabled, isVerified, ttlDays, title, message, setVerified, setModalOpen, setConfig])
 
