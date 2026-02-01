@@ -2,6 +2,9 @@ import { getGlobalSettings } from '@lib/data/fetch'
 import { getAgeVerified } from '@lib/data/cookies'
 import { AgeGateProvider } from '@modules/age-gate'
 
+// Force dynamic rendering to check cookies on every request
+export const dynamic = 'force-dynamic'
+
 export default async function CountryCodeLayout({
   children,
 }: {
