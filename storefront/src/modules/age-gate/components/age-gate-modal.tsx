@@ -1,12 +1,10 @@
 'use client'
 
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react'
-import { useRouter } from 'next/navigation'
 import { useAgeGateStore } from '@lib/store/useAgeGateStore'
 import { verifyAge } from '../actions'
 
 export default function AgeGateModal() {
-  const router = useRouter()
   const { isModalOpen, title, message, ttlDays, setVerified, setModalOpen } =
     useAgeGateStore()
 
@@ -15,8 +13,6 @@ export default function AgeGateModal() {
       await verifyAge(ttlDays)
       setVerified(true)
       setModalOpen(false)
-      // Refresh server components to read updated cookie
-      router.refresh()
     } catch (error) {
       console.error('Age verification failed:', error)
     }
