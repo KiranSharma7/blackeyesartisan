@@ -5,6 +5,7 @@ import {
   CollectionsData,
   ContentPageData,
   FAQData,
+  GlobalSettingsData,
   HeroBannerData,
   MidBannerData,
   VariantColorData,
@@ -201,4 +202,13 @@ export const getAllBlogSlugs = async (): Promise<string[]> => {
 
   const data = await res.json()
   return data.data.map((post: BlogPost) => post.Slug)
+}
+
+// Global Settings
+export const getGlobalSettings = async (): Promise<GlobalSettingsData> => {
+  const res = await fetchStrapiClient(`/api/global-setting`, {
+    next: { tags: ['global-settings'] },
+  })
+
+  return res.json()
 }
