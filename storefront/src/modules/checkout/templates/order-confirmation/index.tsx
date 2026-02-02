@@ -9,17 +9,23 @@ import { Button } from '@/components/ui/button'
 interface OrderConfirmationProps {
   order: HttpTypes.StoreOrder
   countryCode: string
+  handlingTimeDays?: number
+  dutiesDisclaimer?: string
 }
 
 export default function OrderConfirmation({
   order,
   countryCode,
+  handlingTimeDays = 5,
+  dutiesDisclaimer = 'International orders may be subject to customs duties and taxes upon delivery. These fees are the responsibility of the recipient.',
 }: OrderConfirmationProps) {
   const items = order.items || []
   const subtotal = order.subtotal || 0
   const shippingTotal = order.shipping_total || 0
   const total = order.total || 0
   const currencyCode = order.currency_code || 'usd'
+  const isInternational =
+    order.shipping_address?.country_code?.toLowerCase() !== 'us'
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-16 text-center">
@@ -126,12 +132,22 @@ export default function OrderConfirmation({
 
       {/* Handling Time Notice */}
       <div className="bg-sun/20 border-2 border-ink rounded-xl p-4 text-sm text-left mb-8">
-        <p className="font-bold">Estimated Handling Time: 3-5 business days</p>
+        <p className="font-bold">
+          Estimated Handling Time: {handlingTimeDays} business days
+        </p>
         <p className="text-ink/60 mt-1">
-          You&apos;ll receive a shipping confirmation email with tracking when your
-          order ships.
+          Each piece is handcrafted to order. You&apos;ll receive a shipping
+          confirmation email with tracking when your order ships.
         </p>
       </div>
+
+      {/* Duties Disclaimer (international orders only) */}
+      {isInternational && (
+        <div className="bg-stone/10 border-2 border-ink/20 rounded-xl p-4 text-sm text-left mb-8">
+          <p className="font-bold text-ink/80 mb-1">International Shipping Notice</p>
+          <p className="text-ink/60">{dutiesDisclaimer}</p>
+        </div>
+      )}
 
       <Link href={`/${countryCode}/shop`}>
         <Button size="lg">Continue Shopping</Button>

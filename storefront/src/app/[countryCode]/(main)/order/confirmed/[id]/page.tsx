@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { retrieveOrder } from '@lib/data/orders'
+import { getGlobalSettings } from '@lib/data/fetch'
 import OrderConfirmation from '@modules/checkout/templates/order-confirmation'
 
 export const metadata: Metadata = {
@@ -17,11 +18,29 @@ export default async function OrderConfirmedPage({
 }: OrderConfirmedPageProps) {
   const { countryCode, id } = await params
 
-  const order = await retrieveOrder(id)
+  // Fetch order and global settings in parallel
+  const [order, globalSettingsResponse] = await Promise.all([
+    retrieveOrder(id),
+    getGlobalSettings(),
+  ])
 
   if (!order) {
     notFound()
   }
 
-  return <OrderConfirmation order={order} countryCode={countryCode} />
+  // Extract settings with fallbacks
+  const globalSettings = globalSettingsResponse?.data
+  const handlingTimeDays = globalSettings?.handlingTimeDays ?? 5
+  const dutiesDisclaimer =
+    globalSettings?.dutiesDisclaimer ||
+    'International orders may be subject to customs duties and taxes upon delivery. These fees are the responsibility of the recipient.'
+
+  return (
+    <OrderConfirmation
+      order={order}
+      countryCode={countryCode}
+      handlingTimeDays={handlingTimeDays}
+      dutiesDisclaimer={dutiesDisclaimer}
+    />
+  )
 }
