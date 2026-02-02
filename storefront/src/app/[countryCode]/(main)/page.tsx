@@ -2,7 +2,9 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
+import { getCollectionsWithProducts } from '@lib/data/collections'
 import ProductGrid from '@modules/products/components/product-grid'
+import CollectionGrid from '@modules/collections/components/collection-grid'
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
@@ -27,13 +29,16 @@ export default async function HomePage({ params }: HomePageProps) {
     )
   }
 
-  const { response } = await getProductsList({
-    pageParam: 1,
-    queryParams: { limit: 8 },
-    countryCode,
-  })
+  const [productsResult, collections] = await Promise.all([
+    getProductsList({
+      pageParam: 1,
+      queryParams: { limit: 8 },
+      countryCode,
+    }),
+    getCollectionsWithProducts(countryCode),
+  ])
 
-  const products = response.products
+  const products = productsResult.response.products
 
   return (
     <>
@@ -69,8 +74,27 @@ export default async function HomePage({ params }: HomePageProps) {
         </div>
       </section>
 
+      {/* Collections Section */}
+      {collections && collections.length > 0 && (
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-display text-3xl uppercase">
+                Shop by <span className="text-acid">Collection</span>
+              </h2>
+              <Link href={`/${countryCode}/collections`}>
+                <Button variant="ghost" size="sm">
+                  View All &rarr;
+                </Button>
+              </Link>
+            </div>
+            <CollectionGrid collections={collections} countryCode={countryCode} />
+          </div>
+        </section>
+      )}
+
       {/* Value Props */}
-      <section className="py-16">
+      <section className="py-16 bg-stone/20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6">
