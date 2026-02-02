@@ -5,6 +5,7 @@ import { retrieveCart } from '@lib/data/cart'
 import Header from '@modules/layout/components/header'
 import Footer from '@modules/layout/components/footer'
 import CartDrawer from '@modules/cart/components/cart-drawer'
+import AnnouncementBar from '@modules/layout/components/announcement-bar'
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
@@ -21,6 +22,7 @@ export default async function MainLayout({ params, children }: MainLayoutProps) 
 
   return (
     <>
+      <AnnouncementBar />
       <Header countryCode={countryCode} cart={cart} />
       <main className="min-h-screen">{children}</main>
       <Footer countryCode={countryCode} />

@@ -1,6 +1,29 @@
 import { revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Map Strapi model names to ISR cache tags
+const MODEL_TAG_MAP: Record<string, string[]> = {
+  // Blog content
+  'blog': ['blog', 'explore-blog', 'blog-slugs'],
+  'blog-post-category': ['blog', 'blog-categories'],
+  // Homepage content
+  'homepage': ['hero-banner', 'mid-banner'],
+  // About & FAQ
+  'about-us': ['about-us'],
+  'faq': ['faq'],
+  // Policy pages
+  'privacy-policy': ['privacy-policy'],
+  'terms-and-condition': ['terms-and-conditions'],
+  'shipping-policy': ['shipping-policy'],
+  'returns-policy': ['returns-policy'],
+  // Collections
+  'collection': ['collections-main'],
+  // Global settings (affects multiple areas)
+  'global-setting': ['global-settings'],
+  // Product variants
+  'product-variants-color': ['variants-colors'],
+}
+
 export async function POST(request: NextRequest) {
   const secret = request.nextUrl.searchParams.get('secret')
   const body = await request.json()
@@ -10,18 +33,34 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    if (body.model === 'blog' || body.model === 'blog-post-category') {
-      revalidateTag(`blog-${body.entry.Slug}`, { expire: 0 })
-      revalidateTag('blog', { expire: 0 })
-      revalidateTag('explore-blog', { expire: 0 })
-      revalidateTag('blog-categories', { expire: 0 })
-      revalidateTag('blog-slugs', { expire: 0 })
+    const model = body.model as string
+    const tags = MODEL_TAG_MAP[model]
 
-      return NextResponse.json({ revalidated: true, now: Date.now() })
+    if (!tags) {
+      return NextResponse.json({
+        message: 'No revalidation needed',
+        model,
+      })
     }
 
-    return NextResponse.json({ message: 'No revalidation needed' })
+    // Revalidate all tags associated with this model
+    for (const tag of tags) {
+      revalidateTag(tag, { expire: 0 })
+    }
+
+    // If it's a blog post, also revalidate the specific post tag
+    if (model === 'blog' && body.entry?.Slug) {
+      revalidateTag(`blog-${body.entry.Slug}`, { expire: 0 })
+    }
+
+    return NextResponse.json({
+      revalidated: true,
+      tags,
+      model,
+      now: Date.now(),
+    })
   } catch (err) {
+    console.error('Strapi revalidation error:', err)
     return NextResponse.json({ message: 'Error revalidating' }, { status: 500 })
   }
 }

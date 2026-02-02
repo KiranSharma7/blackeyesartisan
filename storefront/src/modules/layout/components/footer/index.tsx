@@ -84,6 +84,14 @@ export default function Footer({ countryCode }: FooterProps) {
                   FAQ
                 </Link>
               </li>
+              <li>
+                <Link
+                  href={`/${countryCode}/blog`}
+                  className="hover:text-acid hover:opacity-100 transition-colors"
+                >
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -91,6 +99,22 @@ export default function Footer({ countryCode }: FooterProps) {
           <div>
             <h4 className="font-display text-lg text-sun mb-4">POLICIES</h4>
             <ul className="space-y-2 text-sm font-medium opacity-80">
+              <li>
+                <Link
+                  href={`/${countryCode}/shipping-policy`}
+                  className="hover:text-acid hover:opacity-100 transition-colors"
+                >
+                  Shipping
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href={`/${countryCode}/returns-policy`}
+                  className="hover:text-acid hover:opacity-100 transition-colors"
+                >
+                  Returns
+                </Link>
+              </li>
               <li>
                 <Link
                   href={`/${countryCode}/privacy-policy`}
