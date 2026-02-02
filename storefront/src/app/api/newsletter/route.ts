@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID
+// Initialize Resend lazily to avoid build-time errors when env vars are missing
+let resend: Resend | null = null
+function getResend(): Resend | null {
+  if (!resend && process.env.RESEND_API_KEY) {
+    resend = new Resend(process.env.RESEND_API_KEY)
+  }
+  return resend
+}
 
 interface NewsletterRequestBody {
   email: string
@@ -32,7 +38,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if Resend is configured
-    if (!process.env.RESEND_API_KEY) {
+    const resendClient = getResend()
+    if (!resendClient) {
       console.error('RESEND_API_KEY is not configured')
       return NextResponse.json(
         { error: 'Newsletter service is not configured' },
@@ -42,13 +49,14 @@ export async function POST(request: NextRequest) {
 
     // If no audience ID, we can still send welcome emails but skip audience
     let alreadySubscribed = false
+    const audienceId = process.env.RESEND_AUDIENCE_ID
 
-    if (AUDIENCE_ID) {
+    if (audienceId) {
       try {
         // Add contact to Resend audience
-        await resend.contacts.create({
+        await resendClient.contacts.create({
           email,
-          audienceId: AUDIENCE_ID,
+          audienceId: audienceId,
           unsubscribed: false,
         })
       } catch (audienceError: unknown) {
@@ -107,7 +115,7 @@ export async function POST(request: NextRequest) {
     // Only send welcome email for new subscribers
     if (!alreadySubscribed) {
       try {
-        await resend.emails.send({
+        await resendClient.emails.send({
           from: 'Black Eyes Artisan <hello@blackeyesartisan.shop>',
           to: email,
           subject: emailSubject,
