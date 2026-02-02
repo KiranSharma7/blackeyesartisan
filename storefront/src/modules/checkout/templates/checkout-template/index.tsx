@@ -13,6 +13,7 @@ interface CheckoutTemplateProps {
   paymentMethods: HttpTypes.StorePaymentProvider[]
   countryCode: string
   step: 'address' | 'delivery' | 'payment'
+  dutiesDisclaimer?: string | null
 }
 
 export default function CheckoutTemplate({
@@ -21,6 +22,7 @@ export default function CheckoutTemplate({
   paymentMethods,
   countryCode,
   step,
+  dutiesDisclaimer,
 }: CheckoutTemplateProps) {
   const hasAddress = !!cart.shipping_address?.address_1
   const hasShippingMethod = cart.shipping_methods && cart.shipping_methods.length > 0
@@ -108,7 +110,7 @@ export default function CheckoutTemplate({
 
           {/* Summary Column */}
           <div>
-            <CheckoutSummary cart={cart} />
+            <CheckoutSummary cart={cart} dutiesDisclaimer={dutiesDisclaimer} />
           </div>
         </div>
       </div>

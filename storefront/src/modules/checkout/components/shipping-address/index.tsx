@@ -1,12 +1,20 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { HttpTypes } from '@medusajs/types'
 import { updateCart } from '@lib/data/cart'
 import { Input } from '@/components/ui/input'
-import { Select } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
+import {
+  CountrySelect,
+  SHIPPING_COUNTRIES,
+} from '@modules/checkout/components/country-select'
+import { PhoneInput } from '@modules/checkout/components/phone-input'
+import {
+  validatePhoneWithMessage,
+  formatPhoneE164,
+} from '@lib/util/phone-validation'
 
 interface ShippingAddressFormProps {
   cart: HttpTypes.StoreCart
@@ -16,20 +24,6 @@ interface ShippingAddressFormProps {
 // Default country code (single region: USD)
 const DEFAULT_COUNTRY = 'us'
 
-// Countries available for shipping (US first, then international alphabetically)
-const COUNTRIES = [
-  { value: 'us', label: 'United States' },
-  { value: 'au', label: 'Australia' },
-  { value: 'ca', label: 'Canada' },
-  { value: 'de', label: 'Germany' },
-  { value: 'es', label: 'Spain' },
-  { value: 'fr', label: 'France' },
-  { value: 'gb', label: 'United Kingdom' },
-  { value: 'it', label: 'Italy' },
-  { value: 'jp', label: 'Japan' },
-  { value: 'nl', label: 'Netherlands' },
-]
-
 export default function ShippingAddressForm({
   cart,
   countryCode,
@@ -37,8 +31,29 @@ export default function ShippingAddressForm({
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [selectedCountry, setSelectedCountry] = useState<string>(
+    cart.shipping_address?.country_code || DEFAULT_COUNTRY
+  )
+  const [phoneValue, setPhoneValue] = useState<string>(
+    cart.shipping_address?.phone || ''
+  )
+  const [isPhoneValid, setIsPhoneValid] = useState<boolean>(true)
 
   const shippingAddress = cart.shipping_address
+
+  const handleCountryChange = useCallback((newCountryCode: string) => {
+    setSelectedCountry(newCountryCode)
+    // Clear phone error when country changes as format may differ
+    setErrors((prev) => {
+      const { phone, ...rest } = prev
+      return rest
+    })
+  }, [])
+
+  const handlePhoneChange = useCallback((phone: string, isValid: boolean) => {
+    setPhoneValue(phone)
+    setIsPhoneValid(isValid)
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -46,7 +61,7 @@ export default function ShippingAddressForm({
 
     const newErrors: Record<string, string> = {}
 
-    // Basic validation
+    // Basic validation for required fields
     const requiredFields = [
       'first_name',
       'last_name',
@@ -54,7 +69,6 @@ export default function ShippingAddressForm({
       'city',
       'postal_code',
       'country_code',
-      'phone',
     ]
 
     for (const field of requiredFields) {
@@ -69,12 +83,23 @@ export default function ShippingAddressForm({
       newErrors.email = 'Valid email is required'
     }
 
+    // Phone validation with country-aware checking
+    const phone = phoneValue
+    const country = formData.get('country_code') as string
+    const phoneError = validatePhoneWithMessage(phone, country)
+    if (phoneError) {
+      newErrors.phone = phoneError
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return
     }
 
     setErrors({})
+
+    // Format phone to E.164 before saving
+    const formattedPhone = formatPhoneE164(phone, country)
 
     startTransition(async () => {
       try {
@@ -88,7 +113,7 @@ export default function ShippingAddressForm({
             city: formData.get('city') as string,
             postal_code: formData.get('postal_code') as string,
             country_code: formData.get('country_code') as string,
-            phone: formData.get('phone') as string,
+            phone: formattedPhone,
           },
           billing_address: {
             first_name: formData.get('first_name') as string,
@@ -98,19 +123,26 @@ export default function ShippingAddressForm({
             city: formData.get('city') as string,
             postal_code: formData.get('postal_code') as string,
             country_code: formData.get('country_code') as string,
-            phone: formData.get('phone') as string,
+            phone: formattedPhone,
           },
         })
         // Always use 'us' country code for redirects (single region)
         router.push('/us/checkout?step=delivery')
       } catch (error) {
         console.error('Failed to update address:', error)
+        setErrors({ form: 'Failed to save address. Please try again.' })
       }
     })
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {errors.form && (
+        <div className="bg-acid/10 border-2 border-acid rounded-xl p-3 text-sm text-acid">
+          {errors.form}
+        </div>
+      )}
+
       <Input
         name="email"
         label="Email"
@@ -119,6 +151,7 @@ export default function ShippingAddressForm({
         placeholder="your@email.com"
         error={errors.email}
         required
+        data-testid="shipping-email-input"
       />
 
       <div className="grid grid-cols-2 gap-4">
@@ -128,6 +161,7 @@ export default function ShippingAddressForm({
           defaultValue={shippingAddress?.first_name || ''}
           error={errors.first_name}
           required
+          data-testid="shipping-first-name-input"
         />
         <Input
           name="last_name"
@@ -135,6 +169,7 @@ export default function ShippingAddressForm({
           defaultValue={shippingAddress?.last_name || ''}
           error={errors.last_name}
           required
+          data-testid="shipping-last-name-input"
         />
       </div>
 
@@ -145,12 +180,14 @@ export default function ShippingAddressForm({
         placeholder="Street address"
         error={errors.address_1}
         required
+        data-testid="shipping-address-input"
       />
 
       <Input
         name="address_2"
         label="Apartment, suite, etc. (optional)"
         defaultValue={shippingAddress?.address_2 || ''}
+        data-testid="shipping-address-2-input"
       />
 
       <div className="grid grid-cols-2 gap-4">
@@ -160,6 +197,7 @@ export default function ShippingAddressForm({
           defaultValue={shippingAddress?.city || ''}
           error={errors.city}
           required
+          data-testid="shipping-city-input"
         />
         <Input
           name="postal_code"
@@ -167,30 +205,30 @@ export default function ShippingAddressForm({
           defaultValue={shippingAddress?.postal_code || ''}
           error={errors.postal_code}
           required
+          data-testid="shipping-postal-code-input"
         />
       </div>
 
-      <Select
+      <CountrySelect
         name="country_code"
         label="Country"
-        options={COUNTRIES}
-        defaultValue={shippingAddress?.country_code || DEFAULT_COUNTRY}
+        defaultValue={selectedCountry}
+        onCountryChange={handleCountryChange}
         error={errors.country_code}
         required
+        data-testid="shipping-country-select"
       />
 
-      <Input
+      <PhoneInput
         name="phone"
         label="Phone"
-        type="tel"
-        defaultValue={shippingAddress?.phone || ''}
-        placeholder="+1 555 123 4567"
+        countryCode={selectedCountry}
+        defaultValue={phoneValue}
+        onPhoneChange={handlePhoneChange}
         error={errors.phone}
         required
+        data-testid="shipping-phone-input"
       />
-      <p className="text-xs text-ink/60 -mt-2">
-        Required for FedEx delivery notifications
-      </p>
 
       <Button
         type="submit"

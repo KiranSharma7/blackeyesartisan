@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { retrieveCart, enrichLineItems } from '@lib/data/cart'
 import { listCartShippingMethods } from '@lib/data/fulfillment'
 import { listCartPaymentMethods } from '@lib/data/payment'
+import { getGlobalSettings } from '@lib/data/fetch'
 import CheckoutTemplate from '@modules/checkout/templates/checkout-template'
 
 export const metadata: Metadata = {
@@ -52,11 +53,15 @@ export default async function CheckoutPage({
     step = 'payment'
   }
 
-  // Fetch shipping options and payment methods
-  const [shippingOptions, paymentMethods] = await Promise.all([
+  // Fetch shipping options, payment methods, and global settings
+  const [shippingOptions, paymentMethods, globalSettings] = await Promise.all([
     listCartShippingMethods(cart.id),
     cart.region_id ? listCartPaymentMethods(cart.region_id) : null,
+    getGlobalSettings().catch(() => null),
   ])
+
+  // Extract duties disclaimer from global settings
+  const dutiesDisclaimer = globalSettings?.data?.dutiesDisclaimer || null
 
   return (
     <CheckoutTemplate
@@ -65,6 +70,7 @@ export default async function CheckoutPage({
       paymentMethods={paymentMethods || []}
       countryCode={countryCode}
       step={step}
+      dutiesDisclaimer={dutiesDisclaimer}
     />
   )
 }

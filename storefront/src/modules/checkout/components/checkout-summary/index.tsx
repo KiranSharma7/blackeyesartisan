@@ -2,18 +2,28 @@ import Image from 'next/image'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import DutiesDisclaimer from '../duties-disclaimer'
 
 interface CheckoutSummaryProps {
   cart: HttpTypes.StoreCart
+  dutiesDisclaimer?: string | null
 }
 
-export default function CheckoutSummary({ cart }: CheckoutSummaryProps) {
+export default function CheckoutSummary({
+  cart,
+  dutiesDisclaimer,
+}: CheckoutSummaryProps) {
   const items = cart.items || []
   const subtotal = cart.subtotal || 0
   const shippingTotal = cart.shipping_total || 0
   const taxTotal = cart.tax_total || 0
   const total = cart.total || 0
   const currencyCode = cart.currency_code || 'usd'
+
+  // Check if shipping is to an international address (non-US)
+  const isInternationalOrder =
+    cart.shipping_address?.country_code &&
+    cart.shipping_address.country_code.toLowerCase() !== 'us'
 
   return (
     <Card className="sticky top-8">
@@ -101,14 +111,11 @@ export default function CheckoutSummary({ cart }: CheckoutSummaryProps) {
           </div>
         </div>
 
-        {/* Duties Disclaimer */}
-        <div className="bg-sun/20 border-2 border-ink rounded-xl p-3 text-xs">
-          <p className="font-bold mb-1">International Orders</p>
-          <p className="text-ink/70">
-            Additional duties and taxes may apply upon delivery to your country.
-            These are the responsibility of the recipient.
-          </p>
-        </div>
+        {/* Duties Disclaimer - Show for international orders or always as info */}
+        <DutiesDisclaimer
+          disclaimerText={dutiesDisclaimer}
+          title={isInternationalOrder ? 'International Shipping' : 'International Orders'}
+        />
       </CardContent>
     </Card>
   )
