@@ -2,7 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
+import { isProductSoldOut } from '@lib/util/inventory'
 import { Card, CardContent } from '@/components/ui/card'
+import { SoldBadgeOverlay } from '../sold-badge'
 
 interface ProductCardProps {
   product: HttpTypes.StoreProduct
@@ -37,6 +39,7 @@ function getLowestPrice(product: HttpTypes.StoreProduct): {
 export default function ProductCard({ product, countryCode }: ProductCardProps) {
   const price = getLowestPrice(product)
   const thumbnailUrl = product.thumbnail || '/placeholder.png'
+  const soldOut = isProductSoldOut(product)
 
   return (
     <Link
@@ -49,11 +52,16 @@ export default function ProductCard({ product, countryCode }: ProductCardProps) 
           className="aspect-[4/5] bg-stone/20 border-b-2 border-ink relative overflow-hidden
                       p-6 flex items-center justify-center"
         >
+          {/* SOLD Badge for sold-out products */}
+          {soldOut && <SoldBadgeOverlay />}
+
           <Image
             src={thumbnailUrl}
             alt={product.title || 'Product image'}
             fill
-            className="object-contain group-hover:scale-110 transition-transform duration-500"
+            className={`object-contain group-hover:scale-110 transition-transform duration-500 ${
+              soldOut ? 'opacity-60' : ''
+            }`}
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         </div>

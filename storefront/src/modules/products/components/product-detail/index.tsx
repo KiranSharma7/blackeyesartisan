@@ -3,9 +3,12 @@
 import { useState, useMemo } from 'react'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
+import { isProductSoldOut } from '@lib/util/inventory'
 import ProductImageGallery from '../image-gallery'
 import VariantSelector from '../variant-selector'
 import AddToCartButton from '../add-to-cart'
+import SoldBadge from '../sold-badge'
+import NotifyMeForm from '@modules/newsletter/components/notify-me-form'
 
 interface ProductDetailProps {
   product: HttpTypes.StoreProduct
@@ -33,6 +36,7 @@ export default function ProductDetail({
   }, [selectedVariant])
 
   const inStock = (selectedVariant?.inventory_quantity ?? 0) > 0
+  const soldOut = isProductSoldOut(product)
 
   return (
     <div className="grid lg:grid-cols-12 gap-12 items-start">
@@ -46,11 +50,14 @@ export default function ProductDetail({
 
       {/* Product Info - Right Column */}
       <div className="lg:col-span-5 flex flex-col gap-8">
-        {/* Title */}
+        {/* Title with SOLD badge for sold-out products */}
         <div>
-          <h1 className="font-display text-4xl md:text-5xl uppercase mb-2">
-            {product.title}
-          </h1>
+          <div className="flex items-start gap-3 mb-2">
+            <h1 className="font-display text-4xl md:text-5xl uppercase">
+              {product.title}
+            </h1>
+            {soldOut && <SoldBadge size="lg" className="mt-2 shrink-0" />}
+          </div>
           {price && (
             <p className="text-2xl font-bold">
               {convertToLocale({
@@ -77,12 +84,16 @@ export default function ProductDetail({
           />
         )}
 
-        {/* Add to Cart */}
-        <AddToCartButton
-          variantId={selectedVariantId}
-          countryCode={countryCode}
-          inStock={inStock}
-        />
+        {/* Add to Cart or Notify Me Form */}
+        {soldOut ? (
+          <NotifyMeForm productTitle={product.title || 'this product'} />
+        ) : (
+          <AddToCartButton
+            variantId={selectedVariantId}
+            countryCode={countryCode}
+            inStock={inStock}
+          />
+        )}
 
         {/* Product Details Accordion */}
         <div className="border-t-2 border-ink/10 pt-6 space-y-4">
@@ -100,8 +111,20 @@ export default function ProductDetail({
           )}
           <div className="flex justify-between text-sm">
             <span className="font-medium text-ink/60">Availability</span>
-            <span className={`font-bold ${inStock ? 'text-green-600' : 'text-acid'}`}>
-              {inStock ? 'In Stock' : 'Out of Stock'}
+            <span
+              className={`font-bold ${
+                soldOut
+                  ? 'text-acid'
+                  : inStock
+                  ? 'text-green-600'
+                  : 'text-sun'
+              }`}
+            >
+              {soldOut
+                ? 'Sold Out'
+                : inStock
+                ? 'In Stock'
+                : 'Selected variant unavailable'}
             </span>
           </div>
         </div>

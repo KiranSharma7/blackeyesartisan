@@ -147,16 +147,17 @@ Based on Solace Medusa Starter structure:
 
 ### Implementation for User Story 3
 
-- [ ] T058 [P] [US3] Create isProductSoldOut utility function in `src/lib/utils/inventory.ts`
-- [ ] T059 [P] [US3] Create SoldBadge component with styled overlay in `src/components/products/SoldBadge.tsx`
-- [ ] T060 [US3] Update ProductCard to show SoldBadge when inventory is zero in `src/components/products/ProductCard.tsx`
-- [ ] T061 [US3] Update ProductDetail to show disabled state when sold out in `src/components/products/ProductDetail.tsx`
-- [ ] T062 [US3] Create NotifyMeForm component for sold-out products in `src/components/newsletter/NotifyMeForm.tsx`
-- [ ] T063 [US3] Integrate NotifyMeForm into ProductDetail for sold-out products in `src/components/products/ProductDetail.tsx`
+- [X] T058 [P] [US3] Create isProductSoldOut utility function in `storefront/src/lib/util/inventory.ts`
+- [X] T059 [P] [US3] Create SoldBadge component with styled overlay in `storefront/src/modules/products/components/sold-badge/index.tsx`
+- [X] T060 [US3] Update ProductCard to show SoldBadge when inventory is zero in `storefront/src/modules/products/components/product-card/index.tsx`
+- [X] T061 [US3] Update ProductDetail to show disabled state when sold out in `storefront/src/modules/products/components/product-detail/index.tsx`
+- [X] T062 [US3] Create NotifyMeForm component for sold-out products in `storefront/src/modules/newsletter/components/notify-me-form/index.tsx`
+- [X] T063 [US3] Integrate NotifyMeForm into ProductDetail for sold-out products
+- [X] T063a [US3] Create newsletter API route in `storefront/src/app/api/newsletter/route.ts`
 - [ ] T064 [US3] Test sold-out display via Playwright MCP with test product
 - [ ] T065 [US3] Deploy and test sold-out display in production
 
-**Checkpoint**: User Story 3 complete - sold-out products display as portfolio with newsletter signup
+**Checkpoint**: User Story 3 implementation complete - sold-out products display as portfolio with newsletter signup (pending testing)
 
 ---
 
