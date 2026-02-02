@@ -6,6 +6,36 @@ export type ValidationError = {
   message: string
 }
 
+/**
+ * Email validation regex - matches standard email format
+ */
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+/**
+ * Validates an email address format
+ * @param email - The email string to validate
+ * @returns true if valid, false otherwise
+ */
+export const validateEmail = (email: string): boolean => {
+  if (!email || typeof email !== 'string') return false
+  return EMAIL_REGEX.test(email.trim())
+}
+
+/**
+ * Validates email and returns an error message if invalid
+ * @param email - The email string to validate
+ * @returns null if valid, error message string if invalid
+ */
+export const validateEmailWithMessage = (email: string): string | null => {
+  if (!email || typeof email !== 'string') {
+    return 'Email is required'
+  }
+  if (!EMAIL_REGEX.test(email.trim())) {
+    return 'Please enter a valid email address'
+  }
+  return null
+}
+
 export const validatePhoneNumber = (number) => {
   const isValidPhoneNumber = validator.isMobilePhone(number)
   return isValidPhoneNumber

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { validateEmail } from '@lib/util/validator'
+import { checkRateLimit, rateLimitExceededResponse } from '@lib/util/rate-limit'
 
 // Initialize Resend lazily to avoid build-time errors when env vars are missing
 let resend: Resend | null = null
@@ -18,19 +20,17 @@ interface NewsletterRequestBody {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check rate limit
+    const rateLimitResult = await checkRateLimit(request)
+    if (!rateLimitResult.success) {
+      return rateLimitExceededResponse()
+    }
+
     const body: NewsletterRequestBody = await request.json()
     const { email, source = 'footer', productTitle } = body
 
-    // Validate email
-    if (!email) {
-      return NextResponse.json(
-        { error: 'Email is required' },
-        { status: 400 }
-      )
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
+    // Validate email using shared validator
+    if (!email || !validateEmail(email)) {
       return NextResponse.json(
         { error: 'Invalid email address' },
         { status: 400 }

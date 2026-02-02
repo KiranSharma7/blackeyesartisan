@@ -169,15 +169,15 @@ Based on Solace Medusa Starter structure:
 
 ### Implementation for User Story 4
 
-- [ ] T066 [P] [US4] Create email validation utility in `src/lib/utils/validation.ts`
-- [ ] T067 [P] [US4] Create rate limiting utility for API routes in `src/lib/utils/rate-limit.ts`
-- [ ] T068 [US4] Create newsletter API route with Resend integration in `src/app/api/newsletter/route.ts`
-- [ ] T069 [US4] Create NewsletterForm component for footer in `src/components/newsletter/NewsletterForm.tsx`
-- [ ] T070 [US4] Update Footer to include NewsletterForm in `src/components/layout/Footer.tsx`
-- [ ] T071 [US4] Test newsletter signup via Playwright MCP (footer form)
-- [ ] T072 [US4] Deploy and test newsletter in production
+- [X] T066 [P] [US4] Create email validation utility in `storefront/src/lib/util/validator.ts` (added validateEmail, validateEmailWithMessage)
+- [X] T067 [P] [US4] Create rate limiting utility for API routes in `storefront/src/lib/util/rate-limit.ts`
+- [X] T068 [US4] Newsletter API route with Resend integration already exists in `storefront/src/app/api/newsletter/route.ts` (completed in T063a); enhanced with rate limiting and shared validation
+- [X] T069 [US4] Create NewsletterForm component for footer in `storefront/src/modules/newsletter/components/newsletter-form/index.tsx`
+- [X] T070 [US4] Update Footer to include NewsletterForm in `storefront/src/modules/layout/components/footer/index.tsx`
+- [X] T071 [US4] Test newsletter signup via Playwright MCP (footer form) - PASSED (see `.playwright-mcp/newsletter-signup-success.png`)
+- [X] T072 [US4] Deploy and test newsletter in production - PASSED (verified on www.blackeyesartisan.shop)
 
-**Checkpoint**: User Story 4 complete - newsletter signup works from footer and sold-out products
+**Checkpoint**: ✅ User Story 4 COMPLETE - newsletter signup works from footer with "Join the Family" section. Form validates email, shows success/error states, and integrates with Resend API. Rate limiting added to prevent abuse.
 
 ---
 

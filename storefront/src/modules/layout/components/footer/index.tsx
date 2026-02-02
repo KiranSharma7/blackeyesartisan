@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import NewsletterForm from '@modules/newsletter/components/newsletter-form'
 
 interface FooterProps {
   countryCode: string
@@ -10,6 +11,19 @@ export default function Footer({ countryCode }: FooterProps) {
   return (
     <footer className="bg-ink text-paper pt-16 pb-8 border-t-2 border-ink">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
+        {/* Newsletter Section */}
+        <div className="mb-12 pb-12 border-b border-paper/20">
+          <div className="max-w-xl">
+            <h3 className="font-display text-2xl text-sun mb-2 uppercase">
+              Join the Family
+            </h3>
+            <p className="text-sm opacity-70 mb-4">
+              Be the first to know about new drops, restocks, and exclusive pieces.
+            </p>
+            <NewsletterForm variant="footer" />
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
           {/* Logo */}
           <div className="col-span-2 md:col-span-1">
