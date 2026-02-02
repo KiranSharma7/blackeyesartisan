@@ -61,7 +61,7 @@ function OrderPlacedEmailComponent({
           `}
         </style>
       </Head>
-      <Preview>Your order #{order.display_id} has been confirmed - Black Eyes Artisan</Preview>
+      <Preview>{`Your order #${order.display_id} has been confirmed - Black Eyes Artisan`}</Preview>
       <Body style={main}>
         <Container style={container}>
           {/* Header */}
@@ -138,7 +138,7 @@ function OrderPlacedEmailComponent({
                 </Column>
               </Row>
             ))}
-            {order.tax_total > 0 && (
+            {Number(order.tax_total) > 0 && (
               <Row style={summaryRow}>
                 <Column style={summaryLabel}>
                   <Text style={summaryText}>Tax</Text>

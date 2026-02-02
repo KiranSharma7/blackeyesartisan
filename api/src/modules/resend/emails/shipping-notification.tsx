@@ -46,7 +46,7 @@ function ShippingNotificationEmailComponent({
           `}
         </style>
       </Head>
-      <Preview>Your order #{order.display_id} has shipped - Black Eyes Artisan</Preview>
+      <Preview>{`Your order #${order.display_id} has shipped - Black Eyes Artisan`}</Preview>
       <Body style={main}>
         <Container style={container}>
           {/* Header */}
