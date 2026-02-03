@@ -5,6 +5,11 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
 import { placeOrder } from '@lib/data/cart'
 
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+const stripePromise = stripePublishableKey
+  ? loadStripe(stripePublishableKey)
+  : null
+
 export default function PaymentProcessingPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -12,24 +17,30 @@ export default function PaymentProcessingPage() {
   const [errorMessage, setErrorMessage] = useState<string>('')
 
   useEffect(() => {
+    let isMounted = true
+    let reloadTimer: ReturnType<typeof setTimeout> | undefined
+    let redirectTimer: ReturnType<typeof setTimeout> | undefined
+
     const processPayment = async () => {
       const clientSecret = searchParams.get('payment_intent_client_secret')
 
       if (!clientSecret) {
+        if (!isMounted) return
         setStatus('error')
         setErrorMessage('Invalid payment session')
         return
       }
 
-      const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-      if (!publishableKey) {
+      if (!stripePromise) {
+        if (!isMounted) return
         setStatus('error')
         setErrorMessage('Stripe not configured')
         return
       }
 
-      const stripe = await loadStripe(publishableKey)
+      const stripe = await stripePromise
       if (!stripe) {
+        if (!isMounted) return
         setStatus('error')
         setErrorMessage('Failed to load Stripe')
         return
@@ -38,6 +49,7 @@ export default function PaymentProcessingPage() {
       const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret)
 
       if (!paymentIntent) {
+        if (!isMounted) return
         setStatus('error')
         setErrorMessage('Payment not found')
         return
@@ -47,32 +59,47 @@ export default function PaymentProcessingPage() {
         case 'succeeded':
           try {
             await placeOrder()
+            if (!isMounted) return
             setStatus('success')
           } catch (err) {
+            if (!isMounted) return
             setStatus('error')
             setErrorMessage('Payment succeeded but order failed. Please contact support.')
           }
           break
 
         case 'processing':
+          if (!isMounted) return
           setStatus('processing')
-          setTimeout(() => window.location.reload(), 2000)
+          reloadTimer = setTimeout(() => window.location.reload(), 2000)
           break
 
         case 'requires_payment_method':
+          if (!isMounted) return
           setStatus('error')
           setErrorMessage('Payment failed. Please try another payment method.')
-          setTimeout(() => router.push('/us/checkout?step=payment'), 3000)
+          redirectTimer = setTimeout(() => router.push('/us/checkout?step=payment'), 3000)
           break
 
         default:
+          if (!isMounted) return
           setStatus('error')
           setErrorMessage('Unexpected payment status. Please contact support.')
           break
       }
     }
 
-    processPayment()
+    void processPayment()
+
+    return () => {
+      isMounted = false
+      if (reloadTimer) {
+        clearTimeout(reloadTimer)
+      }
+      if (redirectTimer) {
+        clearTimeout(redirectTimer)
+      }
+    }
   }, [searchParams, router])
 
   return (

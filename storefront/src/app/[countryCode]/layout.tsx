@@ -1,9 +1,5 @@
 import { getGlobalSettings } from '@lib/data/fetch'
-import { getAgeVerified } from '@lib/data/cookies'
-import { AgeGateProvider } from '@modules/age-gate'
-
-// Force dynamic rendering to check cookies on every request
-export const dynamic = 'force-dynamic'
+import AgeGateProvider from '@modules/age-gate/components/age-gate-provider'
 
 export default async function CountryCodeLayout({
   children,
@@ -13,9 +9,6 @@ export default async function CountryCodeLayout({
   // Fetch global settings from Strapi
   const globalSettingsData = await getGlobalSettings()
   const settings = globalSettingsData?.data
-
-  // Check if user has already verified their age
-  const isVerified = await getAgeVerified()
 
   // Default values if settings are not available
   const ageGateEnabled = settings?.ageGateEnabled ?? true
@@ -27,7 +20,6 @@ export default async function CountryCodeLayout({
 
   return (
     <AgeGateProvider
-      isVerified={isVerified}
       enabled={ageGateEnabled}
       ttlDays={ageGateTtlDays}
       title={ageGateTitle}

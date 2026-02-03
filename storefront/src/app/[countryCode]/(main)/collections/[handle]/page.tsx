@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -10,11 +11,39 @@ interface CollectionPageProps {
   params: Promise<{ countryCode: string; handle: string }>
 }
 
+const getCollectionMetadataData = cache(async (handle: string) => {
+  const collection = await getCollectionByHandle(handle)
+  if (!collection) {
+    return null
+  }
+
+  return collection
+})
+
+const getCollectionPageData = cache(async (countryCode: string, handle: string) => {
+  const collection = await getCollectionMetadataData(handle)
+
+  if (!collection) {
+    return null
+  }
+
+  const { response } = await getProductsListByCollectionId({
+    collectionId: collection.id,
+    countryCode,
+    limit: 24,
+  })
+
+  return {
+    collection,
+    products: response.products,
+  }
+})
+
 export async function generateMetadata({
   params,
 }: CollectionPageProps): Promise<Metadata> {
   const { handle } = await params
-  const collection = await getCollectionByHandle(handle)
+  const collection = await getCollectionMetadataData(handle)
 
   if (!collection) {
     return {
@@ -30,19 +59,12 @@ export async function generateMetadata({
 
 export default async function CollectionPage({ params }: CollectionPageProps) {
   const { countryCode, handle } = await params
-  const collection = await getCollectionByHandle(handle)
-
-  if (!collection) {
+  const data = await getCollectionPageData(countryCode, handle)
+  if (!data) {
     notFound()
   }
 
-  const { response } = await getProductsListByCollectionId({
-    collectionId: collection.id,
-    countryCode,
-    limit: 24,
-  })
-
-  const products = response.products
+  const { collection, products } = data
 
   return (
     <div className="py-16">

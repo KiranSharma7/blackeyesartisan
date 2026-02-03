@@ -6,7 +6,6 @@ import AgeGateModal from './age-gate-modal'
 
 interface AgeGateProviderProps {
   children: React.ReactNode
-  isVerified: boolean
   enabled: boolean
   ttlDays: number
   title: string
@@ -15,7 +14,6 @@ interface AgeGateProviderProps {
 
 export default function AgeGateProvider({
   children,
-  isVerified,
   enabled,
   ttlDays,
   title,
@@ -27,6 +25,11 @@ export default function AgeGateProvider({
   useEffect(() => {
     // Only initialize once - don't override client state changes
     if (!initialized.current) {
+      const isVerified =
+        document.cookie
+          .split(';')
+          .some((cookie) => cookie.trim().startsWith('_bea_age_verified=true'))
+
       setConfig({ ttlDays, title, message })
       setVerified(isVerified)
 
@@ -39,7 +42,7 @@ export default function AgeGateProvider({
 
       initialized.current = true
     }
-  }, [enabled, isVerified, ttlDays, title, message, setVerified, setModalOpen, setConfig])
+  }, [enabled, ttlDays, title, message, setVerified, setModalOpen, setConfig])
 
   const { isModalOpen } = useAgeGateStore()
 

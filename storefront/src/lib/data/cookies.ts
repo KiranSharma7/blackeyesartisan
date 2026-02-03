@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 
 export const getAuthHeaders = async (): Promise<
-  { authorization: string } | {}
+  { authorization: string } | Record<string, never>
 > => {
   const cookieStore = await cookies()
   const token = cookieStore.get('_medusa_jwt')?.value
@@ -68,7 +68,7 @@ export const setAgeVerified = async (ttlDays: number) => {
 
   cookieStore.set(AGE_VERIFIED_COOKIE, 'true', {
     maxAge,
-    httpOnly: true,
+    httpOnly: false,
     sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
   })

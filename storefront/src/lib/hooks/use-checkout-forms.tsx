@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 import { checkoutFormValidationSchema } from '@lib/util/validator'
 import { useFormik } from 'formik'
@@ -74,10 +74,10 @@ export const useCheckoutForms = (initialValues?: any) => {
     validateOnChange: !!formSubmitCount,
   })
 
-  const validateForm = useCallback(() => {
+  const validateForm = () => {
     setFormSubmitCount((prev) => prev + 1)
-    formik.validateForm()
-  }, [formik])
+    void formik.validateForm()
+  }
 
   return {
     ...formik,

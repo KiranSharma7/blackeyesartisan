@@ -1,14 +1,15 @@
 'use client'
 
 import { useState, useTransition, useEffect } from 'react'
+import dynamic from 'next/dynamic'
 import { HttpTypes } from '@medusajs/types'
 import { placeOrder, initiatePaymentSession } from '@lib/data/cart'
 import { convertToLocale } from '@lib/util/money'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { cn } from '@lib/util/cn'
-import StripeWrapper from '../stripe-wrapper'
-import StripeCardElement from '../stripe-card-element'
+
+const StripeWrapper = dynamic(() => import('../stripe-wrapper'))
+const StripeCardElement = dynamic(() => import('../stripe-card-element'))
 
 interface PaymentFormProps {
   cart: HttpTypes.StoreCart
@@ -26,6 +27,10 @@ export default function PaymentForm({ cart, paymentMethods }: PaymentFormProps) 
 
   const handleSelectProvider = (providerId: string) => {
     setSelectedProviderId(providerId)
+    // Clear client secret when switching providers to force a fresh fetch
+    if (providerId !== 'pp_stripe_stripe') {
+      setClientSecret(null)
+    }
   }
 
   const handlePlaceOrder = () => {
@@ -48,22 +53,27 @@ export default function PaymentForm({ cart, paymentMethods }: PaymentFormProps) 
   }
 
   useEffect(() => {
-    if (selectedProviderId === 'pp_stripe_stripe' && !clientSecret) {
+    // Fetch a fresh client secret when Stripe is selected
+    // We always fetch fresh to ensure the PaymentIntent matches current cart total
+    if (selectedProviderId === 'pp_stripe_stripe') {
+      setClientSecret(null) // Clear old secret first
       fetchClientSecret()
     }
-  }, [selectedProviderId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProviderId, cart.id, cart.total])
 
   const fetchClientSecret = async () => {
     setIsLoadingSecret(true)
     setError(null)
 
     try {
-      await initiatePaymentSession(cart, {
+      const response = await initiatePaymentSession(cart, {
         provider_id: selectedProviderId,
       })
 
-      const paymentSession = cart.payment_collection?.payment_sessions?.find(
-        (session) => session.provider_id === selectedProviderId
+      // Use the returned payment_collection from the response, not the stale cart prop
+      const paymentSession = response?.payment_collection?.payment_sessions?.find(
+        (session: any) => session.provider_id === selectedProviderId
       )
 
       if (paymentSession?.data?.client_secret) {

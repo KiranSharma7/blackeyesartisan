@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,9 +9,13 @@ interface BlogPostPageProps {
   params: Promise<{ countryCode: string; slug: string }>
 }
 
+const getBlogPostPageData = cache(async (slug: string) => {
+  return getBlogPostBySlug(slug)
+})
+
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params
-  const post = await getBlogPostBySlug(slug)
+  const post = await getBlogPostPageData(slug)
 
   if (!post) {
     return {
@@ -40,7 +45,7 @@ export async function generateStaticParams() {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { countryCode, slug } = await params
-  const post = await getBlogPostBySlug(slug)
+  const post = await getBlogPostPageData(slug)
 
   if (!post) {
     notFound()

@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { loadStripe, Stripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 
 interface StripeWrapperProps {
@@ -9,16 +8,12 @@ interface StripeWrapperProps {
   clientSecret: string
 }
 
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+const stripePromise = stripePublishableKey
+  ? loadStripe(stripePublishableKey)
+  : null
+
 export default function StripeWrapper({ children, clientSecret }: StripeWrapperProps) {
-  const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null)
-
-  useEffect(() => {
-    const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-    if (key) {
-      setStripePromise(loadStripe(key))
-    }
-  }, [])
-
   if (!stripePromise || !clientSecret) {
     return null
   }

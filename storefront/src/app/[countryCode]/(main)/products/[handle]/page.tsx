@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -10,21 +11,32 @@ interface ProductPageProps {
   params: Promise<{ countryCode: string; handle: string }>
 }
 
-export async function generateMetadata({
-  params,
-}: ProductPageProps): Promise<Metadata> {
-  const { handle, countryCode } = await params
+const getProductPageData = cache(async (countryCode: string, handle: string) => {
   const region = await getRegion(countryCode)
 
   if (!region) {
-    return { title: 'Product Not Found | BlackEyesArtisan' }
+    return null
   }
 
   const product = await getProductByHandle(handle, region.id)
 
   if (!product) {
+    return null
+  }
+
+  return { product }
+})
+
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
+  const { handle, countryCode } = await params
+  const data = await getProductPageData(countryCode, handle)
+
+  if (!data) {
     return { title: 'Product Not Found | BlackEyesArtisan' }
   }
+  const { product } = data
 
   return {
     title: `${product.title} | BlackEyesArtisan`,
@@ -39,17 +51,11 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { countryCode, handle } = await params
-  const region = await getRegion(countryCode)
-
-  if (!region) {
+  const data = await getProductPageData(countryCode, handle)
+  if (!data) {
     notFound()
   }
-
-  const product = await getProductByHandle(handle, region.id)
-
-  if (!product) {
-    notFound()
-  }
+  const { product } = data
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">

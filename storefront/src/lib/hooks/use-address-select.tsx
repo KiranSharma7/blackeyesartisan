@@ -56,6 +56,13 @@ export const useAddressSelect = (
 
   const handleOpenDialogChange = (open: boolean) => {
     setIsOpen(open)
+    if (open && !choosenAddressId && !cart?.shipping_address?.id) {
+      const defaultShippingAddressId =
+        addresses.find((address) => address.is_default_shipping === true)?.id ??
+        null
+      setChoosenAddressId(defaultShippingAddressId)
+    }
+
     if (!open) {
       setAddNewAddress(false)
       setEditAddress(false)
@@ -120,20 +127,6 @@ export const useAddressSelect = (
       )
     )
   }, [addresses, addressInput])
-
-  useEffect(() => {
-    const defaultShippingAddress = addresses.find(
-      (a) => a.is_default_shipping === true
-    )
-
-    if (
-      defaultShippingAddress &&
-      !choosenAddressId &&
-      !cart?.shipping_address?.id
-    ) {
-      setChoosenAddressId(defaultShippingAddress.id)
-    }
-  }, [addresses, cart?.shipping_address?.id, choosenAddressId])
 
   // Close dialog after new address adding / editing success
   useEffect(() => {
