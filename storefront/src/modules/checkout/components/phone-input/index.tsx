@@ -98,23 +98,27 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       setHasBlurred(true)
 
-      if (validateOnBlur && value) {
-        // Validate with full phone number including country code
+      // Only validate if field has a value (phone is optional)
+      if (validateOnBlur && value && value.trim()) {
         const fullPhone = buildFullPhoneNumber(value)
         const error = validatePhoneWithMessage(fullPhone, countryCode)
         setValidationError(error)
+      } else {
+        setValidationError(null)
       }
 
       // Call original onBlur if provided
       props.onBlur?.(e)
     }
 
-    // Re-validate when country changes
+    // Re-validate when country changes (only if has value)
     React.useEffect(() => {
-      if (hasBlurred && value) {
+      if (hasBlurred && value && value.trim()) {
         const fullPhone = buildFullPhoneNumber(value)
         const error = validatePhoneWithMessage(fullPhone, countryCode)
         setValidationError(error)
+      } else if (hasBlurred) {
+        setValidationError(null)
       }
     }, [countryCode, value, hasBlurred, buildFullPhoneNumber])
 
@@ -163,7 +167,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
           <p className="text-sm font-medium text-acid">{displayError}</p>
         ) : (
           <p className="text-xs text-ink/60">
-            Required for FedEx delivery notifications
+            For delivery updates and notifications
           </p>
         )}
       </div>

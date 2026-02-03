@@ -83,13 +83,9 @@ export default function ShippingAddressForm({
       newErrors.email = 'Valid email is required'
     }
 
-    // Phone validation with country-aware checking
+    // Phone is optional - only validate format if provided
     const phone = phoneValue
     const country = formData.get('country_code') as string
-    const phoneError = validatePhoneWithMessage(phone, country)
-    if (phoneError) {
-      newErrors.phone = phoneError
-    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
@@ -221,12 +217,11 @@ export default function ShippingAddressForm({
 
       <PhoneInput
         name="phone"
-        label="Phone"
+        label="Phone (optional)"
         countryCode={selectedCountry}
         defaultValue={phoneValue}
         onPhoneChange={handlePhoneChange}
         error={errors.phone}
-        required
         data-testid="shipping-phone-input"
       />
 

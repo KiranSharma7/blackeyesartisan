@@ -72,8 +72,9 @@ export const validatePhoneWithMessage = (
   phone: string,
   countryCode: string
 ): string | null => {
+  // Phone is optional - return null if empty
   if (!phone || typeof phone !== 'string' || phone.trim() === '') {
-    return 'Phone number is required for international shipping'
+    return null
   }
 
   const country = countryCode.toUpperCase() as CountryCode
