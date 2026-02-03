@@ -1,103 +1,12 @@
 import type { Core } from '@strapi/strapi';
 
-// Helper function to set up public permissions for a content type
-async function enablePublicFind(strapi: Core.Strapi, apiUid: string) {
-  const publicRole = await strapi.db.query('plugin::users-permissions.role').findOne({
-    where: { type: 'public' },
-  });
+type DocumentSeed = {
+  uid: string;
+  title: string;
+  pageContent: string;
+};
 
-  if (!publicRole) {
-    strapi.log.warn('Public role not found, skipping permission setup');
-    return;
-  }
-
-  // Check if permission already exists
-  const existingPermission = await strapi.db.query('plugin::users-permissions.permission').findOne({
-    where: {
-      role: publicRole.id,
-      action: `${apiUid}.find`,
-    },
-  });
-
-  if (!existingPermission) {
-    await strapi.db.query('plugin::users-permissions.permission').create({
-      data: {
-        action: `${apiUid}.find`,
-        role: publicRole.id,
-      },
-    });
-    strapi.log.info(`Enabled public find permission for ${apiUid}`);
-  }
-}
-
-export default {
-  /**
-   * An asynchronous register function that runs before
-   * your application is initialized.
-   *
-   * This gives you an opportunity to extend code.
-   */
-  register(/* { strapi }: { strapi: Core.Strapi } */) {},
-
-  /**
-   * An asynchronous bootstrap function that runs before
-   * your application gets started.
-   *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
-   */
-  async bootstrap({ strapi }: { strapi: Core.Strapi }) {
-    // Set up public permissions for content types
-    const contentTypesToEnable = [
-      'api::global-setting.global-setting',
-      'api::shipping-policy.shipping-policy',
-      'api::return-policy.return-policy',
-      'api::privacy-policy.privacy-policy',
-      'api::terms-and-condition.terms-and-condition',
-      'api::about-us.about-us',
-      'api::homepage.homepage',
-      'api::faq.faq',
-      'api::collection.collection',
-      'api::blog.blog',
-    ];
-
-    for (const apiUid of contentTypesToEnable) {
-      try {
-        await enablePublicFind(strapi, apiUid);
-      } catch (error) {
-        strapi.log.warn(`Failed to enable public find for ${apiUid}: ${error}`);
-      }
-    }
-
-    // Seed Global Settings if not already set
-    const globalSettings = await strapi.documents('api::global-setting.global-setting').findFirst({});
-
-    if (!globalSettings) {
-      await strapi.documents('api::global-setting.global-setting').create({
-        data: {
-          ageGateEnabled: true,
-          ageGateTtlDays: 30,
-          ageGateTitle: 'Age Verification Required',
-          ageGateMessage: 'You must be 18 years or older to enter this site. By entering, you confirm that you are of legal age to view and purchase tobacco accessories.',
-          handlingTimeDays: 3,
-          dutiesDisclaimer: 'International orders may be subject to import duties and taxes, which are the responsibility of the buyer. These charges are determined by your local customs office and are not included in our shipping fees.',
-          announcementBarEnabled: true,
-          announcementBarText: 'Free shipping on orders over $150 USD',
-          announcementBarLink: '/collections',
-          shippingPolicyNote: 'All orders ship via FedEx International Priority from Nepal. A valid phone number is required for delivery. Please allow 3-5 business days for order processing before shipment.',
-        },
-      });
-      strapi.log.info('Seeded Global Settings with default values');
-    }
-
-    // Note: About Us content requires Banner component - create via Strapi admin UI
-
-    // Seed Privacy Policy if not already set
-    const privacyPolicy = await strapi.documents('api::privacy-policy.privacy-policy').findFirst({});
-    if (!privacyPolicy) {
-      const createdPrivacy = await strapi.documents('api::privacy-policy.privacy-policy').create({
-        data: {
-          PageContent: `# Privacy Policy
+const PRIVACY_POLICY_CONTENT = `# Privacy Policy
 
 **Last Updated: January 2026**
 
@@ -129,22 +38,9 @@ You may request access to, correction of, or deletion of your personal data by c
 
 ## Contact Us
 
-For privacy-related questions, contact us at: support@blackeyesartisan.shop`,
-        },
-      });
-      // Publish the document
-      await strapi.documents('api::privacy-policy.privacy-policy').publish({
-        documentId: createdPrivacy.documentId,
-      });
-      strapi.log.info('Seeded Privacy Policy');
-    }
+For privacy-related questions, contact us at: support@blackeyesartisan.shop`;
 
-    // Seed Terms & Conditions if not already set
-    const termsAndConditions = await strapi.documents('api::terms-and-condition.terms-and-condition').findFirst({});
-    if (!termsAndConditions) {
-      const createdTerms = await strapi.documents('api::terms-and-condition.terms-and-condition').create({
-        data: {
-          PageContent: `# Terms & Conditions
+const TERMS_AND_CONDITIONS_CONTENT = `# Terms & Conditions
 
 **Last Updated: January 2026**
 
@@ -177,21 +73,9 @@ Due to the handmade and fragile nature of our products, we do not accept returns
 
 ## Contact
 
-Questions? Contact us at: support@blackeyesartisan.shop`,
-        },
-      });
-      await strapi.documents('api::terms-and-condition.terms-and-condition').publish({
-        documentId: createdTerms.documentId,
-      });
-      strapi.log.info('Seeded Terms & Conditions');
-    }
+Questions? Contact us at: support@blackeyesartisan.shop`;
 
-    // Seed Shipping Policy if not already set
-    const shippingPolicy = await strapi.documents('api::shipping-policy.shipping-policy').findFirst({});
-    if (!shippingPolicy) {
-      const createdShipping = await strapi.documents('api::shipping-policy.shipping-policy').create({
-        data: {
-          PageContent: `# Shipping Policy
+const SHIPPING_POLICY_CONTENT = `# Shipping Policy
 
 **Last Updated: January 2026**
 
@@ -234,21 +118,9 @@ If your package is lost or arrives damaged:
 
 ## Contact
 
-Shipping questions? Email us at: support@blackeyesartisan.shop`,
-        },
-      });
-      await strapi.documents('api::shipping-policy.shipping-policy').publish({
-        documentId: createdShipping.documentId,
-      });
-      strapi.log.info('Seeded Shipping Policy');
-    }
+Shipping questions? Email us at: support@blackeyesartisan.shop`;
 
-    // Seed Return Policy if not already set
-    const returnPolicy = await strapi.documents('api::return-policy.return-policy').findFirst({});
-    if (!returnPolicy) {
-      const createdReturn = await strapi.documents('api::return-policy.return-policy').create({
-        data: {
-          PageContent: `# Return & Refund Policy
+const RETURN_POLICY_CONTENT = `# Return & Refund Policy
 
 **Last Updated: January 2026**
 
@@ -288,13 +160,146 @@ Orders can be cancelled within **24 hours** of placement if not yet processed. O
 
 ## Contact
 
-Return questions? Email us at: support@blackeyesartisan.shop`,
-        },
-      });
-      await strapi.documents('api::return-policy.return-policy').publish({
-        documentId: createdReturn.documentId,
-      });
-      strapi.log.info('Seeded Return Policy');
-    }
+Return questions? Email us at: support@blackeyesartisan.shop`;
+
+const contentTypesToEnable = [
+  'api::global-setting.global-setting',
+  'api::shipping-policy.shipping-policy',
+  'api::return-policy.return-policy',
+  'api::privacy-policy.privacy-policy',
+  'api::terms-and-condition.terms-and-condition',
+  'api::about-us.about-us',
+  'api::homepage.homepage',
+  'api::faq.faq',
+  'api::collection.collection',
+  'api::blog.blog',
+];
+
+const documentsToSeed: DocumentSeed[] = [
+  {
+    uid: 'api::privacy-policy.privacy-policy',
+    title: 'Privacy Policy',
+    pageContent: PRIVACY_POLICY_CONTENT,
+  },
+  {
+    uid: 'api::terms-and-condition.terms-and-condition',
+    title: 'Terms & Conditions',
+    pageContent: TERMS_AND_CONDITIONS_CONTENT,
+  },
+  {
+    uid: 'api::shipping-policy.shipping-policy',
+    title: 'Shipping Policy',
+    pageContent: SHIPPING_POLICY_CONTENT,
+  },
+  {
+    uid: 'api::return-policy.return-policy',
+    title: 'Return Policy',
+    pageContent: RETURN_POLICY_CONTENT,
+  },
+];
+
+async function enablePublicFind(strapi: Core.Strapi, apiUid: string) {
+  const publicRole = await strapi.db.query('plugin::users-permissions.role').findOne({
+    where: { type: 'public' },
+  });
+
+  if (!publicRole) {
+    strapi.log.warn('Public role not found, skipping permission setup');
+    return;
+  }
+
+  const existingPermission = await strapi.db.query('plugin::users-permissions.permission').findOne({
+    where: {
+      role: publicRole.id,
+      action: `${apiUid}.find`,
+    },
+  });
+
+  if (existingPermission) {
+    return;
+  }
+
+  await strapi.db.query('plugin::users-permissions.permission').create({
+    data: {
+      action: `${apiUid}.find`,
+      role: publicRole.id,
+    },
+  });
+  strapi.log.info(`Enabled public find permission for ${apiUid}`);
+}
+
+async function seedPublishedDocument(strapi: Core.Strapi, seed: DocumentSeed) {
+  const existingDocument = await strapi.documents(seed.uid).findFirst({});
+
+  if (existingDocument) {
+    return;
+  }
+
+  const createdDocument = await strapi.documents(seed.uid).create({
+    data: {
+      PageContent: seed.pageContent,
+    },
+  });
+
+  await strapi.documents(seed.uid).publish({
+    documentId: createdDocument.documentId,
+  });
+
+  strapi.log.info(`Seeded ${seed.title}`);
+}
+
+async function seedGlobalSettings(strapi: Core.Strapi) {
+  const globalSettings = await strapi.documents('api::global-setting.global-setting').findFirst({});
+
+  if (globalSettings) {
+    return;
+  }
+
+  await strapi.documents('api::global-setting.global-setting').create({
+    data: {
+      ageGateEnabled: true,
+      ageGateTtlDays: 30,
+      ageGateTitle: 'Age Verification Required',
+      ageGateMessage:
+        'You must be 18 years or older to enter this site. By entering, you confirm that you are of legal age to view and purchase tobacco accessories.',
+      handlingTimeDays: 3,
+      dutiesDisclaimer:
+        "International orders may be subject to import duties and taxes, which are the responsibility of the buyer. These charges are determined by your local customs office and are not included in our shipping fees.",
+      announcementBarEnabled: true,
+      announcementBarText: 'Free shipping on orders over $150 USD',
+      announcementBarLink: '/collections',
+      shippingPolicyNote:
+        'All orders ship via FedEx International Priority from Nepal. A valid phone number is required for delivery. Please allow 3-5 business days for order processing before shipment.',
+    },
+  });
+
+  strapi.log.info('Seeded Global Settings with default values');
+}
+
+export default {
+  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+
+  async bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    await Promise.all(
+      contentTypesToEnable.map(async (apiUid) => {
+        try {
+          await enablePublicFind(strapi, apiUid);
+        } catch (error) {
+          strapi.log.warn(`Failed to enable public find for ${apiUid}: ${error}`);
+        }
+      })
+    );
+
+    await seedGlobalSettings(strapi);
+
+    await Promise.all(
+      documentsToSeed.map(async (seed) => {
+        try {
+          await seedPublishedDocument(strapi, seed);
+        } catch (error) {
+          strapi.log.warn(`Failed to seed ${seed.title}: ${error}`);
+        }
+      })
+    );
   },
 };

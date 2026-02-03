@@ -7,14 +7,12 @@ import {
   Img,
   Row,
   Section,
-  Head,
   Preview,
   Body,
   Link,
-  Hr,
-  Button
+  Hr
 } from "@react-email/components"
-import { BigNumberValue, CustomerDTO, OrderDTO } from "@medusajs/framework/types"
+import { CustomerDTO, OrderDTO } from "@medusajs/framework/types"
 
 type ShippingNotificationEmailProps = {
   order: OrderDTO & {
@@ -36,16 +34,6 @@ function ShippingNotificationEmailComponent({
 
   return (
     <Html>
-      <Head>
-        <style>
-          {`
-            @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
-            body {
-              font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            }
-          `}
-        </style>
-      </Head>
       <Preview>{`Your order #${order.display_id} has shipped - Black Eyes Artisan`}</Preview>
       <Body style={main}>
         <Container style={container}>
@@ -148,6 +136,7 @@ function ShippingNotificationEmailComponent({
 const main = {
   backgroundColor: '#f5f5f5',
   padding: '40px 20px',
+  fontFamily: "'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const container = {

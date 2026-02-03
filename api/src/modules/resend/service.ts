@@ -30,6 +30,8 @@ const templates: {[key in Templates]?: (props: unknown) => React.ReactNode} = {
   [Templates.SHIPPING_NOTIFICATION]: shippingNotificationEmail
 }
 
+const templateKeys = new Set(Object.values(Templates))
+
 type ResendOptions = {
   api_key: string
   from: string
@@ -79,9 +81,8 @@ class ResendNotificationProviderService extends AbstractNotificationProviderServ
     if (this.options.html_templates?.[template]) {
       return this.options.html_templates[template].content
     }
-    const allowedTemplates = Object.keys(templates)
 
-    if (!allowedTemplates.includes(template)) {
+    if (!templateKeys.has(template)) {
       return null
     }
 
