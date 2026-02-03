@@ -59,6 +59,19 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       return getCountryCallingCode(countryCode)
     }, [countryCode])
 
+    // Build full phone number with country code for validation
+    const buildFullPhoneNumber = React.useCallback(
+      (phoneValue: string): string => {
+        if (!phoneValue) return ''
+        // If user already included country code, don't double-add
+        if (phoneValue.startsWith('+')) return phoneValue
+        if (phoneValue.startsWith(callingCode)) return phoneValue
+        // Prepend country calling code for validation
+        return `${callingCode}${phoneValue.replace(/^\s+/, '')}`
+      },
+      [callingCode]
+    )
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       let newValue = e.target.value
 
@@ -74,10 +87,11 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         setValidationError(null)
       }
 
-      // Validate and notify parent
+      // Validate and notify parent - use full number with country code
       if (onPhoneChange) {
-        const error = validatePhoneWithMessage(newValue, countryCode)
-        onPhoneChange(newValue, error === null)
+        const fullPhone = buildFullPhoneNumber(newValue)
+        const error = validatePhoneWithMessage(fullPhone, countryCode)
+        onPhoneChange(fullPhone, error === null)
       }
     }
 
@@ -85,7 +99,9 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       setHasBlurred(true)
 
       if (validateOnBlur && value) {
-        const error = validatePhoneWithMessage(value, countryCode)
+        // Validate with full phone number including country code
+        const fullPhone = buildFullPhoneNumber(value)
+        const error = validatePhoneWithMessage(fullPhone, countryCode)
         setValidationError(error)
       }
 
@@ -96,10 +112,11 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
     // Re-validate when country changes
     React.useEffect(() => {
       if (hasBlurred && value) {
-        const error = validatePhoneWithMessage(value, countryCode)
+        const fullPhone = buildFullPhoneNumber(value)
+        const error = validatePhoneWithMessage(fullPhone, countryCode)
         setValidationError(error)
       }
-    }, [countryCode, value, hasBlurred])
+    }, [countryCode, value, hasBlurred, buildFullPhoneNumber])
 
     // Determine which error to display (external takes priority)
     const displayError = externalError || validationError
