@@ -11,7 +11,7 @@ For full project context, see the parent repository's [CLAUDE.md](../CLAUDE.md).
 ## Quick Start Commands
 
 ```bash
-# Development mode with auto-reload
+# Development mode with auto-reload (port 1337)
 npm run develop
 
 # Production mode
@@ -20,9 +20,17 @@ npm run start
 # Build admin panel
 npm run build
 
+# Deploy to Strapi Cloud
+npm run deploy
+
 # Run Strapi CLI commands
 npm run strapi <command>
 ```
+
+**Access Points**:
+- Admin Panel: `http://localhost:1337/admin`
+- API: `http://localhost:1337/api`
+- Production: `https://cms.blackeyesartisan.shop`
 
 ## Architecture & Data Model
 
@@ -65,8 +73,15 @@ Each collection in `src/api/` follows standard Strapi structure:
 - **controllers**: Request handlers (typically use `factories.createCoreController()`)
 - **routes**: REST/GraphQL endpoint definitions
 - **services**: Business logic (typically use `factories.createCoreService()`)
+- **content-types**: JSON schema definitions for the collection structure
 
 Collections use JSON schema definitions (stored in database) rather than code-based models. Schemas are managed through the Strapi admin UI at `/admin`.
+
+**Important Collections**:
+- `global-setting`: Site-wide settings (age gate, handling times, announcement bar, duties disclaimer)
+- `homepage`: Homepage content with dynamic zones
+- `collection`: Product collections linked to Medusa
+- `shipping-policy`, `return-policy`, `privacy-policy`, `terms-and-condition`: Policy pages
 
 ### Components
 
@@ -146,6 +161,8 @@ SPACE_URL=...                   # Public URL for stored files
 - **Admin Access**: Protected by `ADMIN_JWT_SECRET` and `API_TOKEN_SALT`
 - **API Access**: Token-based authentication for programmatic access
 - **CORS**: Configured in `config/middlewares.ts` to allow storefront requests
+- **Content Security Policy**: CSP configured to allow S3 storage URLs for media
+- **Public Permissions**: Set via bootstrap for specific content types (read-only API access)
 
 ### Storage
 
@@ -159,6 +176,12 @@ File uploads go to AWS S3-compatible storage (DigitalOcean Spaces):
 Bootstrap lifecycle in `src/index.ts`:
 - **register()**: Runs before app initialization—extend core features, register hooks
 - **bootstrap()**: Runs after app starts—seed data, schedule jobs, set up event listeners
+
+**Bootstrap Seeding**: The bootstrap function in `src/index.ts` automatically:
+- Sets public permissions for content types (enables anonymous API access)
+- Seeds Global Settings with default values if not present
+- Seeds all policy pages (Privacy, Terms, Shipping, Return) with default content
+- Publishes seeded content automatically
 
 Storefront triggers content revalidation via webhook (see parent CLAUDE.md `STRAPI_WEBHOOK_REVALIDATION_SECRET`).
 
@@ -246,6 +269,15 @@ TypeScript files use loose checking (`strict: false`). When adding custom logic:
 - Import types from `@strapi/strapi` where available
 - Use `factories` helper for type-safe controller/service creation
 - Component/collection types available via Strapi's content-type generation
+
+## AI Assistant Integration
+
+This project has the Strapi MCP (Model Context Protocol) tool configured, which allows Claude Code to:
+- Query the official Strapi documentation directly
+- Get up-to-date Strapi best practices and examples
+- Retrieve relevant documentation sections for Strapi-related questions
+
+When working on Strapi-specific tasks, the MCP tool will automatically provide relevant documentation context.
 
 ## Documentation References
 

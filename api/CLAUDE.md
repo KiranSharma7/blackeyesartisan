@@ -156,9 +156,12 @@ TEST_TYPE=unit yarn test -- path/to/test.unit.spec.ts
 **Core Configuration:**
 - `NODE_ENV` - 'development' or 'production'
 - `DATABASE_URL` - PostgreSQL connection (required: `postgresql://user:pass@host:5432/dbname`)
+- `REDIS_URL` - Redis connection for sessions/caching (e.g., `redis://localhost:6379`)
 - `MEDUSA_BACKEND_URL` - Admin dashboard backend URL (e.g., `http://localhost:9000`)
+- `DISABLE_MEDUSA_ADMIN` - Set to 'true' to disable admin panel (optional)
 - `JWT_SECRET` - JWT signing key (default: 'supersecret', change in production)
 - `COOKIE_SECRET` - Cookie encryption key (default: 'supersecret', change in production)
+- `MEDUSA_FF_INDEX_ENGINE` - Set to 'true' to enable index/search engine (required for product search)
 
 **CORS Configuration:**
 - `STORE_CORS` - Store API CORS origins (e.g., `http://localhost:3000,https://example.com`)
@@ -194,14 +197,15 @@ TEST_TYPE=unit yarn test -- path/to/test.unit.spec.ts
 - Target ES2021, Module Node16
 - Decorators enabled (required for Medusa)
 - Output to `.medusa/server` directory
-- Path alias: `@/` → `src/`
 - JSX support for React email templates
+- No path aliases defined (baseUrl: "." only)
 
 **jest.config.js** - Testing:
 - SWC compiler for fast TypeScript compilation
 - Test type detection via `TEST_TYPE` env var
-- Path mapper: `@/` → `src/`
+- Path alias mapper: `@/` → `src/` (only for tests)
 - Node test environment
+- Module path ignores: `dist/`, `.medusa/`
 
 ## Custom Modules & Extensions
 

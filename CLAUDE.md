@@ -305,7 +305,7 @@ yarn test:integration:http          # HTTP endpoint tests
 - **PM2**: Process manager for service orchestration
 
 ### Deployment Flow
-1. **Storefront**: Push to GitHub → Vercel auto-deploys
+1. **Storefront**: vercel cLI → Vercel auto-deploys
 2. **Backend**: SSH to VPS → Deploy code → Restart PM2 services
 3. **DNS**: A records point to VPS IP for api/cms subdomains
 
