@@ -1,12 +1,14 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { HttpTypes } from '@medusajs/types'
 import { placeOrder, initiatePaymentSession } from '@lib/data/cart'
 import { convertToLocale } from '@lib/util/money'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { cn } from '@lib/util/cn'
+import StripeWrapper from '../stripe-wrapper'
+import StripeCardElement from '../stripe-card-element'
 
 interface PaymentFormProps {
   cart: HttpTypes.StoreCart
@@ -19,6 +21,8 @@ export default function PaymentForm({ cart, paymentMethods }: PaymentFormProps) 
     cart.payment_collection?.payment_sessions?.[0]?.provider_id || 'pp_system_default'
   )
   const [error, setError] = useState<string | null>(null)
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
+  const [isLoadingSecret, setIsLoadingSecret] = useState(false)
 
   const handleSelectProvider = (providerId: string) => {
     setSelectedProviderId(providerId)
@@ -41,6 +45,38 @@ export default function PaymentForm({ cart, paymentMethods }: PaymentFormProps) 
         setError(err instanceof Error ? err.message : 'Payment failed. Please try again.')
       }
     })
+  }
+
+  useEffect(() => {
+    if (selectedProviderId === 'pp_stripe_stripe' && !clientSecret) {
+      fetchClientSecret()
+    }
+  }, [selectedProviderId])
+
+  const fetchClientSecret = async () => {
+    setIsLoadingSecret(true)
+    setError(null)
+
+    try {
+      await initiatePaymentSession(cart, {
+        provider_id: selectedProviderId,
+      })
+
+      const paymentSession = cart.payment_collection?.payment_sessions?.find(
+        (session) => session.provider_id === selectedProviderId
+      )
+
+      if (paymentSession?.data?.client_secret) {
+        setClientSecret(paymentSession.data.client_secret as string)
+      } else {
+        throw new Error('Failed to get payment client secret')
+      }
+    } catch (err) {
+      console.error('Payment initialization error:', err)
+      setError('Failed to initialize payment. Please try again.')
+    } finally {
+      setIsLoadingSecret(false)
+    }
   }
 
   const total = cart.total || 0
@@ -80,31 +116,49 @@ export default function PaymentForm({ cart, paymentMethods }: PaymentFormProps) 
         )
       })}
 
-      {/* Stripe Card Element would go here for production */}
+      {/* Stripe Payment Form */}
       {selectedProviderId === 'pp_stripe_stripe' && (
-        <Card className="p-6 bg-stone/20">
-          <p className="text-sm text-ink/60 text-center">
-            Stripe payment integration - Card input will appear here
-          </p>
-        </Card>
+        <div className="mt-4">
+          {isLoadingSecret ? (
+            <div className="p-6 text-center">
+              <p className="text-sm text-ink/60">Loading payment form...</p>
+            </div>
+          ) : clientSecret ? (
+            <StripeWrapper clientSecret={clientSecret}>
+              <StripeCardElement
+                cart={cart}
+                onPaymentComplete={async () => {
+                  await placeOrder()
+                }}
+                onError={setError}
+              />
+            </StripeWrapper>
+          ) : (
+            <div className="p-4 bg-acid/10 border border-acid rounded-lg">
+              <p className="text-sm text-acid">Failed to load payment form. Please try manual payment.</p>
+            </div>
+          )}
+        </div>
       )}
 
       {error && (
         <p className="text-acid text-sm font-medium text-center">{error}</p>
       )}
 
-      {/* Place Order Button */}
-      <Button
-        onClick={handlePlaceOrder}
-        size="xl"
-        className="w-full mt-6"
-        disabled={isPending}
-        data-testid="pay-button"
-      >
-        {isPending
-          ? 'Processing...'
-          : `Pay ${convertToLocale({ amount: total, currency_code: currencyCode })}`}
-      </Button>
+      {/* Place Order Button (hidden for Stripe) */}
+      {selectedProviderId !== 'pp_stripe_stripe' && (
+        <Button
+          onClick={handlePlaceOrder}
+          size="xl"
+          className="w-full mt-6"
+          disabled={isPending}
+          data-testid="pay-button"
+        >
+          {isPending
+            ? 'Processing...'
+            : `Pay ${convertToLocale({ amount: total, currency_code: currencyCode })}`}
+        </Button>
+      )}
 
       <p className="text-xs text-ink/60 text-center">
         By placing this order, you agree to our Terms of Service and Privacy Policy.
