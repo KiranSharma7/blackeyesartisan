@@ -72,46 +72,84 @@
 
 | Role | Font | Fallback | Weight |
 |------|------|----------|--------|
-| Display | Dela Gothic One | cursive | 400 (single weight) |
-| Body | Space Grotesk | sans-serif | 400, 500, 600, 700 |
+| Brand | Pacifico | cursive | 400 (single weight) |
+| Display | Inter | sans-serif | 400, 500, 600, 700, 800 |
+| Body | Inter | sans-serif | 400, 500, 600, 700 |
 
 ## 3.2 Font Import
 
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+```
+
+**Next.js Font Import:**
+```typescript
+import { Pacifico, Inter } from 'next/font/google'
+
+const pacifico = Pacifico({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-brand',
+  display: 'swap',
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
 ```
 
 ## 3.3 Type Scale
 
 | Name | Size (px) | Line Height | Weight | Font | Usage |
 |------|-----------|-------------|--------|------|-------|
-| Display XL | 48-64px | 1.0 | 400 | Dela Gothic One | Hero headlines |
-| Display L | 40-48px | 1.0-1.1 | 400 | Dela Gothic One | Section titles |
-| Display M | 32-40px | 1.1 | 400 | Dela Gothic One | Large headings |
-| Display S | 24-28px | 1.2 | 400 | Dela Gothic One | Card titles |
-| Heading | 18-20px | 1.3 | 400 | Dela Gothic One | Subsection titles |
-| Body L | 16-18px | 1.5-1.6 | 500 | Space Grotesk | Large body text |
-| Body M | 14-16px | 1.5 | 500 | Space Grotesk | Default body |
-| Body S | 12-14px | 1.4 | 500-600 | Space Grotesk | Small body, descriptions |
-| Caption | 10-12px | 1.3 | 600-700 | Space Grotesk | Labels, badges |
-| Micro | 9-10px | 1.2 | 700 | Space Grotesk | Tiny labels |
+| Brand XL | 48-80px | 1.0-1.2 | 400 | Pacifico | Hero headlines (no uppercase) |
+| Brand L | 30-40px | 1.2 | 400 | Pacifico | Major section headers |
+| Display XL | 40-48px | 1.1 | 700 | Inter | Page titles (uppercase) |
+| Display L | 32-40px | 1.1 | 700 | Inter | Section titles (uppercase) |
+| Display M | 24-32px | 1.2 | 700 | Inter | Card titles (uppercase) |
+| Display S | 18-20px | 1.3 | 700 | Inter | Subsection titles (uppercase) |
+| Heading | 16-18px | 1.4 | 600-700 | Inter | Small headings |
+| Body L | 16-18px | 1.5-1.6 | 500 | Inter | Large body text |
+| Body M | 14-16px | 1.5 | 400-500 | Inter | Default body |
+| Body S | 12-14px | 1.4 | 500 | Inter | Small body, descriptions |
+| Caption | 10-12px | 1.3 | 600-700 | Inter | Labels, badges |
+| Micro | 9-10px | 1.2 | 700 | Inter | Tiny labels |
 
 ## 3.4 Typography Treatments
 
-**Standard Text:**
+**Brand Headings (Hero/Section Headers):**
 ```css
-font-family: 'Space Grotesk', sans-serif;
-font-weight: 500;
+font-family: 'Pacifico', cursive;
+font-weight: 400;
+color: #18181B;
+/* DO NOT use text-transform: uppercase with Pacifico */
+/* Script fonts break when uppercased */
+```
+
+**Display Headings (UI Elements):**
+```css
+font-family: 'Inter', sans-serif;
+font-weight: 700; /* REQUIRED: Inter needs explicit weights */
+text-transform: uppercase;
+letter-spacing: -0.02em; /* tracking-tight */
 color: #18181B;
 ```
 
-**Display Headings:**
+**Standard Text:**
 ```css
-font-family: 'Dela Gothic One', cursive;
-text-transform: uppercase;
-letter-spacing: -0.02em; /* tracking-tight */
+font-family: 'Inter', sans-serif;
+font-weight: 400; /* Regular for body text */
+color: #18181B;
+```
+
+**Emphasized Text:**
+```css
+font-family: 'Inter', sans-serif;
+font-weight: 500-600; /* Medium to Semibold */
 color: #18181B;
 ```
 
@@ -142,11 +180,41 @@ color: #18181B;
 
 **Uppercase Labels:**
 ```css
+font-family: 'Inter', sans-serif;
 text-transform: uppercase;
 letter-spacing: 0.1em; /* tracking-widest */
 font-size: 10-12px;
 font-weight: 700;
 ```
+
+**Font Usage Guidelines:**
+
+✅ **Use Pacifico (`font-brand`) for:**
+- Homepage hero headlines
+- Major section headers on landing pages
+- Logo text
+- Large decorative text (24px+)
+
+❌ **Never use Pacifico for:**
+- Buttons, navigation, product titles
+- Form labels, inputs
+- Small text (under 24px)
+- Uppercase text (script fonts break)
+- Any UI elements requiring scannability
+
+✅ **Use Inter Bold (`font-display font-bold`) for:**
+- All buttons and CTAs
+- Navigation links
+- Product and collection titles
+- Cart and checkout headers
+- All UI headings (H2-H6)
+- Keep `uppercase` transformation
+
+✅ **Use Inter Regular/Medium (`font-sans`) for:**
+- Body paragraphs and descriptions
+- Form inputs
+- Captions and labels
+- Footer links
 
 ---
 
@@ -267,8 +335,8 @@ box-shadow: 6px 6px 0px 0px #18181B;
 
 ### Primary Button (CTA)
 ```html
-<button class="bg-acid text-white border-2 border-ink rounded-xl font-display 
-               text-lg px-6 py-3 shadow-hard-sm
+<button class="bg-acid text-white border-2 border-ink rounded-xl font-display font-bold
+               text-lg px-6 py-3 shadow-hard-sm uppercase tracking-wide
                hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]
                transition-all">
     ADD TO CART
@@ -277,9 +345,9 @@ box-shadow: 6px 6px 0px 0px #18181B;
 
 ### Secondary Button (Dark)
 ```html
-<button class="bg-ink text-white px-4 py-2 rounded-lg font-display text-sm 
-               border-2 border-ink shadow-hard-sm
-               hover:bg-acid hover:shadow-none 
+<button class="bg-ink text-white px-4 py-2 rounded-lg font-display font-bold text-sm
+               border-2 border-ink shadow-hard-sm uppercase
+               hover:bg-acid hover:shadow-none
                hover:translate-x-[2px] hover:translate-y-[2px]
                transition-all">
     CART (1)
@@ -288,7 +356,7 @@ box-shadow: 6px 6px 0px 0px #18181B;
 
 ### Outline Button
 ```html
-<button class="border-2 border-ink rounded-xl px-6 py-3 font-display
+<button class="border-2 border-ink rounded-xl px-6 py-3 font-display font-bold uppercase
                hover:bg-ink hover:text-paper transition-colors">
     LEARN MORE
 </button>
@@ -326,9 +394,8 @@ box-shadow: 6px 6px 0px 0px #18181B;
     <div class="bg-paper/90 backdrop-blur-md border-2 border-ink rounded-xl shadow-hard 
                 flex justify-between items-center p-4">
         <!-- Logo -->
-        <a href="#" class="text-2xl md:text-3xl font-display tracking-tighter">
-            ARO<span class="text-acid text-shadow-sm" 
-                     style="-webkit-text-stroke: 1px #18181B;">VELL</span>
+        <a href="#" class="text-2xl md:text-3xl font-brand">
+            Black<span class="text-acid">Eyes</span>
         </a>
         
         <!-- Nav Links -->
@@ -387,7 +454,7 @@ box-shadow: 6px 6px 0px 0px #18181B;
     
     <!-- Content -->
     <div class="p-4">
-        <h3 class="font-display text-lg leading-none mb-1">Product Name</h3>
+        <h3 class="font-display font-bold text-lg leading-tight uppercase mb-1">Product Name</h3>
         <div class="flex gap-1 text-[10px] font-bold text-ink/50 uppercase">
             <span>Note 1</span> • <span>Note 2</span> • <span>Note 3</span>
         </div>
@@ -404,7 +471,7 @@ box-shadow: 6px 6px 0px 0px #18181B;
         <iconify-icon icon="solar:dropper-minimalistic-2-linear" width="24"></iconify-icon>
     </div>
     <div>
-        <h3 class="font-display text-xl mb-2">Feature Title</h3>
+        <h3 class="font-display font-bold text-xl uppercase mb-2">Feature Title</h3>
         <p class="text-sm font-medium opacity-70 leading-relaxed">
             Feature description text goes here.
         </p>
@@ -863,7 +930,7 @@ translate-y-20 group-hover:translate-y-0
             <iconify-icon icon="solar:letter-linear" width="16"></iconify-icon>
             <span class="text-xs font-bold uppercase">The Scent Club</span>
         </div>
-        <h2 class="font-display text-4xl md:text-5xl mb-4">DON'T SMELL BORING.</h2>
+        <h2 class="font-brand text-4xl md:text-5xl mb-4">Don't Smell Boring.</h2>
         <p class="font-medium opacity-90 mb-8 text-lg">
             Join 15,000+ others getting weekly scent guides and exclusive drops.
         </p>
@@ -872,9 +939,9 @@ translate-y-20 group-hover:translate-y-0
                    class="flex-1 bg-white text-ink border-2 border-ink rounded-xl 
                           px-4 py-3 font-bold focus:outline-none focus:shadow-hard-sun 
                           transition-all placeholder:text-ink/40">
-            <button type="button" class="bg-ink text-white border-2 border-ink rounded-xl 
-                                        px-6 py-3 font-display hover:bg-sun hover:text-ink 
-                                        transition-all shadow-hard-sm 
+            <button type="button" class="bg-ink text-white border-2 border-ink rounded-xl
+                                        px-6 py-3 font-display font-bold uppercase hover:bg-sun hover:text-ink
+                                        transition-all shadow-hard-sm
                                         hover:translate-x-[2px] hover:translate-y-[2px]">
                 JOIN
             </button>
@@ -887,8 +954,8 @@ translate-y-20 group-hover:translate-y-0
 
 ```html
 <div class="fixed bottom-0 left-0 right-0 p-4 bg-paper border-t-2 border-ink md:hidden z-40">
-    <button class="w-full bg-acid text-white border-2 border-ink rounded-xl 
-                   font-display text-lg py-3 shadow-hard-sm flex items-center justify-center gap-2">
+    <button class="w-full bg-acid text-white border-2 border-ink rounded-xl
+                   font-display font-bold text-lg py-3 shadow-hard-sm uppercase flex items-center justify-center gap-2">
         ADD TO CART - $19.00
     </button>
 </div>
@@ -904,17 +971,17 @@ translate-y-20 group-hover:translate-y-0
         <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
             <!-- Logo Column -->
             <div class="col-span-2 md:col-span-1">
-                <a href="#" class="text-3xl font-display tracking-tighter mb-4">
-                    ARO<span class="text-transparent text-outline-acid">VELL</span>
+                <a href="#" class="text-3xl font-brand mb-4 block">
+                    Black<span class="text-acid">Eyes</span>
                 </a>
                 <p class="text-sm opacity-60 max-w-[200px]">
-                    Brand tagline or description.
+                    Handcrafted glass art from Nepal
                 </p>
             </div>
-            
+
             <!-- Link Columns -->
             <div>
-                <h4 class="font-display text-lg text-sun mb-4">SHOP</h4>
+                <h4 class="font-display font-bold text-lg text-sun mb-4">SHOP</h4>
                 <ul class="space-y-2 text-sm font-medium opacity-80">
                     <li><a href="#" class="hover:text-acid">Link 1</a></li>
                     <li><a href="#" class="hover:text-acid">Link 2</a></li>
@@ -923,7 +990,7 @@ translate-y-20 group-hover:translate-y-0
             
             <!-- Social Column -->
             <div>
-                <h4 class="font-display text-lg text-sun mb-4">SOCIALS</h4>
+                <h4 class="font-display font-bold text-lg text-sun mb-4">SOCIALS</h4>
                 <div class="flex gap-3">
                     <a href="#" class="bg-paper text-ink p-2 rounded-lg 
                                       hover:bg-acid hover:text-white transition-colors">
@@ -962,8 +1029,9 @@ tailwind.config = {
         sun: '#FCCA46',
       },
       fontFamily: {
-        display: ['Dela Gothic One', 'cursive'],
-        sans: ['Space Grotesk', 'sans-serif'],
+        brand: ['Pacifico', 'cursive'],
+        display: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
       },
       boxShadow: {
         'hard': '4px 4px 0px 0px #18181B',
