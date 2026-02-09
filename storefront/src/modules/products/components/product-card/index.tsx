@@ -68,7 +68,7 @@ export default function ProductCard({ product, countryCode }: ProductCardProps) 
 
         {/* Content */}
         <CardContent className="p-4">
-          <h3 className="font-display text-lg leading-tight mb-1 uppercase line-clamp-2">
+          <h3 className="font-display font-bold text-lg leading-tight mb-1 uppercase line-clamp-2">
             {product.title}
           </h3>
           {price && (

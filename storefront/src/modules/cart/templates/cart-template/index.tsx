@@ -23,7 +23,7 @@ export default function CartTemplate({ cart, countryCode }: CartTemplateProps) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="font-display text-4xl uppercase mb-8">Your Cart</h1>
+      <h1 className="font-display font-bold text-4xl uppercase mb-8">Your Cart</h1>
 
       <div className="grid lg:grid-cols-3 gap-12">
         {/* Items Column */}

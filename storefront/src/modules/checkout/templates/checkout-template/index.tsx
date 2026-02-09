@@ -31,7 +31,7 @@ export default function CheckoutTemplate({
     <div className="min-h-screen bg-stone/20 py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
-        <h1 className="font-display text-4xl uppercase mb-8 text-center">
+        <h1 className="font-display font-bold text-4xl uppercase mb-8 text-center">
           Checkout
         </h1>
 

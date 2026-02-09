@@ -37,7 +37,7 @@ export default function OrderConfirmation({
         <Check className="w-10 h-10" />
       </div>
 
-      <h1 className="font-display text-4xl uppercase mb-4">Order Confirmed!</h1>
+      <h1 className="font-display font-bold text-4xl uppercase mb-4">Order Confirmed!</h1>
       <p className="text-lg text-ink/60 mb-2">Order #{order.display_id}</p>
       <p className="text-sm text-ink/60 mb-8">
         Confirmation sent to {order.email}
@@ -46,7 +46,7 @@ export default function OrderConfirmation({
       {/* Order Items */}
       <Card className="text-left mb-8">
         <CardContent className="p-6">
-          <h2 className="font-display text-xl mb-4">Order Details</h2>
+          <h2 className="font-display font-bold text-xl mb-4">Order Details</h2>
 
           <div className="space-y-4 mb-6">
             {items.map((item) => (
@@ -114,7 +114,7 @@ export default function OrderConfirmation({
       {order.shipping_address && (
         <Card className="text-left mb-8">
           <CardContent className="p-6">
-            <h2 className="font-display text-xl mb-4">Shipping To</h2>
+            <h2 className="font-display font-bold text-xl mb-4">Shipping To</h2>
             <p className="font-bold">
               {order.shipping_address.first_name} {order.shipping_address.last_name}
             </p>

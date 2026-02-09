@@ -16,8 +16,8 @@ export default function Error({ error, reset }: ErrorProps) {
   return (
     <div className="min-h-screen bg-paper flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="font-display text-6xl md:text-7xl text-acid mb-4">Oops!</h1>
-        <h2 className="font-display text-2xl md:text-3xl uppercase mb-4">
+        <h1 className="font-display font-bold text-6xl md:text-7xl text-acid mb-4">Oops!</h1>
+        <h2 className="font-display font-bold text-2xl md:text-3xl uppercase mb-4">
           Something went <span className="text-ink">wrong</span>
         </h2>
         <p className="text-ink/70 mb-8 max-w-md mx-auto">

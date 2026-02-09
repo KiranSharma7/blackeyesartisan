@@ -16,7 +16,7 @@ export default async function FAQPage() {
     return (
       <div className="py-16">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
-          <h1 className="font-display text-4xl md:text-5xl uppercase mb-8">
+          <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-8">
             Frequently Asked <span className="text-acid">Questions</span>
           </h1>
           <p className="text-lg opacity-70">Content coming soon.</p>
@@ -29,7 +29,7 @@ export default async function FAQPage() {
     <div className="py-16">
       <div className="max-w-4xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <h1 className="font-display text-4xl md:text-5xl uppercase mb-4">
+        <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-4">
           Frequently Asked <span className="text-acid">Questions</span>
         </h1>
         <p className="text-lg opacity-70 mb-12">
@@ -59,7 +59,7 @@ export default async function FAQPage() {
               id={section.Bookmark || section.Title.toLowerCase().replace(/\s+/g, '-')}
               className="scroll-mt-24"
             >
-              <h2 className="font-display text-2xl uppercase mb-6">
+              <h2 className="font-display font-bold text-2xl uppercase mb-6">
                 <span className="text-sun">{section.Title}</span>
               </h2>
               <FAQAccordion questions={section.Question} />

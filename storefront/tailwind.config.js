@@ -22,8 +22,9 @@ module.exports = {
       },
       // BlackEyesArtisan Design System Fonts
       fontFamily: {
-        display: ['Dela Gothic One', 'cursive'],
-        sans: ['Space Grotesk', 'sans-serif'],
+        brand: ['Pacifico', 'cursive'],
+        display: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
       },
       // BlackEyesArtisan Design System Shadows (Hard shadows, no blur)
       boxShadow: {

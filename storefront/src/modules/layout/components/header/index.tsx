@@ -23,9 +23,9 @@ export default function Header({ countryCode, cart }: HeaderProps) {
         {/* Logo */}
         <Link
           href={`/${countryCode}`}
-          className="text-2xl md:text-3xl font-display tracking-tighter hover:opacity-80 transition-opacity"
+          className="text-2xl md:text-3xl font-brand hover:opacity-80 transition-opacity"
         >
-          BLACK<span className="text-acid">EYES</span>
+          Black<span className="text-acid">Eyes</span>
         </Link>
 
         {/* Nav Links */}

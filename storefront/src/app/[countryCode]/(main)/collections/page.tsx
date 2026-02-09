@@ -21,7 +21,7 @@ export default async function CollectionsPage({ params }: CollectionsPageProps) 
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Page Header */}
         <div className="text-center mb-12">
-          <h1 className="font-display text-4xl md:text-5xl uppercase mb-4">
+          <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-4">
             Our <span className="text-acid">Collections</span>
           </h1>
           <p className="text-lg font-medium text-ink/60 max-w-xl mx-auto">
@@ -35,7 +35,7 @@ export default async function CollectionsPage({ params }: CollectionsPageProps) 
           <CollectionGrid collections={collections} countryCode={countryCode} />
         ) : (
           <div className="text-center py-12 bg-stone/20 rounded-2xl border-2 border-ink">
-            <h2 className="font-display text-2xl uppercase mb-2">
+            <h2 className="font-display font-bold text-2xl uppercase mb-2">
               Coming Soon
             </h2>
             <p className="text-ink/60 font-medium">

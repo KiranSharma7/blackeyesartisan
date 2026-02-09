@@ -51,7 +51,7 @@ export default function CartItem({ item }: CartItemProps) {
 
       {/* Details */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-display text-sm uppercase truncate">{item.title}</h3>
+        <h3 className="font-display font-bold text-sm uppercase truncate">{item.title}</h3>
         {item.variant?.title && item.variant.title !== 'Default' && (
           <p className="text-sm text-ink/60">{item.variant.title}</p>
         )}

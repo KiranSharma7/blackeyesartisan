@@ -49,7 +49,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
     <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="font-display text-4xl uppercase mb-2">Shop All</h1>
+        <h1 className="font-display font-bold text-4xl uppercase mb-2">Shop All</h1>
         <p className="text-ink/60 font-medium">
           {count} {count === 1 ? 'product' : 'products'} available
         </p>

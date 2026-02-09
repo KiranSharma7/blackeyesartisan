@@ -58,7 +58,7 @@ export default function CartDrawer({ cart, countryCode }: CartDrawerProps) {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b-2 border-ink">
-          <h2 className="font-display text-2xl uppercase">Your Cart</h2>
+          <h2 className="font-display font-bold text-2xl uppercase">Your Cart</h2>
           <Button
             variant="ghost"
             size="icon"
@@ -88,7 +88,7 @@ export default function CartDrawer({ cart, countryCode }: CartDrawerProps) {
           <div className="p-6 border-t-2 border-ink bg-white">
             <div className="flex justify-between mb-4">
               <span className="font-bold">Subtotal</span>
-              <span className="font-display text-xl">
+              <span className="font-display font-bold text-xl">
                 {convertToLocale({
                   amount: subtotal,
                   currency_code: currencyCode,

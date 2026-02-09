@@ -16,7 +16,7 @@ export default async function AboutUsPage() {
     return (
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h1 className="font-display text-4xl md:text-5xl uppercase mb-8">
+          <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-8">
             About <span className="text-acid">Us</span>
           </h1>
           <p className="text-lg opacity-70">Content coming soon.</p>
@@ -40,7 +40,7 @@ export default async function AboutUsPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink/80 to-transparent" />
             <div className="absolute bottom-6 left-6 right-6">
-              <h1 className="font-display text-4xl md:text-5xl text-paper uppercase">
+              <h1 className="font-display font-bold text-4xl md:text-5xl text-paper uppercase">
                 About <span className="text-acid">Us</span>
               </h1>
             </div>
@@ -48,7 +48,7 @@ export default async function AboutUsPage() {
         )}
 
         {!about.Banner?.length && (
-          <h1 className="font-display text-4xl md:text-5xl uppercase mb-12">
+          <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-12">
             About <span className="text-acid">Us</span>
           </h1>
         )}
@@ -58,7 +58,7 @@ export default async function AboutUsPage() {
           <section className="mb-16">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <h2 className="font-display text-3xl uppercase mb-4">
+                <h2 className="font-display font-bold text-3xl uppercase mb-4">
                   <span className="text-sun">{about.OurStory.Title}</span>
                 </h2>
                 <div
@@ -98,7 +98,7 @@ export default async function AboutUsPage() {
                 </div>
               )}
               <div className="order-1 md:order-2">
-                <h2 className="font-display text-3xl uppercase mb-4">
+                <h2 className="font-display font-bold text-3xl uppercase mb-4">
                   <span className="text-acid">{about.OurCraftsmanship.Title}</span>
                 </h2>
                 <div
@@ -113,7 +113,7 @@ export default async function AboutUsPage() {
         {/* Why Us Section */}
         {about.WhyUs && about.WhyUs.Tile && about.WhyUs.Tile.length > 0 && (
           <section className="mb-16">
-            <h2 className="font-display text-3xl uppercase mb-8 text-center">
+            <h2 className="font-display font-bold text-3xl uppercase mb-8 text-center">
               <span className="text-sun">{about.WhyUs.Title}</span>
             </h2>
             <div className="grid md:grid-cols-3 gap-6">

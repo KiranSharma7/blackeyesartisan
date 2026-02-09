@@ -48,7 +48,7 @@ export default function AgeGateModal() {
                 18+
               </div>
 
-              <h2 className="mb-4 font-display text-xl uppercase text-ink">
+              <h2 className="mb-4 font-display font-bold text-xl uppercase text-ink">
                 {title}
               </h2>
 

@@ -47,7 +47,7 @@ export default function CheckoutSummary({
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-display text-sm uppercase truncate">
+                <p className="font-display font-bold text-sm uppercase truncate">
                   {item.title}
                 </p>
                 <p className="text-xs text-ink/60">Qty: {item.quantity}</p>

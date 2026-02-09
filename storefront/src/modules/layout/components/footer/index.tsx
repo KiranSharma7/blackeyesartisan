@@ -14,7 +14,7 @@ export default function Footer({ countryCode }: FooterProps) {
         {/* Newsletter Section */}
         <div className="mb-12 pb-12 border-b border-paper/20">
           <div className="max-w-xl">
-            <h3 className="font-display text-2xl text-sun mb-2 uppercase">
+            <h3 className="font-display font-bold text-2xl text-sun mb-2 uppercase">
               Join the Family
             </h3>
             <p className="text-sm opacity-70 mb-4">
@@ -43,7 +43,7 @@ export default function Footer({ countryCode }: FooterProps) {
 
           {/* Shop Links */}
           <div>
-            <h4 className="font-display text-lg text-sun mb-4">SHOP</h4>
+            <h4 className="font-display font-bold text-lg text-sun mb-4">SHOP</h4>
             <ul className="space-y-2 text-sm font-medium opacity-80">
               <li>
                 <Link
@@ -66,7 +66,7 @@ export default function Footer({ countryCode }: FooterProps) {
 
           {/* Info Links */}
           <div>
-            <h4 className="font-display text-lg text-sun mb-4">INFO</h4>
+            <h4 className="font-display font-bold text-lg text-sun mb-4">INFO</h4>
             <ul className="space-y-2 text-sm font-medium opacity-80">
               <li>
                 <Link
@@ -97,7 +97,7 @@ export default function Footer({ countryCode }: FooterProps) {
 
           {/* Policy Links */}
           <div>
-            <h4 className="font-display text-lg text-sun mb-4">POLICIES</h4>
+            <h4 className="font-display font-bold text-lg text-sun mb-4">POLICIES</h4>
             <ul className="space-y-2 text-sm font-medium opacity-80">
               <li>
                 <Link

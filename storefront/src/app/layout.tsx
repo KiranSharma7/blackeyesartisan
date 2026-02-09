@@ -1,19 +1,19 @@
 import { Metadata } from 'next'
-import { Dela_Gothic_One, Space_Grotesk } from 'next/font/google'
+import { Pacifico, Inter } from 'next/font/google'
 
 import { getBaseURL } from '@lib/util/env'
 
 import 'styles/globals.css'
 
 // BlackEyesArtisan Design System Fonts
-const delaGothicOne = Dela_Gothic_One({
+const pacifico = Pacifico({
   weight: '400',
   subsets: ['latin'],
-  variable: '--font-display',
+  variable: '--font-brand',
   display: 'swap',
 })
 
-const spaceGrotesk = Space_Grotesk({
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
@@ -31,7 +31,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${delaGothicOne.variable} ${spaceGrotesk.variable}`}
+      className={`${pacifico.variable} ${inter.variable}`}
     >
       <body className="font-sans bg-white text-black">
         <main className="relative">{props.children}</main>

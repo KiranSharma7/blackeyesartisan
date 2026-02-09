@@ -46,7 +46,7 @@ export default function CollectionCard({
 
           {/* Collection title overlay */}
           <div className="absolute inset-0 bg-ink/40 group-hover:bg-ink/50 transition-colors flex items-center justify-center">
-            <h3 className="font-display text-2xl md:text-3xl text-paper uppercase text-center px-4 drop-shadow-lg">
+            <h3 className="font-display font-bold text-2xl md:text-3xl text-paper uppercase text-center px-4 drop-shadow-lg">
               {collection.title}
             </h3>
           </div>

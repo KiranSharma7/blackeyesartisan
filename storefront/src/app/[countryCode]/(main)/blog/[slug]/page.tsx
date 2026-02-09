@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               day: 'numeric',
             })}
           </time>
-          <h1 className="font-display text-4xl md:text-5xl uppercase mt-2 mb-4">
+          <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mt-2 mb-4">
             {post.Title}
           </h1>
         </header>

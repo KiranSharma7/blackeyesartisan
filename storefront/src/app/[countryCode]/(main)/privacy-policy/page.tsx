@@ -15,7 +15,7 @@ export default async function PrivacyPolicyPage() {
     <div className="py-16">
       <div className="max-w-4xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <h1 className="font-display text-4xl md:text-5xl uppercase mb-8">
+        <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-8">
           Privacy <span className="text-acid">Policy</span>
         </h1>
 

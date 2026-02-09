@@ -53,7 +53,7 @@ export default function ProductDetail({
         {/* Title with SOLD badge for sold-out products */}
         <div>
           <div className="flex items-start gap-3 mb-2">
-            <h1 className="font-display text-4xl md:text-5xl uppercase">
+            <h1 className="font-display font-bold text-4xl md:text-5xl uppercase">
               {product.title}
             </h1>
             {soldOut && <SoldBadge size="lg" className="mt-2 shrink-0" />}

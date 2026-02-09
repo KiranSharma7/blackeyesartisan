@@ -45,7 +45,7 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Hero Section */}
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
-          <h1 className="font-display text-5xl md:text-7xl uppercase mb-6">
+          <h1 className="font-brand text-5xl md:text-7xl mb-6">
             Handcrafted
             <br />
             <span className="text-acid">Glass Art</span>
@@ -62,7 +62,7 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Featured Products */}
       <section className="py-16 bg-stone/20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="font-display text-3xl uppercase mb-8">Latest Drops</h2>
+          <h2 className="font-brand text-3xl md:text-4xl mb-8">Latest Drops</h2>
           <ProductGrid products={products} countryCode={countryCode} />
           <div className="text-center mt-8">
             <Link href={`/${countryCode}/shop`}>
@@ -79,7 +79,7 @@ export default async function HomePage({ params }: HomePageProps) {
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 md:px-8">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-display text-3xl uppercase">
+              <h2 className="font-brand text-3xl md:text-4xl">
                 Shop by <span className="text-acid">Collection</span>
               </h2>
               <Link href={`/${countryCode}/collections`}>
@@ -101,7 +101,7 @@ export default async function HomePage({ params }: HomePageProps) {
               <div className="w-16 h-16 bg-acid/10 border-2 border-ink rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🔥</span>
               </div>
-              <h3 className="font-display text-xl uppercase mb-2">Handcrafted</h3>
+              <h3 className="font-display font-bold text-xl uppercase mb-2">Handcrafted</h3>
               <p className="text-ink/60 font-medium">
                 Each piece is individually made by skilled artisans in Nepal.
               </p>
@@ -110,7 +110,7 @@ export default async function HomePage({ params }: HomePageProps) {
               <div className="w-16 h-16 bg-acid/10 border-2 border-ink rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">✨</span>
               </div>
-              <h3 className="font-display text-xl uppercase mb-2">One of a Kind</h3>
+              <h3 className="font-display font-bold text-xl uppercase mb-2">One of a Kind</h3>
               <p className="text-ink/60 font-medium">
                 No two pieces are exactly alike. Own something truly unique.
               </p>
@@ -119,7 +119,7 @@ export default async function HomePage({ params }: HomePageProps) {
               <div className="w-16 h-16 bg-acid/10 border-2 border-ink rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🌍</span>
               </div>
-              <h3 className="font-display text-xl uppercase mb-2">Ships Worldwide</h3>
+              <h3 className="font-display font-bold text-xl uppercase mb-2">Ships Worldwide</h3>
               <p className="text-ink/60 font-medium">
                 Secure international shipping with tracking via FedEx.
               </p>

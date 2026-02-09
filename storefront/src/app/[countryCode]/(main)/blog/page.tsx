@@ -22,7 +22,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
     return (
       <div className="py-16">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h1 className="font-display text-4xl md:text-5xl uppercase mb-8">
+          <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-8">
             Our <span className="text-acid">Blog</span>
           </h1>
           <p className="text-lg opacity-70">New stories coming soon.</p>
@@ -35,7 +35,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
     <div className="py-16">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Header */}
-        <h1 className="font-display text-4xl md:text-5xl uppercase mb-4">
+        <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-4">
           Our <span className="text-acid">Blog</span>
         </h1>
         <p className="text-lg opacity-70 mb-12">

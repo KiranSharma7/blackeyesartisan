@@ -15,7 +15,7 @@ export default function EmptyCart({ countryCode }: EmptyCartProps) {
       >
         <ShoppingBag className="w-10 h-10 text-ink/40" />
       </div>
-      <h2 className="font-display text-2xl uppercase mb-2">Your Cart is Empty</h2>
+      <h2 className="font-display font-bold text-2xl uppercase mb-2">Your Cart is Empty</h2>
       <p className="text-ink/60 font-medium mb-8 max-w-md">
         Looks like you haven&apos;t added any items to your cart yet. Browse our
         collection of handcrafted glass art.
