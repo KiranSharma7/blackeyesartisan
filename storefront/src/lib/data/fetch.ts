@@ -48,7 +48,7 @@ export const fetchStrapiClient = async (
 // Homepage data
 export const getHeroBannerData = async (): Promise<HeroBannerData> => {
   const res = await fetchStrapiClient(
-    `/api/homepage?populate[1]=HeroBanner&populate[2]=HeroBanner.CTA&populate[3]=HeroBanner.Image`,
+    `/api/homepage?populate[1]=HeroBanner&populate[2]=HeroBanner.CTA&populate[3]=HeroBanner.Image&populate[4]=HeroBanner.SecondaryCTA`,
     {
       next: { tags: ['hero-banner'] },
     }

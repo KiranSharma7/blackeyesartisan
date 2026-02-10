@@ -3,8 +3,10 @@ import Link from 'next/link'
 import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
 import { getCollectionsWithProducts } from '@lib/data/collections'
+import { getHeroBannerData } from '@lib/data/fetch'
 import ProductGrid from '@modules/products/components/product-grid'
 import CollectionGrid from '@modules/collections/components/collection-grid'
+import Hero from '@modules/home/components/hero'
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
@@ -29,35 +31,23 @@ export default async function HomePage({ params }: HomePageProps) {
     )
   }
 
-  const [productsResult, collections] = await Promise.all([
+  const [productsResult, collections, heroBannerRes] = await Promise.all([
     getProductsList({
       pageParam: 1,
       queryParams: { limit: 8 },
       countryCode,
     }),
     getCollectionsWithProducts(countryCode),
+    getHeroBannerData().catch(() => null),
   ])
 
   const products = productsResult.response.products
+  const heroData = heroBannerRes?.data?.HeroBanner ?? null
 
   return (
     <>
       {/* Hero Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
-          <h1 className="font-brand text-5xl md:text-7xl mb-6">
-            Handcrafted
-            <br />
-            <span className="text-acid">Glass Art</span>
-          </h1>
-          <p className="text-lg font-medium text-ink/60 max-w-xl mx-auto mb-8">
-            One-of-a-kind pieces, handmade in Nepal with love and fire.
-          </p>
-          <Link href={`/${countryCode}/shop`}>
-            <Button size="xl">Shop Now</Button>
-          </Link>
-        </div>
-      </section>
+      <Hero data={heroData} countryCode={countryCode} />
 
       {/* Featured Products */}
       <section className="py-16 bg-stone/20">

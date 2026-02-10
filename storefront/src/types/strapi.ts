@@ -24,6 +24,11 @@ export type HeroBanner = {
     BtnText: string
     BtnLink: string
   }
+  SecondaryCTA?: {
+    id: number
+    BtnText: string
+    BtnLink: string
+  }
   Image: {
     url: string
     alternativeText?: string
