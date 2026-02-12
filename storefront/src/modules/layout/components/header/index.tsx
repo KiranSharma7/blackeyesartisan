@@ -40,17 +40,18 @@ export default function Header({
         <nav className="px-4 md:px-8 pt-4 pb-2">
           <div className="max-w-7xl mx-auto bg-paper/90 backdrop-blur-md border-2 border-ink rounded-2xl shadow-hard-sm hover:shadow-hard transition-all px-4 py-3">
             <div className="flex items-center justify-between">
-              {/* LEFT: Hamburger (mobile) + Nav Menu (desktop) */}
+              {/* LEFT: Hamburger (mobile only) + Nav Menu (desktop only) */}
               <div className="flex items-center gap-2 flex-1">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={openMobileMenu}
-                  className="md:hidden"
-                  aria-label="Open menu"
-                >
-                  <Menu className="w-5 h-5" />
-                </Button>
+                <div className="block md:hidden">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={openMobileMenu}
+                    aria-label="Open menu"
+                  >
+                    <Menu className="w-5 h-5" />
+                  </Button>
+                </div>
 
                 <NavMenu items={navigationItems} countryCode={countryCode} />
               </div>
