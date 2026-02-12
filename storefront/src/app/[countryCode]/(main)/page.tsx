@@ -51,7 +51,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
       {/* Featured Products */}
       <section className="py-16 bg-stone/20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="max-w-site mx-auto px-4 md:px-8">
           <h2 className="font-brand text-3xl md:text-4xl mb-8">Latest Drops</h2>
           <ProductGrid products={products} countryCode={countryCode} />
           <div className="text-center mt-8">
@@ -67,7 +67,7 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Collections Section */}
       {collections && collections.length > 0 && (
         <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="max-w-site mx-auto px-4 md:px-8">
             <div className="flex items-center justify-between mb-8">
               <h2 className="font-brand text-3xl md:text-4xl">
                 Shop by <span className="text-acid">Collection</span>
@@ -85,7 +85,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
       {/* Value Props */}
       <section className="py-16 bg-stone/20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="max-w-site mx-auto px-4 md:px-8">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-acid/10 border-2 border-ink rounded-full flex items-center justify-center mx-auto mb-4">

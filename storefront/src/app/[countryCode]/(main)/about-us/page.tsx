@@ -15,7 +15,7 @@ export default async function AboutUsPage() {
   if (!about) {
     return (
       <div className="py-16">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="max-w-site mx-auto px-4 md:px-8">
           <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-8">
             About <span className="text-acid">Us</span>
           </h1>
@@ -27,7 +27,7 @@ export default async function AboutUsPage() {
 
   return (
     <div className="py-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+      <div className="max-w-site mx-auto px-4 md:px-8">
         {/* Hero Banner */}
         {about.Banner && about.Banner.length > 0 && (
           <div className="relative w-full h-[300px] md:h-[400px] mb-12 rounded-lg overflow-hidden border-2 border-ink shadow-hard">

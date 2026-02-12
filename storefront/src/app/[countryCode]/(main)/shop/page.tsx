@@ -46,7 +46,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
   const totalPages = Math.ceil(count / limit)
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+    <div className="max-w-site mx-auto px-4 md:px-8 py-12">
       {/* Header */}
       <div className="mb-8">
         <h1 className="font-display font-bold text-4xl uppercase mb-2">Shop All</h1>

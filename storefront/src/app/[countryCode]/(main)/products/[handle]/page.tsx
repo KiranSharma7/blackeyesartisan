@@ -58,7 +58,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { product } = data
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
+    <div className="max-w-site mx-auto px-4 md:px-8 py-12">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm font-semibold opacity-60 mb-8">
         <Link

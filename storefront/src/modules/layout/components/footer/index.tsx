@@ -10,7 +10,7 @@ export default function Footer({ countryCode }: FooterProps) {
 
   return (
     <footer className="bg-ink text-paper pt-16 pb-8 border-t-2 border-ink">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+      <div className="max-w-site mx-auto px-4 md:px-8">
         {/* Newsletter Section */}
         <div className="mb-12 pb-12 border-b border-paper/20">
           <div className="max-w-xl">

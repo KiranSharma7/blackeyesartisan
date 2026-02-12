@@ -38,7 +38,7 @@ export default function Header({
     <>
       <ScrollWrapper>
         <nav className="px-4 large:px-8 pt-4 pb-2">
-          <div className="max-w-7xl mx-auto bg-paper/90 backdrop-blur-md border-2 border-ink rounded-2xl shadow-hard-sm hover:shadow-hard transition-all px-4 py-3">
+          <div className="max-w-site mx-auto bg-paper/90 backdrop-blur-md border-2 border-ink rounded-2xl shadow-hard-sm hover:shadow-hard transition-all px-4 py-3">
             <div className="flex items-center justify-between">
               {/* LEFT: Hamburger (mobile only) + Nav Menu (desktop only) */}
               <div className="flex items-center gap-2 flex-1">

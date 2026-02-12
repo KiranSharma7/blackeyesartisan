@@ -48,7 +48,7 @@ export default function Hero({ data, countryCode }: HeroProps) {
       <div className="hidden md:block absolute top-1/4 right-[10%] w-[400px] h-[400px] rounded-full bg-acid/10 blur-[120px] z-10 pointer-events-none" />
 
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 md:px-8 w-full py-24 md:py-0 flex flex-col items-center text-center md:items-start md:text-left md:max-w-2xl md:ml-[max(2rem,calc((100vw-80rem)/2+2rem))]">
+      <div className="relative z-20 max-w-site mx-auto px-4 md:px-8 w-full py-24 md:py-0 flex flex-col items-center text-center md:items-start md:text-left md:max-w-2xl md:ml-[max(2rem,calc((100vw-85.375rem)/2+2rem))]">
         <h1 className="font-brand text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-6">
           {parts.map((part, i) =>
             /glass art/i.test(part) ? (

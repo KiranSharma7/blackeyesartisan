@@ -20,6 +20,10 @@ module.exports = {
         stone: '#E8DCCA',
         sun: '#FCCA46',
       },
+      // Custom max-width for site container
+      maxWidth: {
+        'site': '1366px',
+      },
       // BlackEyesArtisan Design System Fonts
       fontFamily: {
         brand: ['Pacifico', 'cursive'],

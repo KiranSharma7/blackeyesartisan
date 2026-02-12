@@ -21,7 +21,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
   if (!posts || posts.length === 0) {
     return (
       <div className="py-16">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="max-w-site mx-auto px-4 md:px-8">
           <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-8">
             Our <span className="text-acid">Blog</span>
           </h1>
@@ -33,7 +33,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
 
   return (
     <div className="py-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+      <div className="max-w-site mx-auto px-4 md:px-8">
         {/* Header */}
         <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-4">
           Our <span className="text-acid">Blog</span>

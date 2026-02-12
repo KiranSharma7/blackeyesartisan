@@ -18,7 +18,7 @@ export default async function CollectionsPage({ params }: CollectionsPageProps) 
 
   return (
     <div className="py-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+      <div className="max-w-site mx-auto px-4 md:px-8">
         {/* Page Header */}
         <div className="text-center mb-12">
           <h1 className="font-display font-bold text-4xl md:text-5xl uppercase mb-4">

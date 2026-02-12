@@ -68,7 +68,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
 
   return (
     <div className="py-16">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+      <div className="max-w-site mx-auto px-4 md:px-8">
         {/* Breadcrumb */}
         <nav className="mb-8">
           <ol className="flex items-center text-sm font-medium text-ink/60">
