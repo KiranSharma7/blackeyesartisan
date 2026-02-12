@@ -38,7 +38,7 @@ export default async function HomePage({ params }: HomePageProps) {
       countryCode,
     }),
     getCollectionsWithProducts(countryCode),
-    getHeroSlidesData(),
+    getHeroSlidesData().catch(() => null),
   ])
 
   const products = productsResult.response.products
