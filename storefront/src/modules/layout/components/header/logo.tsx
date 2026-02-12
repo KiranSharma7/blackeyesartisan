@@ -26,9 +26,9 @@ export default function Logo({ countryCode, logoUrl }: LogoProps) {
       <Image
         src={src}
         alt="Black Eyes Artisan"
-        width={100}
-        height={100}
-        className="w-16 h-16 large:w-24 large:h-24 object-contain"
+        width={80}
+        height={80}
+        className="w-14 h-14 large:w-20 large:h-20 object-contain"
         priority
       />
     </Link>
