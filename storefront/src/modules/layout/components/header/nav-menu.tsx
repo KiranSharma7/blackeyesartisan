@@ -12,7 +12,7 @@ export default function NavMenu({ items, countryCode }: NavMenuProps) {
   const sortedItems = [...items].sort((a, b) => a.order - b.order)
 
   return (
-    <div className="hidden md:flex items-center gap-1">
+    <div className="hidden large:flex items-center gap-1">
       {sortedItems.map((item) => {
         const href = item.url.startsWith('/')
           ? `/${countryCode}${item.url}`
