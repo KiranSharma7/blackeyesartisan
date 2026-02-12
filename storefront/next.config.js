@@ -39,6 +39,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'api.blackeyesartisan.shop',
       },
+      // Strapi CMS (for uploaded media like logo)
+      {
+        protocol: 'https',
+        hostname: 'cms.blackeyesartisan.shop',
+      },
       // Legacy support for SPACE_DOMAIN env vars (now point to Cloudinary)
       ...(process.env.NEXT_PUBLIC_SPACE_DOMAIN
         ? [

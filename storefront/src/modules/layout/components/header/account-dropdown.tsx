@@ -49,7 +49,7 @@ export default function AccountDropdown({
         size="icon"
         onClick={toggleAccount}
         aria-label="Account menu"
-        className="hidden md:flex"
+        className=""
       >
         <User className="w-5 h-5" />
       </Button>
