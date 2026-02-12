@@ -6,6 +6,12 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { HeroBanner } from 'types/strapi'
 
+function getStrapiImageUrl(url: string): string {
+  if (url.startsWith('http')) return url
+  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL || ''
+  return `${strapiUrl}${url}`
+}
+
 type HeroCarouselProps = {
   slides: HeroBanner[]
   countryCode: string
@@ -87,7 +93,7 @@ export default function HeroCarousel({
                 {/* Background image */}
                 {slide.Image?.url && (
                   <Image
-                    src={slide.Image.url}
+                    src={getStrapiImageUrl(slide.Image.url)}
                     alt={slide.Image.alternativeText ?? slide.Headline}
                     fill
                     priority={index === 0}
