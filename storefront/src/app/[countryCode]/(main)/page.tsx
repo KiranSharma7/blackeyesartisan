@@ -3,10 +3,8 @@ import Link from 'next/link'
 import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
 import { getCollectionsWithProducts } from '@lib/data/collections'
-import { getHeroBannerData } from '@lib/data/fetch'
 import ProductGrid from '@modules/products/components/product-grid'
 import CollectionGrid from '@modules/collections/components/collection-grid'
-import Hero from '@modules/home/components/hero'
 import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
@@ -31,24 +29,19 @@ export default async function HomePage({ params }: HomePageProps) {
     )
   }
 
-  const [productsResult, collections, heroBannerRes] = await Promise.all([
+  const [productsResult, collections] = await Promise.all([
     getProductsList({
       pageParam: 1,
       queryParams: { limit: 8 },
       countryCode,
     }),
     getCollectionsWithProducts(countryCode),
-    getHeroBannerData().catch(() => null),
   ])
 
   const products = productsResult.response.products
-  const heroData = heroBannerRes?.data?.HeroBanner ?? null
 
   return (
     <>
-      {/* Hero Section */}
-      <Hero data={heroData} countryCode={countryCode} />
-
       {/* Featured Products */}
       <section className="py-16 bg-stone/20">
         <div className="max-w-site mx-auto px-4 md:px-8">

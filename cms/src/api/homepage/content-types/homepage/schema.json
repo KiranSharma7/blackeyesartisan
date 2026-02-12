@@ -12,11 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "HeroBanner": {
-      "type": "component",
-      "repeatable": false,
-      "component": "homepage.hero-banner"
-    },
     "MidBanner": {
       "type": "component",
       "repeatable": false,

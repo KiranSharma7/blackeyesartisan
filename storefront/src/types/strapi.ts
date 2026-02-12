@@ -41,7 +41,6 @@ export type BannerResponse<T extends string> = {
   }
 }
 
-export type HeroBannerData = BannerResponse<'HeroBanner'>
 export type MidBannerData = BannerResponse<'MidBanner'>
 
 export type BlogPost = {
