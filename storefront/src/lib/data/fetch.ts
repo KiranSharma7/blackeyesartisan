@@ -8,6 +8,7 @@ import {
   GlobalSettingsData,
   HeroBannerData,
   MidBannerData,
+  NavigationData,
   VariantColorData,
 } from 'types/strapi'
 
@@ -209,6 +210,18 @@ export const getGlobalSettings = async (): Promise<GlobalSettingsData> => {
   const res = await fetchStrapiClient(`/api/global-setting`, {
     next: { tags: ['global-settings'] },
   })
+
+  return res.json()
+}
+
+// Navigation
+export const getNavigationData = async (): Promise<NavigationData> => {
+  const res = await fetchStrapiClient(
+    `/api/global-setting?populate[1]=navigationLogo&populate[2]=navigationItems`,
+    {
+      next: { tags: ['navigation'] },
+    }
+  )
 
   return res.json()
 }

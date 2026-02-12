@@ -56,6 +56,17 @@
     "shippingPolicyNote": {
       "type": "text",
       "default": "All orders ship via FedEx International. A valid phone number is required for delivery."
+    },
+    "navigationLogo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "navigationItems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "navigation.menu-item"
     }
   }
 }

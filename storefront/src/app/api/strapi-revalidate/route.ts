@@ -19,7 +19,7 @@ const MODEL_TAG_MAP: Record<string, string[]> = {
   // Collections
   'collection': ['collections-main'],
   // Global settings (affects multiple areas)
-  'global-setting': ['global-settings'],
+  'global-setting': ['global-settings', 'navigation'],
   // Product variants
   'product-variants-color': ['variants-colors'],
 }

@@ -162,6 +162,21 @@ export type ContentPageData = {
   data: ContentPage
 }
 
+// Navigation
+export type NavMenuItem = {
+  id: number
+  label: string
+  url: string
+  order: number
+}
+
+export type NavigationData = {
+  data: {
+    navigationLogo?: StrapiPhotoAttributes
+    navigationItems: NavMenuItem[]
+  }
+}
+
 // Global Settings
 export type GlobalSettings = {
   id: number
@@ -176,6 +191,8 @@ export type GlobalSettings = {
   announcementBarText: string | null
   announcementBarLink: string | null
   shippingPolicyNote: string
+  navigationLogo?: StrapiPhotoAttributes
+  navigationItems?: NavMenuItem[]
   createdAt: string
   updatedAt: string
 }
