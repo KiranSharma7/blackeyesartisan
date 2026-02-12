@@ -43,6 +43,12 @@ export type BannerResponse<T extends string> = {
 
 export type MidBannerData = BannerResponse<'MidBanner'>
 
+export type HeroSlidesData = {
+  data: {
+    HeroSlides: HeroBanner[]
+  } | null
+}
+
 export type BlogPost = {
   Title: string
   Slug: string
