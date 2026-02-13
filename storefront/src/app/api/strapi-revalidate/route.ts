@@ -7,7 +7,7 @@ const MODEL_TAG_MAP: Record<string, string[]> = {
   'blog': ['blog', 'explore-blog', 'blog-slugs'],
   'blog-post-category': ['blog', 'blog-categories'],
   // Homepage content
-  'homepage': ['hero-banner', 'mid-banner'],
+  'homepage': ['mid-banner'],
   // About & FAQ
   'about-us': ['about-us'],
   'faq': ['faq'],

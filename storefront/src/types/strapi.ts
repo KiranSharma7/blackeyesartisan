@@ -16,15 +16,10 @@ export interface StrapiData<T> {
   data: T
 }
 
-export type HeroBanner = {
+export type BannerContent = {
   Headline: string
   Text: string
   CTA: {
-    id: number
-    BtnText: string
-    BtnLink: string
-  }
-  SecondaryCTA?: {
     id: number
     BtnText: string
     BtnLink: string
@@ -35,18 +30,10 @@ export type HeroBanner = {
   }
 }
 
-export type BannerResponse<T extends string> = {
+export type MidBannerData = {
   data: {
-    [K in T]: HeroBanner
+    MidBanner: BannerContent
   }
-}
-
-export type MidBannerData = BannerResponse<'MidBanner'>
-
-export type HeroSlidesData = {
-  data: {
-    HeroSlides: HeroBanner[]
-  } | null
 }
 
 export type BlogPost = {

@@ -28,13 +28,6 @@
       "type": "media",
       "multiple": false,
       "required": true
-    },
-    "SecondaryCTA": {
-      "displayName": "SecondaryCTA",
-      "type": "component",
-      "repeatable": false,
-      "component": "homepage.cta",
-      "required": false
     }
   }
 }

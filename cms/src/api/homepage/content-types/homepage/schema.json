@@ -12,11 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "HeroSlides": {
-      "type": "component",
-      "repeatable": true,
-      "component": "homepage.hero-banner"
-    },
     "MidBanner": {
       "type": "component",
       "repeatable": false,

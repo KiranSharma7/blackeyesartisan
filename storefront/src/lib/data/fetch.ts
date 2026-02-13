@@ -6,7 +6,6 @@ import {
   ContentPageData,
   FAQData,
   GlobalSettingsData,
-  HeroSlidesData,
   MidBannerData,
   NavigationData,
   VariantColorData,
@@ -47,17 +46,6 @@ export const fetchStrapiClient = async (
 }
 
 // Homepage data
-export const getHeroSlidesData = async (): Promise<HeroSlidesData> => {
-  const res = await fetchStrapiClient(
-    `/api/homepage?populate[HeroSlides][populate][0]=CTA&populate[HeroSlides][populate][1]=Image&populate[HeroSlides][populate][2]=SecondaryCTA`,
-    {
-      next: { tags: ['hero-banner'] },
-    }
-  )
-
-  return res.json()
-}
-
 export const getMidBannerData = async (): Promise<MidBannerData> => {
   const res = await fetchStrapiClient(
     `/api/homepage?populate[1]=MidBanner&populate[2]=MidBanner.CTA&populate[3]=MidBanner.Image`,

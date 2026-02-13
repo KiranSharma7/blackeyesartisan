@@ -653,7 +653,6 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     draftAndPublish: false;
   };
   attributes: {
-    HeroBanner: Schema.Attribute.Component<'homepage.hero-banner', false>;
     MidBanner: Schema.Attribute.Component<'homepage.hero-banner', false>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
