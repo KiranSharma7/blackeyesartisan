@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/retroui/Card'
+import { Button } from '@/components/retroui/Button'
 import CartItem from '../../components/cart-item'
 import EmptyCart from '../../components/empty-cart'
 

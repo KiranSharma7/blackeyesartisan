@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { addToCart } from '@lib/data/cart'
 import { useCartStore } from '@lib/store/useCartStore'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 
 interface AddToCartButtonProps {
   variantId: string

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { getCollectionByHandle } from '@lib/data/collections'
 import { getProductsListByCollectionId } from '@lib/data/products'
 import ProductGrid from '@modules/products/components/product-grid'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 
 interface CollectionPageProps {
   params: Promise<{ countryCode: string; handle: string }>

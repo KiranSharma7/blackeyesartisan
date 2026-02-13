@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/retroui/Card'
 
 interface CheckoutSectionProps {
   title: string

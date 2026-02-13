@@ -4,8 +4,8 @@ import { ShoppingBag, Search, Menu } from 'lucide-react'
 import { useCartStore } from '@lib/store/useCartStore'
 import { useNavStore } from '@lib/store/useNavStore'
 import { HttpTypes } from '@medusajs/types'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/retroui/Button'
+import { Badge } from '@/components/retroui/Badge'
 import { NavMenuItem } from 'types/strapi'
 import ScrollWrapper from './scroll-wrapper'
 import Logo from './logo'
@@ -37,39 +37,41 @@ export default function Header({
   return (
     <>
       <ScrollWrapper>
-        <nav className="px-4 large:px-8 pt-4 pb-2">
-          <div className="max-w-site mx-auto bg-paper/90 backdrop-blur-md border-2 border-ink rounded-2xl shadow-hard-sm hover:shadow-hard transition-all px-4 py-3">
-            <div className="flex items-center justify-between">
-              {/* LEFT: Hamburger (mobile only) + Nav Menu (desktop only) */}
-              <div className="flex items-center gap-2 flex-1">
+        <div className="px-4 large:px-6 pt-3 pb-1">
+          <nav className="max-w-site mx-auto bg-paper/80 backdrop-blur-md border-2 border-ink rounded-2xl shadow-hard-sm">
+            <div className="flex items-center justify-between h-16 large:h-[72px] px-4 large:px-6">
+              {/* LEFT: Hamburger (mobile) + Logo */}
+              <div className="flex items-center gap-3">
                 <div className="block large:hidden">
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={openMobileMenu}
                     aria-label="Open menu"
+                    className="hover:bg-ink/5 -ml-2"
                   >
-                    <Menu className="w-5 h-5" />
+                    <Menu className="w-5 h-5 text-ink/70" />
                   </Button>
                 </div>
 
-                <NavMenu items={navigationItems} countryCode={countryCode} />
-              </div>
-
-              {/* CENTER: Logo */}
-              <div className="flex-shrink-0">
                 <Logo countryCode={countryCode} logoUrl={logoUrl} />
               </div>
 
+              {/* CENTER: Nav Menu (desktop only) */}
+              <div className="hidden large:flex flex-1 justify-center">
+                <NavMenu items={navigationItems} countryCode={countryCode} />
+              </div>
+
               {/* RIGHT: Search + Account + Cart */}
-              <div className="flex items-center gap-1 flex-1 justify-end">
+              <div className="flex items-center gap-0.5">
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={openSearch}
                   aria-label="Search"
+                  className="hover:bg-ink/5"
                 >
-                  <Search className="w-5 h-5" />
+                  <Search className="w-[18px] h-[18px] text-ink/70" />
                 </Button>
 
                 <AccountDropdown
@@ -81,15 +83,15 @@ export default function Header({
                   variant="ghost"
                   size="icon"
                   onClick={openCartDropdown}
-                  className="relative"
+                  className="relative hover:bg-ink/5"
                   aria-label="Open cart"
                   data-testid="cart-button"
                 >
-                  <ShoppingBag className="w-5 h-5" />
+                  <ShoppingBag className="w-[18px] h-[18px] text-ink/70" />
                   {itemCount > 0 && (
                     <Badge
                       variant="primary"
-                      className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-[10px]"
+                      className="absolute -top-0.5 -right-0.5 w-[18px] h-[18px] p-0 flex items-center justify-center text-[9px] font-semibold"
                       data-testid="cart-count"
                     >
                       {itemCount}
@@ -98,8 +100,8 @@ export default function Header({
                 </Button>
               </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </div>
       </ScrollWrapper>
 
       {/* Overlays — rendered outside ScrollWrapper so they're not clipped */}

@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import { HttpTypes } from '@medusajs/types'
 import { placeOrder, initiatePaymentSession } from '@lib/data/cart'
 import { convertToLocale } from '@lib/util/money'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 import { cn } from '@lib/util/cn'
 
 const StripeWrapper = dynamic(() => import('../stripe-wrapper'))

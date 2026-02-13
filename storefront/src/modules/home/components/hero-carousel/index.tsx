@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 import { HeroBanner } from 'types/strapi'
 
 function getStrapiImageUrl(url: string): string {

@@ -3,10 +3,37 @@
 @import 'tailwindcss/utilities';
 
 /* ========================================
-   BlackEyesArtisan Design System
+   BlackEyesArtisan Design System + RetroUI
    ======================================== */
 
 @layer base {
+  /* RetroUI CSS variables mapped to BlackEyesArtisan brand tokens */
+  :root {
+    --background: #FEF8E7;      /* paper */
+    --foreground: #18181B;       /* ink */
+    --card: #FFFFFF;             /* white */
+    --card-foreground: #18181B;  /* ink */
+    --primary: #D63D42;          /* acid */
+    --primary-foreground: #FFFFFF;
+    --primary-hover: #B8323A;    /* darker acid */
+    --secondary: #18181B;        /* ink */
+    --secondary-foreground: #FEF8E7; /* paper */
+    --secondary-hover: #D63D42;  /* acid */
+    --muted: #E8DCCA;            /* stone */
+    --muted-foreground: rgba(24, 24, 27, 0.6); /* ink/60 */
+    --accent: #E8DCCA;           /* stone */
+    --accent-foreground: #18181B; /* ink */
+    --destructive: #D63D42;      /* acid */
+    --destructive-foreground: #FFFFFF;
+    --border: #18181B;           /* ink */
+    --input: #18181B;            /* ink */
+    --ring: #D63D42;             /* acid */
+    --popover: #FFFFFF;
+    --popover-foreground: #18181B;
+    --shadow-color: #18181B;     /* ink */
+    --radius: 0.75rem;           /* rounded-xl */
+  }
+
   body {
     @apply bg-paper text-ink;
     scroll-behavior: smooth;
@@ -19,7 +46,7 @@
 }
 
 @layer components {
-  /* BlackEyesArtisan Button Styles */
+  /* BlackEyesArtisan Button Styles (utility classes for inline use) */
   .btn-primary {
     @apply bg-acid text-white border-2 border-ink rounded-xl font-display font-bold
            text-lg px-6 py-3 shadow-hard-sm uppercase tracking-wide
@@ -159,5 +186,10 @@
   input[type='search']::-webkit-search-results-button,
   input[type='search']::-webkit-search-results-decoration {
     -webkit-appearance: none;
+  }
+
+  /* Marquee pause on hover */
+  .hover-pause:hover .animate-marquee {
+    animation-play-state: paused;
   }
 }

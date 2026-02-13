@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { Check } from 'lucide-react'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/retroui/Card'
+import { Button } from '@/components/retroui/Button'
 
 interface OrderConfirmationProps {
   order: HttpTypes.StoreOrder

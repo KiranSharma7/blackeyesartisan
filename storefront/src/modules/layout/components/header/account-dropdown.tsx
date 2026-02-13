@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { User } from 'lucide-react'
 import { useNavStore } from '@lib/store/useNavStore'
 import { signout } from '@lib/data/customer'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 import { HttpTypes } from '@medusajs/types'
 
 interface AccountDropdownProps {

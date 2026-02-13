@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { X, User, Package, Search } from 'lucide-react'
 import { useNavStore } from '@lib/store/useNavStore'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 import { NavMenuItem } from 'types/strapi'
 import { HttpTypes } from '@medusajs/types'
 

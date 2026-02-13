@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/retroui/Card'
 import DutiesDisclaimer from '../duties-disclaimer'
 
 interface CheckoutSummaryProps {

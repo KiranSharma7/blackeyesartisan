@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { HttpTypes } from '@medusajs/types'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/retroui/Card'
 
 interface CollectionCardProps {
   collection: HttpTypes.StoreCollection

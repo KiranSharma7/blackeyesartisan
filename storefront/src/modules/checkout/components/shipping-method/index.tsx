@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 import { HttpTypes } from '@medusajs/types'
 import { setShippingMethod } from '@lib/data/cart'
 import { convertToLocale } from '@lib/util/money'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
+import { Button } from '@/components/retroui/Button'
+import { Card } from '@/components/retroui/Card'
 import { cn } from '@lib/util/cn'
 
 interface ShippingMethodSelectProps {

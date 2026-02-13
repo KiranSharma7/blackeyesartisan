@@ -7,7 +7,7 @@ import { getHeroSlidesData } from '@lib/data/fetch'
 import ProductGrid from '@modules/products/components/product-grid'
 import CollectionGrid from '@modules/collections/components/collection-grid'
 import HeroCarousel from '@modules/home/components/hero-carousel'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 
 export const metadata: Metadata = {
   title: 'BlackEyesArtisan | Handcrafted Glass Art',

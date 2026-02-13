@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
 import { isProductSoldOut } from '@lib/util/inventory'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/retroui/Card'
 import { SoldBadgeOverlay } from '../sold-badge'
 
 interface ProductCardProps {

@@ -6,7 +6,7 @@ import { X } from 'lucide-react'
 import { HttpTypes } from '@medusajs/types'
 import { useCartStore } from '@lib/store/useCartStore'
 import { convertToLocale } from '@lib/util/money'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 import CartItem from '../cart-item'
 
 interface CartDrawerProps {

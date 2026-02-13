@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { Pacifico, Inter } from 'next/font/google'
+import { Pacifico, Archivo_Black, Space_Grotesk } from 'next/font/google'
 
 import { getBaseURL } from '@lib/util/env'
 
@@ -13,7 +13,14 @@ const pacifico = Pacifico({
   display: 'swap',
 })
 
-const inter = Inter({
+const archivoBlack = Archivo_Black({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-head',
+  display: 'swap',
+})
+
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
@@ -31,7 +38,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${pacifico.variable} ${inter.variable}`}
+      className={`${pacifico.variable} ${archivoBlack.variable} ${spaceGrotesk.variable}`}
     >
       <body className="font-sans bg-white text-black">
         <main className="relative">{props.children}</main>

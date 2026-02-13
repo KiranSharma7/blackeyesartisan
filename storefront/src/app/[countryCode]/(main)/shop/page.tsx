@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
 import ProductGrid from '@modules/products/components/product-grid'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export const metadata: Metadata = {

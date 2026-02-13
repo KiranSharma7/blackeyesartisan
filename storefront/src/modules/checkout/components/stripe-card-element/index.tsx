@@ -2,7 +2,7 @@
 
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/retroui/Button'
 import { convertToLocale } from '@lib/util/money'
 import { HttpTypes } from '@medusajs/types'
 
