@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
 import { cn } from '@lib/util/cn'
+import { Badge } from '@/components/retroui/Badge'
 
 interface HeroPeekCardProps {
   product: HttpTypes.StoreProduct
@@ -48,7 +49,7 @@ export default function HeroPeekCard({
         "transition-all duration-300 hover:-translate-y-1 hover:shadow-hard-xl"
       )}>
         {/* PICK Badge */}
-        <span className="badge badge-hot absolute top-3 left-3 z-10">Pick</span>
+        <Badge variant="solid" size="sm" className="absolute top-3 left-3 z-10">Pick</Badge>
 
         {/* Product Image */}
         <Image
