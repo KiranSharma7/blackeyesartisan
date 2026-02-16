@@ -83,9 +83,9 @@ export default function SearchOverlay({ countryCode }: SearchOverlayProps) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search for products..."
-              className="w-full h-14 pl-12 pr-4 rounded-xl border-2 border-ink bg-white text-base font-medium
-                         shadow-hard-sm placeholder:text-ink/40
-                         focus:outline-none focus:ring-2 focus:ring-acid focus:ring-offset-2
+              className="w-full h-14 pl-12 pr-4 rounded border-2 border-ink bg-white text-base font-medium
+                         shadow-md placeholder:text-ink/40
+                         focus:outline-hidden focus:shadow-xs
                          transition-all duration-200"
             />
           </form>

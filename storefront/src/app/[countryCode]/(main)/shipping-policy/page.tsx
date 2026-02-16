@@ -26,7 +26,7 @@ export default async function ShippingPolicyPage() {
 
         {/* Quick Info Box */}
         {settings && (
-          <div className="bg-stone/30 border-2 border-ink rounded-lg p-6 mb-12 shadow-hard">
+          <div className="bg-ink/[0.08] border-2 border-ink rounded-xl p-6 mb-12 shadow-hard">
             <h2 className="font-display text-xl mb-4">Quick Info</h2>
             <ul className="space-y-3 text-ink/80">
               <li className="flex items-start">

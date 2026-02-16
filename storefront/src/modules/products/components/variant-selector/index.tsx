@@ -2,6 +2,7 @@
 
 import { HttpTypes } from '@medusajs/types'
 import { cn } from '@lib/util/cn'
+import { Button } from '@/components/retroui/Button'
 
 interface VariantSelectorProps {
   variants: HttpTypes.StoreProductVariant[]
@@ -29,20 +30,18 @@ export default function VariantSelector({
           const isAvailable = (variant.inventory_quantity ?? 0) > 0
 
           return (
-            <button
+            <Button
               key={variant.id}
               onClick={() => onSelect(variant.id)}
               disabled={!isAvailable}
+              variant={isSelected ? 'secondary' : 'outline'}
+              size="sm"
               className={cn(
-                'px-4 py-2 border-2 border-ink rounded-lg font-medium text-sm transition-all',
-                isSelected
-                  ? 'bg-ink text-paper shadow-hard-sm'
-                  : 'bg-white hover:bg-stone/50',
                 !isAvailable && 'opacity-40 cursor-not-allowed line-through'
               )}
             >
               {variant.title}
-            </button>
+            </Button>
           )
         })}
       </div>

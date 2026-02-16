@@ -17,7 +17,7 @@ export default function HeroSlide({ slide, priority = false }: HeroSlideProps) {
     : `${process.env.NEXT_PUBLIC_STRAPI_URL}${rawUrl}`
 
   return (
-    <div className="relative w-full h-full bg-stone/30 rounded-[2rem] overflow-hidden">
+    <div className="relative w-full h-full bg-ink/[0.08] rounded-[2rem] overflow-hidden">
       {/* Background Image */}
       <Image
         src={imageUrl}

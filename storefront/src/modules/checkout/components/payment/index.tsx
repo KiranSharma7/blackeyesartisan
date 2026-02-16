@@ -104,15 +104,15 @@ export default function PaymentForm({ cart, paymentMethods }: PaymentFormProps) 
         const isSelected = selectedProviderId === provider.id
 
         return (
-          <button
+          <Button
             key={provider.id}
             type="button"
             onClick={() => handleSelectProvider(provider.id)}
+            variant={isSelected ? 'secondary' : 'outline'}
+            size="lg"
             className={cn(
-              'w-full text-left p-4 border-2 border-ink rounded-xl transition-all',
-              isSelected
-                ? 'bg-ink text-paper shadow-hard-sm'
-                : 'bg-white hover:bg-stone/30'
+              'w-full justify-start p-4 h-auto',
+              isSelected && 'shadow-hard-sm'
             )}
           >
             <p className="font-display text-lg uppercase">
@@ -122,7 +122,7 @@ export default function PaymentForm({ cart, paymentMethods }: PaymentFormProps) 
                 ? 'Credit Card'
                 : provider.id}
             </p>
-          </button>
+          </Button>
         )
       })}
 
@@ -144,7 +144,7 @@ export default function PaymentForm({ cart, paymentMethods }: PaymentFormProps) 
               />
             </StripeWrapper>
           ) : (
-            <div className="p-4 bg-acid/10 border border-acid rounded-lg">
+            <div className="p-4 bg-acid/10 border-2 border-acid rounded-xl">
               <p className="text-sm text-acid">Failed to load payment form. Please try manual payment.</p>
             </div>
           )}

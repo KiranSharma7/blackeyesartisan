@@ -14,9 +14,8 @@ module.exports = {
       // BlackEyesArtisan Design System Colors
       colors: {
         ink: '#18181B',
-        paper: '#FEF8E7',
+        paper: '#FFFFFF',
         acid: '#D63D42',
-        stone: '#E8DCCA',
         sun: '#FCCA46',
         // RetroUI semantic color tokens (mapped to brand)
         background: 'var(--background)',

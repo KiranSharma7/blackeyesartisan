@@ -45,7 +45,7 @@ export default function HeroPeekCard({
       className="group block h-full"
     >
       <div className={cn(
-        "relative h-full rounded-2xl border-2 border-ink shadow-hard overflow-hidden bg-stone/30",
+        "relative h-full rounded-2xl border-2 border-ink shadow-hard overflow-hidden bg-ink/[0.08]",
         "transition-all duration-300 hover:-translate-y-1 hover:shadow-hard-xl"
       )}>
         {/* PICK Badge */}

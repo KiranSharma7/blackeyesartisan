@@ -9,7 +9,7 @@
 @layer base {
   /* RetroUI CSS variables mapped to BlackEyesArtisan brand tokens */
   :root {
-    --background: #FEF8E7;      /* paper */
+    --background: #FFFFFF;       /* pure white */
     --foreground: #18181B;       /* ink */
     --card: #FFFFFF;             /* white */
     --card-foreground: #18181B;  /* ink */
@@ -17,11 +17,11 @@
     --primary-foreground: #FFFFFF;
     --primary-hover: #B8323A;    /* darker acid */
     --secondary: #18181B;        /* ink */
-    --secondary-foreground: #FEF8E7; /* paper */
+    --secondary-foreground: #FFFFFF; /* white */
     --secondary-hover: #D63D42;  /* acid */
-    --muted: #E8DCCA;            /* stone */
+    --muted: #F5F5F5;            /* light gray */
     --muted-foreground: rgba(24, 24, 27, 0.6); /* ink/60 */
-    --accent: #E8DCCA;           /* stone */
+    --accent: #FCCA46;           /* sun */
     --accent-foreground: #18181B; /* ink */
     --destructive: #D63D42;      /* acid */
     --destructive-foreground: #FFFFFF;
@@ -110,7 +110,7 @@
   }
 
   .text-outline-paper {
-    -webkit-text-stroke: 1px #FEF8E7;
+    -webkit-text-stroke: 1px #FFFFFF;
     color: transparent;
   }
 

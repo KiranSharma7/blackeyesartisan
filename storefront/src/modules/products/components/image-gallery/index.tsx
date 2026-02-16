@@ -20,7 +20,7 @@ export default function ProductImageGallery({
   if (!images || images.length === 0) {
     return (
       <div className="relative bg-white border-2 border-ink rounded-[2rem] shadow-hard-xl overflow-hidden aspect-square">
-        <div className="absolute inset-0 flex items-center justify-center bg-stone/20">
+        <div className="absolute inset-0 flex items-center justify-center bg-ink/5">
           <span className="text-ink/40 font-medium">No image available</span>
         </div>
       </div>

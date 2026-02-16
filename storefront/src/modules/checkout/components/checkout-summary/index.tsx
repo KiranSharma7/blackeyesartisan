@@ -35,7 +35,7 @@ export default function CheckoutSummary({
         <div className="space-y-3 max-h-[300px] overflow-y-auto">
           {items.map((item) => (
             <div key={item.id} className="flex gap-3">
-              <div className="w-16 h-16 bg-stone/20 border-2 border-ink rounded-lg overflow-hidden relative flex-shrink-0">
+              <div className="w-16 h-16 bg-ink/5 border-2 border-ink rounded-xl overflow-hidden relative flex-shrink-0">
                 {item.thumbnail && (
                   <Image
                     src={item.thumbnail}

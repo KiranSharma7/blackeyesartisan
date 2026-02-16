@@ -51,7 +51,7 @@ export default function OrderConfirmation({
           <div className="space-y-4 mb-6">
             {items.map((item) => (
               <div key={item.id} className="flex gap-4">
-                <div className="w-16 h-16 bg-stone/20 border-2 border-ink rounded-lg overflow-hidden relative flex-shrink-0">
+                <div className="w-16 h-16 bg-ink/5 border-2 border-ink rounded-xl overflow-hidden relative flex-shrink-0">
                   {item.thumbnail && (
                     <Image
                       src={item.thumbnail}
@@ -143,7 +143,7 @@ export default function OrderConfirmation({
 
       {/* Duties Disclaimer (international orders only) */}
       {isInternational && (
-        <div className="bg-stone/10 border-2 border-ink/20 rounded-xl p-4 text-sm text-left mb-8">
+        <div className="bg-ink/5 border-2 border-ink/20 rounded-xl p-4 text-sm text-left mb-8">
           <p className="font-bold text-ink/80 mb-1">International Shipping Notice</p>
           <p className="text-ink/60">{dutiesDisclaimer}</p>
         </div>

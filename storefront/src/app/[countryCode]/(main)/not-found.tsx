@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Button } from '@/components/retroui/Button'
 
 export default function NotFound() {
   return (
@@ -12,18 +13,12 @@ export default function NotFound() {
           The page you're looking for doesn't exist or has been moved.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/us"
-            className="inline-block px-8 py-4 bg-ink text-paper font-display text-lg uppercase border-2 border-ink rounded-lg shadow-hard hover:shadow-hard-xl hover:-translate-y-1 transition-all"
-          >
-            Back to Home
-          </Link>
-          <Link
-            href="/us/shop"
-            className="inline-block px-8 py-4 bg-paper text-ink font-display text-lg uppercase border-2 border-ink rounded-lg shadow-hard hover:shadow-hard-xl hover:-translate-y-1 transition-all"
-          >
-            Browse Shop
-          </Link>
+          <Button asChild variant="secondary" size="lg">
+            <Link href="/us">Back to Home</Link>
+          </Button>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/us/shop">Browse Shop</Link>
+          </Button>
         </div>
       </div>
     </div>

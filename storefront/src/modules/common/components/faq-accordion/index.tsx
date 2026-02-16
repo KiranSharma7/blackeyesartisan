@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@lib/util/cn'
+import { Button } from '@/components/retroui/Button'
 
 interface Question {
   id: number
@@ -44,14 +45,14 @@ export default function FAQAccordion({ questions }: FAQAccordionProps) {
       {questions.map((question, index) => (
         <div
           key={question.id}
-          className="border-2 border-ink rounded-lg overflow-hidden bg-paper"
+          className="border-2 border-ink rounded-xl overflow-hidden bg-paper shadow-xs hover:shadow-md transition-shadow"
         >
-          <button
+          <Button
+            variant="ghost"
             onClick={() => toggleQuestion(index)}
             className={cn(
-              'w-full px-6 py-4 text-left flex items-center justify-between gap-4',
-              'hover:bg-stone/30 transition-colors',
-              openIndex === index && 'bg-stone/30'
+              'w-full px-6 py-4 justify-between gap-4 rounded-none text-left h-auto',
+              openIndex === index && 'bg-ink/[0.08]'
             )}
             aria-expanded={openIndex === index}
           >
@@ -62,7 +63,7 @@ export default function FAQAccordion({ questions }: FAQAccordionProps) {
                 openIndex === index && 'rotate-180'
               )}
             />
-          </button>
+          </Button>
           <div
             className={cn(
               'overflow-hidden transition-all duration-200',

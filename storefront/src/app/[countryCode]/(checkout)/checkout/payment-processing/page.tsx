@@ -103,7 +103,7 @@ export default function PaymentProcessingPage() {
   }, [searchParams, router])
 
   return (
-    <div className="min-h-screen bg-stone/20 flex items-center justify-center">
+    <div className="min-h-screen bg-ink/5 flex items-center justify-center">
       <div className="max-w-md mx-auto p-8 bg-white border-2 border-ink rounded-xl shadow-hard">
         {status === 'processing' && (
           <>

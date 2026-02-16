@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { Button } from '@/components/retroui/Button'
 
 interface ErrorProps {
   error: Error & { digest?: string }
@@ -24,18 +25,12 @@ export default function Error({ error, reset }: ErrorProps) {
           We encountered an unexpected error. Please try again or return to the homepage.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            onClick={reset}
-            className="inline-block px-8 py-4 bg-ink text-paper font-display text-lg uppercase border-2 border-ink rounded-lg shadow-hard hover:shadow-hard-xl hover:-translate-y-1 transition-all"
-          >
+          <Button onClick={reset} variant="secondary" size="lg">
             Try Again
-          </button>
-          <a
-            href="/us"
-            className="inline-block px-8 py-4 bg-paper text-ink font-display text-lg uppercase border-2 border-ink rounded-lg shadow-hard hover:shadow-hard-xl hover:-translate-y-1 transition-all"
-          >
-            Back to Home
-          </a>
+          </Button>
+          <Button asChild variant="outline" size="lg">
+            <a href="/us">Back to Home</a>
+          </Button>
         </div>
       </div>
     </div>

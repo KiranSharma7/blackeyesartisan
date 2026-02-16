@@ -30,7 +30,7 @@ export default async function AboutUsPage() {
       <div className="max-w-site mx-auto px-4 md:px-8">
         {/* Hero Banner */}
         {about.Banner && about.Banner.length > 0 && (
-          <div className="relative w-full h-[300px] md:h-[400px] mb-12 rounded-lg overflow-hidden border-2 border-ink shadow-hard">
+          <div className="relative w-full h-[300px] md:h-[400px] mb-12 rounded-xl overflow-hidden border-2 border-ink shadow-hard">
             <Image
               src={about.Banner[0].url}
               alt={about.Banner[0].alternativeText || 'Black Eyes Artisan'}
@@ -67,7 +67,7 @@ export default async function AboutUsPage() {
                 />
               </div>
               {about.OurStory.Image && (
-                <div className="relative aspect-square rounded-lg overflow-hidden border-2 border-ink shadow-hard">
+                <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-ink shadow-hard">
                   <Image
                     src={about.OurStory.Image.url}
                     alt={about.OurStory.Image.alternativeText || about.OurStory.Title}
@@ -82,10 +82,10 @@ export default async function AboutUsPage() {
 
         {/* Our Craftsmanship Section */}
         {about.OurCraftsmanship && (
-          <section className="mb-16 bg-stone/30 -mx-4 md:-mx-8 px-4 md:px-8 py-12 rounded-lg">
+          <section className="mb-16 bg-ink/[0.08] -mx-4 md:-mx-8 px-4 md:px-8 py-12 rounded-xl">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               {about.OurCraftsmanship.Image && (
-                <div className="relative aspect-square rounded-lg overflow-hidden border-2 border-ink shadow-hard order-2 md:order-1">
+                <div className="relative aspect-square rounded-xl overflow-hidden border-2 border-ink shadow-hard order-2 md:order-1">
                   <Image
                     src={about.OurCraftsmanship.Image.url}
                     alt={
@@ -120,7 +120,7 @@ export default async function AboutUsPage() {
               {about.WhyUs.Tile.map((tile) => (
                 <div
                   key={tile.id}
-                  className="bg-paper border-2 border-ink rounded-lg p-6 shadow-hard hover:shadow-hard-xl transition-shadow"
+                  className="bg-paper border-2 border-ink rounded-xl p-6 shadow-hard hover:shadow-hard-xl transition-shadow"
                 >
                   {tile.Image && (
                     <div className="relative w-16 h-16 mb-4">
@@ -142,7 +142,7 @@ export default async function AboutUsPage() {
 
         {/* Numbers/Stats Section */}
         {about.Numbers && about.Numbers.length > 0 && (
-          <section className="bg-ink text-paper -mx-4 md:-mx-8 px-4 md:px-8 py-12 rounded-lg">
+          <section className="bg-ink text-paper -mx-4 md:-mx-8 px-4 md:px-8 py-12 rounded-xl">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
               {about.Numbers.map((stat) => (
                 <div key={stat.id}>

@@ -28,7 +28,7 @@ export default function CheckoutTemplate({
   const hasShippingMethod = cart.shipping_methods && cart.shipping_methods.length > 0
 
   return (
-    <div className="min-h-screen bg-stone/20 py-8">
+    <div className="min-h-screen bg-ink/5 py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <h1 className="font-display font-bold text-4xl uppercase mb-8 text-center">

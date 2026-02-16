@@ -10,7 +10,7 @@ export default function EmptyCart({ countryCode }: EmptyCartProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div
-        className="w-20 h-20 bg-stone/20 rounded-full border-2 border-ink
+        className="w-20 h-20 bg-ink/5 rounded-full border-2 border-ink
                     flex items-center justify-center mb-6"
       >
         <ShoppingBag className="w-10 h-10 text-ink/40" />

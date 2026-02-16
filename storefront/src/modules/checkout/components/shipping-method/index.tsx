@@ -64,20 +64,20 @@ export default function ShippingMethodSelect({
         const currencyCode = cart.currency_code || 'usd'
 
         return (
-          <button
+          <Button
             key={option.id}
             type="button"
             onClick={() => handleSelectOption(option.id)}
+            variant={isSelected ? 'secondary' : 'outline'}
+            size="lg"
             className={cn(
-              'w-full text-left p-4 border-2 border-ink rounded-xl transition-all',
-              isSelected
-                ? 'bg-ink text-paper shadow-hard-sm'
-                : 'bg-white hover:bg-stone/30'
+              'w-full justify-start p-4 h-auto',
+              isSelected && 'shadow-hard-sm'
             )}
             data-testid="shipping-option"
           >
-            <div className="flex justify-between items-center">
-              <div>
+            <div className="flex justify-between items-center w-full">
+              <div className="text-left">
                 <p className="font-display text-lg uppercase">{option.name}</p>
                 {(option.data as any)?.estimated_days && (
                   <p className={cn('text-sm', isSelected ? 'opacity-80' : 'text-ink/60')}>
@@ -94,7 +94,7 @@ export default function ShippingMethodSelect({
                     })}
               </p>
             </div>
-          </button>
+          </Button>
         )
       })}
 

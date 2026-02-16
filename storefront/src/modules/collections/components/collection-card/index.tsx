@@ -28,7 +28,7 @@ export default function CollectionCard({
       <Card className="group overflow-hidden hover:shadow-hard-xl">
         {/* Image Container */}
         <div
-          className="aspect-[16/10] bg-stone/30 border-b-2 border-ink relative overflow-hidden
+          className="aspect-[16/10] bg-ink/[0.08] border-b-2 border-ink relative overflow-hidden
                       flex items-center justify-center"
         >
           {imageUrl ? (
@@ -41,7 +41,7 @@ export default function CollectionCard({
             />
           ) : (
             /* Gradient placeholder when no image */
-            <div className="absolute inset-0 bg-gradient-to-br from-acid/20 via-sun/20 to-stone/40" />
+            <div className="absolute inset-0 bg-gradient-to-br from-acid/20 via-sun/20 to-ink/10" />
           )}
 
           {/* Collection title overlay */}

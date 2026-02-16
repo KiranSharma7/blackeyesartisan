@@ -49,7 +49,7 @@ export default function ProductCard({ product, countryCode }: ProductCardProps) 
       <Card className="group overflow-hidden hover:shadow-hard-xl">
         {/* Image Container */}
         <div
-          className="aspect-[4/5] bg-stone/20 border-b-2 border-ink relative overflow-hidden
+          className="aspect-[4/5] bg-ink/5 border-b-2 border-ink relative overflow-hidden
                       p-6 flex items-center justify-center"
         >
           {/* SOLD Badge for sold-out products */}

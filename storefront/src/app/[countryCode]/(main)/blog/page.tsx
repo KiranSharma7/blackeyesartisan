@@ -48,7 +48,7 @@ export default async function BlogPage({ params }: BlogPageProps) {
             <Link
               key={post.Slug}
               href={`/${countryCode}/blog/${post.Slug}`}
-              className="group block bg-paper border-2 border-ink rounded-lg overflow-hidden shadow-hard hover:shadow-hard-xl transition-shadow"
+              className="group block bg-paper border-2 border-ink rounded-xl overflow-hidden shadow-hard hover:shadow-hard-xl transition-shadow"
             >
               {post.FeaturedImage?.url && (
                 <div className="relative aspect-video overflow-hidden">

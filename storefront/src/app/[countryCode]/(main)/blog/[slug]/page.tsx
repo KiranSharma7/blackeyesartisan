@@ -91,7 +91,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* Featured Image */}
         {post.FeaturedImage?.url && (
-          <div className="relative aspect-video mb-12 rounded-lg overflow-hidden border-2 border-ink shadow-hard">
+          <div className="relative aspect-video mb-12 rounded-xl overflow-hidden border-2 border-ink shadow-hard">
             <Image
               src={post.FeaturedImage.url}
               alt={post.FeaturedImage.alternativeText || post.Title}

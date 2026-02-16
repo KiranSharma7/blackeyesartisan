@@ -86,14 +86,15 @@ export default function MobileMenu({
 
         <div className="px-6 py-4">
           {/* Search */}
-          <button
+          <Button
+            variant="outline"
+            size="lg"
             onClick={handleSearchClick}
-            className="w-full flex items-center gap-3 px-4 py-3.5 mb-2 rounded-xl
-                       border-2 border-ink/10 hover:border-ink/30 transition-colors"
+            className="w-full justify-start gap-3 mb-2 border-ink/10 hover:border-ink/30 shadow-none hover:shadow-none"
           >
             <Search className="w-5 h-5 text-ink/50" />
             <span className="text-sm font-medium text-ink/50">Search products...</span>
-          </button>
+          </Button>
 
           {/* Nav Links */}
           <div className="mt-2 space-y-1">
@@ -103,11 +104,17 @@ export default function MobileMenu({
                 : item.url
 
               return (
-                <Link key={item.id} href={href} onClick={closeMobileMenu}>
-                  <button className="w-full text-left px-4 py-3.5 text-base font-bold uppercase tracking-wide rounded-xl hover:bg-stone/40 transition-colors">
+                <Button
+                  key={item.id}
+                  asChild
+                  variant="ghost"
+                  size="lg"
+                  className="w-full justify-start font-bold uppercase tracking-wide"
+                >
+                  <Link href={href} onClick={closeMobileMenu}>
                     {item.label}
-                  </button>
-                </Link>
+                  </Link>
+                </Button>
               )
             })}
           </div>
@@ -121,35 +128,50 @@ export default function MobileMenu({
                     {customer.email}
                   </p>
                 </div>
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="lg"
+                  className="w-full justify-start gap-3"
+                >
+                  <Link
+                    href={`/${countryCode}/account`}
+                    onClick={closeMobileMenu}
+                  >
+                    <User className="w-5 h-5 text-ink/60" />
+                    <span className="text-sm font-semibold">My Account</span>
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="lg"
+                  className="w-full justify-start gap-3"
+                >
+                  <Link
+                    href={`/${countryCode}/account/orders`}
+                    onClick={closeMobileMenu}
+                  >
+                    <Package className="w-5 h-5 text-ink/60" />
+                    <span className="text-sm font-semibold">Orders</span>
+                  </Link>
+                </Button>
+              </>
+            ) : (
+              <Button
+                asChild
+                variant="ghost"
+                size="lg"
+                className="w-full justify-start gap-3"
+              >
                 <Link
                   href={`/${countryCode}/account`}
                   onClick={closeMobileMenu}
                 >
-                  <button className="w-full text-left px-4 py-3.5 flex items-center gap-3 rounded-xl hover:bg-stone/40 transition-colors">
-                    <User className="w-5 h-5 text-ink/60" />
-                    <span className="text-sm font-semibold">My Account</span>
-                  </button>
-                </Link>
-                <Link
-                  href={`/${countryCode}/account/orders`}
-                  onClick={closeMobileMenu}
-                >
-                  <button className="w-full text-left px-4 py-3.5 flex items-center gap-3 rounded-xl hover:bg-stone/40 transition-colors">
-                    <Package className="w-5 h-5 text-ink/60" />
-                    <span className="text-sm font-semibold">Orders</span>
-                  </button>
-                </Link>
-              </>
-            ) : (
-              <Link
-                href={`/${countryCode}/account`}
-                onClick={closeMobileMenu}
-              >
-                <button className="w-full text-left px-4 py-3.5 flex items-center gap-3 rounded-xl hover:bg-stone/40 transition-colors">
                   <User className="w-5 h-5 text-ink/60" />
                   <span className="text-sm font-semibold">Sign In / Create Account</span>
-                </button>
-              </Link>
+                </Link>
+              </Button>
             )}
           </div>
         </div>

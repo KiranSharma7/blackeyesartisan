@@ -34,7 +34,7 @@ export default async function CollectionsPage({ params }: CollectionsPageProps) 
         {collections && collections.length > 0 ? (
           <CollectionGrid collections={collections} countryCode={countryCode} />
         ) : (
-          <div className="text-center py-12 bg-stone/20 rounded-2xl border-2 border-ink">
+          <div className="text-center py-12 bg-ink/5 rounded-2xl border-2 border-ink">
             <h2 className="font-display font-bold text-2xl uppercase mb-2">
               Coming Soon
             </h2>

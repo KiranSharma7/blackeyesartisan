@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { getFAQ } from '@lib/data/fetch'
 import FAQAccordion from '@modules/common/components/faq-accordion'
+import { Button } from '@/components/retroui/Button'
 
 export const metadata: Metadata = {
   title: 'FAQ | Black Eyes Artisan',
@@ -40,13 +41,17 @@ export default async function FAQPage() {
         {faq.FAQSection.length > 1 && (
           <nav className="mb-12 flex flex-wrap gap-3">
             {faq.FAQSection.map((section) => (
-              <a
+              <Button
                 key={section.id}
-                href={`#${section.Bookmark || section.Title.toLowerCase().replace(/\s+/g, '-')}`}
-                className="px-4 py-2 bg-stone border-2 border-ink rounded-lg text-sm font-medium hover:bg-sun hover:shadow-hard transition-all"
+                asChild
+                variant="outline"
+                size="sm"
+                className="bg-ink/10 hover:bg-sun"
               >
-                {section.Title}
-              </a>
+                <a href={`#${section.Bookmark || section.Title.toLowerCase().replace(/\s+/g, '-')}`}>
+                  {section.Title}
+                </a>
+              </Button>
             ))}
           </nav>
         )}

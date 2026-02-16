@@ -73,7 +73,7 @@ export default function StripeCardElement({
       />
 
       {errorMessage && (
-        <div className="p-3 bg-acid/10 border-2 border-acid rounded-lg">
+        <div className="p-3 bg-acid/10 border-2 border-acid rounded-xl">
           <p className="text-sm text-acid font-medium">{errorMessage}</p>
         </div>
       )}

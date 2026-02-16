@@ -6,6 +6,7 @@ import { Trash2, Minus, Plus } from 'lucide-react'
 import { HttpTypes } from '@medusajs/types'
 import { convertToLocale } from '@lib/util/money'
 import { updateLineItem, deleteLineItem } from '@lib/data/cart'
+import { Button } from '@/components/retroui/Button'
 
 interface CartItemProps {
   item: HttpTypes.StoreCartLineItem
@@ -39,7 +40,7 @@ export default function CartItem({ item }: CartItemProps) {
       className={`flex gap-4 py-4 border-b border-ink/10 ${isPending ? 'opacity-50' : ''}`}
     >
       {/* Image */}
-      <div className="w-20 h-20 bg-stone/20 border-2 border-ink rounded-xl overflow-hidden flex-shrink-0 relative">
+      <div className="w-20 h-20 bg-ink/5 border-2 border-ink rounded-xl overflow-hidden flex-shrink-0 relative">
         <Image
           src={thumbnailUrl}
           alt={item.title || 'Product'}
@@ -64,37 +65,43 @@ export default function CartItem({ item }: CartItemProps) {
       </div>
 
       {/* Quantity Controls */}
-      <div className="flex items-center border-2 border-ink rounded-xl bg-white h-10">
-        <button
+      <div className="flex items-center border-2 border-ink rounded-xl bg-white h-10 shadow-xs">
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => handleUpdateQuantity(item.quantity - 1)}
           disabled={isPending || item.quantity <= 1}
-          className="px-3 hover:bg-stone/50 rounded-l-lg transition-colors disabled:opacity-30"
+          className="rounded-r-none h-full"
           aria-label="Decrease quantity"
         >
           <Minus className="w-4 h-4" />
-        </button>
+        </Button>
         <span className="px-2 font-bold min-w-[2rem] text-center">
           {item.quantity}
         </span>
-        <button
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => handleUpdateQuantity(item.quantity + 1)}
           disabled={isPending}
-          className="px-3 hover:bg-stone/50 rounded-r-lg transition-colors disabled:opacity-30"
+          className="rounded-l-none h-full"
           aria-label="Increase quantity"
         >
           <Plus className="w-4 h-4" />
-        </button>
+        </Button>
       </div>
 
       {/* Remove Button */}
-      <button
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={handleRemove}
         disabled={isPending}
-        className="text-ink/40 hover:text-acid transition-colors disabled:opacity-30"
+        className="text-ink/40 hover:text-acid"
         aria-label="Remove item"
       >
         <Trash2 className="w-5 h-5" />
-      </button>
+      </Button>
     </div>
   )
 }

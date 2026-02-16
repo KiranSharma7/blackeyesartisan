@@ -66,61 +66,93 @@ export default function AccountDropdown({
                   {customer.email}
                 </p>
               </div>
-              <Link
-                href={`/${countryCode}/account`}
-                onClick={closeAccount}
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start"
               >
-                <button role="menuitem" className="w-full text-left px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-stone/40 transition-colors">
+                <Link
+                  href={`/${countryCode}/account`}
+                  role="menuitem"
+                  onClick={closeAccount}
+                >
                   My Account
-                </button>
-              </Link>
-              <Link
-                href={`/${countryCode}/account/orders`}
-                onClick={closeAccount}
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start"
               >
-                <button role="menuitem" className="w-full text-left px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-stone/40 transition-colors">
+                <Link
+                  href={`/${countryCode}/account/orders`}
+                  role="menuitem"
+                  onClick={closeAccount}
+                >
                   Orders
-                </button>
-              </Link>
-              <Link
-                href={`/${countryCode}/account/profile`}
-                onClick={closeAccount}
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start"
               >
-                <button role="menuitem" className="w-full text-left px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-stone/40 transition-colors">
+                <Link
+                  href={`/${countryCode}/account/profile`}
+                  role="menuitem"
+                  onClick={closeAccount}
+                >
                   Profile
-                </button>
-              </Link>
+                </Link>
+              </Button>
               <div className="border-t border-ink/10 mt-1 pt-1">
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full justify-start text-acid hover:bg-acid/10"
                   role="menuitem"
                   onClick={() => {
                     closeAccount()
                     signout(countryCode)
                   }}
-                  className="w-full text-left px-3 py-2.5 text-sm font-semibold text-acid rounded-lg hover:bg-acid/10 transition-colors"
                 >
                   Sign Out
-                </button>
+                </Button>
               </div>
             </>
           ) : (
             <>
-              <Link
-                href={`/${countryCode}/account`}
-                onClick={closeAccount}
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start"
               >
-                <button role="menuitem" className="w-full text-left px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-stone/40 transition-colors">
+                <Link
+                  href={`/${countryCode}/account`}
+                  role="menuitem"
+                  onClick={closeAccount}
+                >
                   Sign In
-                </button>
-              </Link>
-              <Link
-                href={`/${countryCode}/account`}
-                onClick={closeAccount}
+                </Link>
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className="w-full justify-start"
               >
-                <button role="menuitem" className="w-full text-left px-3 py-2.5 text-sm font-semibold rounded-lg hover:bg-stone/40 transition-colors">
+                <Link
+                  href={`/${countryCode}/account`}
+                  role="menuitem"
+                  onClick={closeAccount}
+                >
                   Create Account
-                </button>
-              </Link>
+                </Link>
+              </Button>
             </>
           )}
         </div>

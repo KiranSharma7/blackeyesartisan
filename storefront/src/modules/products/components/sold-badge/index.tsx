@@ -24,7 +24,7 @@ export default function SoldBadge({ className, size = 'md' }: SoldBadgeProps) {
         'font-display uppercase tracking-wider',
         // Design system: ink background, paper text, 2px border, hard shadow
         'bg-ink text-paper border-2 border-ink',
-        'rounded-lg shadow-hard-sm',
+        'rounded-xl shadow-hard-sm',
         // Animation on hover (for parent hover states)
         'transition-transform duration-200',
         // Size variant

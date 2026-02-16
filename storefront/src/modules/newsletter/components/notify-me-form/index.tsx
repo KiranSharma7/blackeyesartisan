@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '@lib/util/cn'
+import { Button } from '@/components/retroui/Button'
 
 interface NotifyMeFormProps {
   productTitle: string
@@ -102,30 +103,23 @@ export default function NotifyMeForm({
             placeholder="Enter your email"
             disabled={status === 'loading' || status === 'success'}
             className={cn(
-              'flex-1 px-4 py-3 border-2 border-ink rounded-lg',
-              'font-sans text-base bg-paper text-ink',
+              'flex-1 px-4 py-3 border-2 border-ink rounded-xl',
+              'font-medium bg-paper text-ink',
               'placeholder:text-ink/40',
-              'focus:outline-none focus:ring-2 focus:ring-ink focus:ring-offset-2',
+              'focus:outline-hidden focus:shadow-xs shadow-md',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'transition-all duration-200'
             )}
           />
-          <button
+          <Button
             type="submit"
             disabled={status === 'loading' || status === 'success'}
-            className={cn(
-              'px-6 py-3 border-2 border-ink rounded-lg',
-              'font-display text-sm uppercase tracking-wider',
-              'bg-ink text-paper',
-              'hover:bg-paper hover:text-ink',
-              'shadow-hard hover:shadow-hard-sm',
-              'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-ink disabled:hover:text-paper',
-              'transition-all duration-200',
-              'whitespace-nowrap'
-            )}
+            variant="secondary"
+            size="lg"
+            className="whitespace-nowrap"
           >
             {status === 'loading' ? 'Submitting...' : 'Notify Me'}
-          </button>
+          </Button>
         </div>
 
         {/* Status Message */}

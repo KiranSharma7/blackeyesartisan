@@ -111,7 +111,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
         {products.length > 0 ? (
           <ProductGrid products={products} countryCode={countryCode} />
         ) : (
-          <div className="text-center py-12 bg-stone/20 rounded-2xl border-2 border-ink">
+          <div className="text-center py-12 bg-ink/5 rounded-2xl border-2 border-ink">
             <h2 className="font-display font-bold text-2xl uppercase mb-2">
               Coming Soon
             </h2>

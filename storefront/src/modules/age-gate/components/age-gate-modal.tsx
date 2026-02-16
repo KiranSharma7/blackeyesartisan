@@ -65,7 +65,7 @@ export default function AgeGateModal() {
 
             <button
               onClick={handleDecline}
-              className="w-full border-4 border-ink bg-white px-6 py-3 font-display text-sm uppercase tracking-wide text-ink shadow-hard transition-all hover:-translate-y-0.5 hover:bg-stone hover:shadow-hard-xl active:translate-y-0 active:shadow-hard-sm"
+              className="w-full border-4 border-ink bg-white px-6 py-3 font-display text-sm uppercase tracking-wide text-ink shadow-hard transition-all hover:-translate-y-0.5 hover:bg-ink/10 hover:shadow-hard-xl active:translate-y-0 active:shadow-hard-sm"
             >
               I am under 18
             </button>

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { cn } from '@lib/util/cn'
 import { validateEmail } from '@lib/util/validator'
+import { Button } from '@/components/retroui/Button'
 
 interface NewsletterFormProps {
   className?: string
@@ -98,43 +99,28 @@ export default function NewsletterForm({
             disabled={status === 'loading' || status === 'success'}
             aria-label="Email address for newsletter"
             className={cn(
-              'flex-1 px-4 py-3 border-2 rounded-lg',
-              'font-sans text-base',
+              'flex-1 px-4 py-3 border-2 rounded-xl font-medium',
               'placeholder:opacity-50',
-              'focus:outline-none focus:ring-2 focus:ring-offset-2',
+              'focus:outline-hidden focus:shadow-xs',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               'transition-all duration-200',
               isFooter
-                ? 'border-paper/30 bg-ink text-paper placeholder:text-paper/50 focus:ring-paper'
-                : 'border-ink bg-paper text-ink placeholder:text-ink/50 focus:ring-ink'
+                ? 'border-paper/30 bg-ink text-paper placeholder:text-paper/50 shadow-md'
+                : 'border-ink bg-paper text-ink placeholder:text-ink/50 shadow-md'
             )}
           />
-          <button
+          <Button
             type="submit"
             disabled={status === 'loading' || status === 'success'}
+            variant={isFooter ? 'default' : 'secondary'}
+            size="lg"
             className={cn(
-              'px-6 py-3 border-2 rounded-lg',
-              'font-display text-sm uppercase tracking-wider',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              'transition-all duration-200',
               'whitespace-nowrap',
-              isFooter
-                ? [
-                    'border-sun bg-sun text-ink',
-                    'hover:bg-transparent hover:text-sun',
-                    'shadow-hard-sun hover:shadow-none',
-                    'disabled:hover:bg-sun disabled:hover:text-ink'
-                  ]
-                : [
-                    'border-ink bg-ink text-paper',
-                    'hover:bg-paper hover:text-ink',
-                    'shadow-hard hover:shadow-hard-sm',
-                    'disabled:hover:bg-ink disabled:hover:text-paper'
-                  ]
+              isFooter && 'bg-sun border-sun text-ink hover:bg-transparent hover:text-sun shadow-hard-sun hover:shadow-none'
             )}
           >
             {status === 'loading' ? 'Joining...' : status === 'success' ? 'Subscribed!' : 'Subscribe'}
-          </button>
+          </Button>
         </div>
 
         {/* Status Message */}
