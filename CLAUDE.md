@@ -20,9 +20,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Taxes**: Manual approach in MVP; duties/taxes disclaimer visible in checkout and policies
 
 ### Data Sources of Truth
-- **Medusa**: Products, inventory, cart, checkout, orders, regions, shipping
-- **Strapi**: Pages, policies, global settings (age gate TTL, handling times, announcement bar)
-- **Storefront**: Reads commerce data from Medusa + content from Strapi via APIs
+- **Medusa** (all eCommerce): Products, collections, featured/hero picks, inventory, pricing, cart, checkout, orders, regions, shipping, payments, customers — any commerce-related selection or curation (e.g. which products appear as hero peek cards) is managed via Medusa collections/admin, NOT Strapi
+- **Strapi** (all content): Pages, policies, blog posts, FAQs, global settings (age gate TTL, handling times, announcement bar), banner slides, SEO metadata — purely editorial/content, never product data
+- **Storefront**: Reads commerce data from Medusa + content from Strapi via APIs; never the source of truth for either
 
 ---
 

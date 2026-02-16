@@ -5,6 +5,7 @@ import { getRegion } from '@lib/data/regions'
 import { getCollectionsWithProducts } from '@lib/data/collections'
 import ProductGrid from '@modules/products/components/product-grid'
 import CollectionGrid from '@modules/collections/components/collection-grid'
+import HeroSection from '@modules/home/components/hero-section'
 import { Button } from '@/components/retroui/Button'
 
 export const metadata: Metadata = {
@@ -42,6 +43,9 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <>
+      {/* Hero Section */}
+      <HeroSection countryCode={countryCode} />
+
       {/* Featured Products */}
       <section className="py-16 bg-stone/20">
         <div className="max-w-site mx-auto px-4 md:px-8">

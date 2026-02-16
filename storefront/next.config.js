@@ -45,6 +45,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'cms.blackeyesartisan.shop',
       },
+      // Unsplash (for placeholder/mock hero images - remove when using CMS images)
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
       // Legacy support for SPACE_DOMAIN env vars (now point to Cloudinary)
       ...(process.env.NEXT_PUBLIC_SPACE_DOMAIN
         ? [
