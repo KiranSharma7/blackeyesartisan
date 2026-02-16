@@ -5,7 +5,7 @@ import { BannerContent } from 'types/strapi'
 import HeroCarousel from './hero-carousel'
 import HeroSkeleton from './hero-skeleton'
 
-const HERO_PICKS_HANDLE = 'hero-picks'
+const HERO_PICKS_HANDLE = 'pick'
 
 // TODO: Remove mock data once Strapi MidBanner is populated
 const MOCK_SLIDES: BannerContent[] = [
