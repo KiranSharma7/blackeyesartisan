@@ -6,7 +6,6 @@ import { getCollectionsWithProducts } from '@lib/data/collections'
 import ProductGrid from '@modules/products/components/product-grid'
 import CollectionGrid from '@modules/collections/components/collection-grid'
 import HeroSection from '@modules/home/components/hero-section'
-import CategoryCarousel from '@modules/home/components/category-carousel'
 import { Button } from '@/components/retroui/Button'
 
 export const metadata: Metadata = {
@@ -46,9 +45,6 @@ export default async function HomePage({ params }: HomePageProps) {
     <>
       {/* Hero Section */}
       <HeroSection countryCode={countryCode} />
-
-      {/* Shop by Category Carousel */}
-      <CategoryCarousel countryCode={countryCode} />
 
       {/* Featured Products */}
       <section className="py-16 bg-ink/5">

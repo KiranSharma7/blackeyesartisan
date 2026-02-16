@@ -1,5 +1,3 @@
-import { cache } from 'react'
-
 import { sdk } from '@lib/config'
 
 export const listCategories = async function () {
@@ -19,18 +17,6 @@ export const getCategoriesList = async function (
     { next: { tags: ['categories'] } }
   )
 }
-
-export const getTopLevelCategories = cache(async function (
-  limit: number = 20
-) {
-  return sdk.store.category
-    .list(
-      // @ts-ignore
-      { limit, offset: 0, parent_category_id: null, fields: '+metadata' },
-      { next: { tags: ['categories'] } }
-    )
-    .then(({ product_categories }) => product_categories)
-})
 
 export const getCategoryByHandle = async function (categoryHandle: string[]) {
   return sdk.store.category.list(
