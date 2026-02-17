@@ -114,7 +114,7 @@ export default function NotifyMeForm({
           <Button
             type="submit"
             disabled={status === 'loading' || status === 'success'}
-            variant="secondary"
+            variant="default"
             size="lg"
             className="whitespace-nowrap"
           >

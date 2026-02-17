@@ -48,7 +48,11 @@ export default function HeroSlide({ slide, priority = false }: HeroSlideProps) {
 
         {/* CTA Button */}
         {slide.CTA && (
-          <Button variant="default" size="lg" asChild>
+          <Button
+            variant="default"
+            size="lg"
+            asChild
+          >
             <Link href={slide.CTA.BtnLink}>{slide.CTA.BtnText}</Link>
           </Button>
         )}

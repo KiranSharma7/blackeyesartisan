@@ -6,6 +6,7 @@ import { HttpTypes } from '@medusajs/types'
 import { updateCart } from '@lib/data/cart'
 import { Input } from '@/components/retroui/Input'
 import { Button } from '@/components/retroui/Button'
+import { Alert } from '@/components/retroui/Alert'
 import {
   CountrySelect,
   SHIPPING_COUNTRIES,
@@ -134,9 +135,9 @@ export default function ShippingAddressForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {errors.form && (
-        <div className="bg-acid/10 border-2 border-acid rounded-xl p-3 text-sm text-acid">
+        <Alert status="error">
           {errors.form}
-        </div>
+        </Alert>
       )}
 
       <Input
@@ -227,7 +228,7 @@ export default function ShippingAddressForm({
 
       <Button
         type="submit"
-        variant="secondary"
+        variant="default"
         size="lg"
         className="w-full mt-6"
         disabled={isPending}

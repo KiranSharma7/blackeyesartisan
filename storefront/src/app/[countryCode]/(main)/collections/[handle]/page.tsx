@@ -119,7 +119,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
               New pieces for this collection are on the way.
             </p>
             <Link href={`/${countryCode}/collections`}>
-              <Button variant="outline">Browse Other Collections</Button>
+              <Button variant="default">Browse Other Collections</Button>
             </Link>
           </div>
         )}
@@ -127,7 +127,7 @@ export default async function CollectionPage({ params }: CollectionPageProps) {
         {/* Back to Collections */}
         <div className="text-center mt-12">
           <Link href={`/${countryCode}/collections`}>
-            <Button variant="outline" size="lg">
+            <Button variant="default" size="lg">
               &larr; All Collections
             </Button>
           </Link>

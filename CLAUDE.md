@@ -273,7 +273,7 @@ yarn test:integration:http          # HTTP endpoint tests
   ```
 
 ### Component Patterns
-- **Storefront**: React functional components + hooks
+- **Storefront**: React functional components + hooks. **ALWAYS use RetroUI components** from `storefront/src/components/retroui/` (Button, Card, Input, Select, Dialog, Badge, Text, Label, Accordion, Alert, Drawer, Loader, Radio, Carousel, Textarea, Switch, Checkbox, Progress, Tabs, Menu, Breadcrumb, Sonner). Never use raw HTML elements or other UI libraries when a RetroUI equivalent exists.
 - **API**: TypeORM entities with decorators
 - **CMS**: Strapi REST collections with custom components
 
@@ -294,7 +294,7 @@ yarn test:integration:http          # HTTP endpoint tests
   - `cms.blackeyesartisan.shop` → VPS Nginx → Strapi (port 1337)
 
 ### Vercel (Storefront)
-- Auto-deploys from GitHub main branch
+- Deployed manually via Vercel CLI (`vercel` or `vercel --prod`), NOT auto-deployed from GitHub
 - Environment variables configured in Vercel dashboard
 - Required vars: `NEXT_PUBLIC_MEDUSA_BACKEND_URL`, `NEXT_PUBLIC_STRAPI_URL`, `NEXT_PUBLIC_STRAPI_READ_TOKEN`, `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`, `NEXT_PUBLIC_BASE_URL`, `STRAPI_WEBHOOK_REVALIDATION_SECRET`, `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME`
 
@@ -403,3 +403,6 @@ URL: cloudinary://876936695179845:iEYpye-9ptjclcN4cZNKzyePo74@dllzefagw
 ```
 API Key: re_dU5PsXha_7Voxe2AEwFz2jixeyJSryv45
 ```
+
+
+Always use Context7 MCP when I need library/API documentation, code generation, setup or configuration steps without me having to explicitly ask.

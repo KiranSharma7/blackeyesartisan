@@ -1,8 +1,7 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import useEmblaCarousel from 'embla-carousel-react'
+import { Carousel } from '@/components/retroui/Carousel'
 import CategoryCard, { EnrichedCategory } from './category-card'
 
 interface CategoryCarouselClientProps {
@@ -14,51 +13,22 @@ export default function CategoryCarouselClient({
   categories,
   countryCode,
 }: CategoryCarouselClientProps) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    loop: false,
-    align: 'start',
-    slidesToScroll: 1,
-  })
-
-  const [canScrollPrev, setCanScrollPrev] = useState(false)
-  const [canScrollNext, setCanScrollNext] = useState(true)
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return
-    setCanScrollPrev(emblaApi.canScrollPrev())
-    setCanScrollNext(emblaApi.canScrollNext())
-  }, [emblaApi])
-
-  useEffect(() => {
-    if (!emblaApi) return
-    onSelect()
-    emblaApi.on('select', onSelect)
-    emblaApi.on('reInit', onSelect)
-    return () => {
-      emblaApi.off('select', onSelect)
-      emblaApi.off('reInit', onSelect)
-    }
-  }, [emblaApi, onSelect])
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi])
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
-
   return (
-    <div
-      className="relative"
+    <Carousel
+      opts={{ loop: false, align: 'start', slidesToScroll: 1 }}
       role="region"
       aria-label="Shop by Category"
     >
       {/* Full-viewport-width wrapper that breaks out of parent container */}
       <div className="w-[100vw] relative left-1/2 -translate-x-1/2">
         {/* Embla viewport */}
-        <div ref={emblaRef} className="overflow-hidden">
-          <div className="flex">
+        <Carousel.Viewport>
+          <Carousel.Slides>
             {/* Leading spacer for left inset */}
             <div className="flex-[0_0_16px] md:flex-[0_0_calc((100vw-1366px)/2+32px)] lg:flex-[0_0_calc((100vw-1366px)/2+32px)]" />
 
             {/* All Products card — always first */}
-            <div className="flex-[0_0_72%] sm:flex-[0_0_40%] md:flex-[0_0_28%] lg:flex-[0_0_22%] min-w-0 pl-4 md:pl-6 h-[380px] sm:h-[400px] md:h-[420px]">
+            <Carousel.Slide className="flex-[0_0_72%] sm:flex-[0_0_40%] md:flex-[0_0_28%] lg:flex-[0_0_22%] pl-4 md:pl-6 h-[380px] sm:h-[400px] md:h-[420px]">
               <Link
                 href={`/${countryCode}/shop`}
                 className="group block h-full"
@@ -120,80 +90,29 @@ export default function CategoryCarouselClient({
                   </div>
                 </div>
               </Link>
-            </div>
+            </Carousel.Slide>
 
             {/* Category cards */}
             {categories.map((category) => (
-              <div
+              <Carousel.Slide
                 key={category.id}
-                className="flex-[0_0_72%] sm:flex-[0_0_40%] md:flex-[0_0_28%] lg:flex-[0_0_22%] min-w-0 pl-4 md:pl-6 h-[380px] sm:h-[400px] md:h-[420px]"
+                className="flex-[0_0_72%] sm:flex-[0_0_40%] md:flex-[0_0_28%] lg:flex-[0_0_22%] pl-4 md:pl-6 h-[380px] sm:h-[400px] md:h-[420px]"
               >
                 <CategoryCard
                   category={category}
                   countryCode={countryCode}
                 />
-              </div>
+              </Carousel.Slide>
             ))}
             {/* Trailing spacer so last card has right padding */}
             <div className="flex-[0_0_16px] md:flex-[0_0_24px]" />
-          </div>
-        </div>
+          </Carousel.Slides>
+        </Carousel.Viewport>
 
-        {/* Navigation Buttons — hidden when can't scroll */}
-        {canScrollPrev && (
-          <button
-            onClick={scrollPrev}
-            aria-label="Previous category"
-            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-10
-                       w-11 h-11 md:w-12 md:h-12
-                       rounded-full border-2 border-ink bg-paper shadow-hard-sm
-                       text-ink flex items-center justify-center
-                       transition-all duration-200
-                       hover:bg-ink hover:text-paper hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]
-                       active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-        )}
-
-        {canScrollNext && (
-          <button
-            onClick={scrollNext}
-            aria-label="Next category"
-            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-10
-                       w-11 h-11 md:w-12 md:h-12
-                       rounded-full border-2 border-ink bg-paper shadow-hard-sm
-                       text-ink flex items-center justify-center
-                       transition-all duration-200
-                       hover:bg-ink hover:text-paper hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]
-                       active:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="9 6 15 12 9 18" />
-            </svg>
-          </button>
-        )}
+        {/* Navigation Buttons — RetroUI Carousel components */}
+        <Carousel.Prev />
+        <Carousel.Next />
       </div>
-    </div>
+    </Carousel>
   )
 }

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { Pacifico, Archivo_Black, Space_Grotesk } from 'next/font/google'
 
 import { getBaseURL } from '@lib/util/env'
+import { Toaster } from '@/components/retroui/Sonner'
 
 import 'styles/globals.css'
 
@@ -42,6 +43,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
     >
       <body className="font-sans bg-white text-black">
         <main className="relative">{props.children}</main>
+        <Toaster />
       </body>
     </html>
   )

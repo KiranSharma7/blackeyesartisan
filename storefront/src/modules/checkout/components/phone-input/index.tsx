@@ -145,12 +145,9 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
             type="tel"
             id={inputId}
             className={cn(
-              'flex h-12 w-full rounded-xl border-2 border-ink bg-white pl-16 pr-4 py-2 text-base font-medium',
-              'shadow-hard-sm transition-all duration-200',
-              'placeholder:text-ink/40',
-              'focus:outline-none focus:ring-2 focus:ring-acid focus:ring-offset-2',
-              'disabled:cursor-not-allowed disabled:opacity-50',
-              displayError && 'border-acid focus:ring-acid',
+              'px-4 py-2 h-12 w-full rounded border-2 shadow-md transition focus:outline-hidden focus:shadow-xs font-medium',
+              'pl-16',
+              displayError && 'border-destructive text-destructive shadow-xs shadow-destructive',
               className
             )}
             ref={ref}

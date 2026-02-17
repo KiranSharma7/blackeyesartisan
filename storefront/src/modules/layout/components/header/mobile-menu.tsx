@@ -87,7 +87,7 @@ export default function MobileMenu({
         <div className="px-6 py-4">
           {/* Search */}
           <Button
-            variant="outline"
+            variant="default"
             size="lg"
             onClick={handleSearchClick}
             className="w-full justify-start gap-3 mb-2 border-ink/10 hover:border-ink/30 shadow-none hover:shadow-none"

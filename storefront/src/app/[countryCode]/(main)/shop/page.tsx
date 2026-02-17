@@ -63,13 +63,13 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
         <div className="flex items-center justify-center gap-4 mt-12">
           {page > 1 ? (
             <Link href={`/${countryCode}/shop?page=${page - 1}`}>
-              <Button variant="outline" size="md">
+              <Button variant="default" size="md">
                 <ChevronLeft className="w-5 h-5 mr-1" />
                 Previous
               </Button>
             </Link>
           ) : (
-            <Button variant="outline" size="md" disabled>
+            <Button variant="default" size="md" disabled>
               <ChevronLeft className="w-5 h-5 mr-1" />
               Previous
             </Button>
@@ -81,13 +81,13 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
 
           {page < totalPages ? (
             <Link href={`/${countryCode}/shop?page=${page + 1}`}>
-              <Button variant="outline" size="md">
+              <Button variant="default" size="md">
                 Next
                 <ChevronRight className="w-5 h-5 ml-1" />
               </Button>
             </Link>
           ) : (
-            <Button variant="outline" size="md" disabled>
+            <Button variant="default" size="md" disabled>
               Next
               <ChevronRight className="w-5 h-5 ml-1" />
             </Button>

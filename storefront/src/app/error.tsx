@@ -25,10 +25,10 @@ export default function Error({ error, reset }: ErrorProps) {
           We encountered an unexpected error. Please try again or return to the homepage.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button onClick={reset} variant="secondary" size="lg">
+          <Button onClick={reset} variant="default" size="lg">
             Try Again
           </Button>
-          <Button asChild variant="outline" size="lg">
+          <Button asChild variant="default" size="lg">
             <a href="/us">Back to Home</a>
           </Button>
         </div>

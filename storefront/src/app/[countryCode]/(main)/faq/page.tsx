@@ -44,7 +44,7 @@ export default async function FAQPage() {
               <Button
                 key={section.id}
                 asChild
-                variant="outline"
+                variant="default"
                 size="sm"
                 className="bg-ink/10 hover:bg-sun"
               >

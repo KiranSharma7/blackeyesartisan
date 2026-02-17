@@ -61,7 +61,7 @@ export default async function CategorySection({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 items-start">
           {/* Left Column — Headline + CTA */}
           <div>
-            <h2 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl uppercase leading-[0.95] mb-6 md:mb-8">
+            <h2 className="font-brand text-4xl md:text-5xl lg:text-6xl leading-snug mb-6 md:mb-8">
               Your Online
               <br />
               <span className="relative inline-block">
@@ -72,9 +72,9 @@ export default async function CategorySection({
             </h2>
             <Link href={`/${countryCode}/about`}>
               <Button
-                variant="outline"
+                variant="default"
                 size="lg"
-                className="rounded-full gap-2"
+                className="gap-2"
               >
                 Our Story
                 <svg

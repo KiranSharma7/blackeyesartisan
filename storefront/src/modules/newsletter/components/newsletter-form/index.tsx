@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { cn } from '@lib/util/cn'
 import { validateEmail } from '@lib/util/validator'
 import { Button } from '@/components/retroui/Button'
+import { Input } from '@/components/retroui/Input'
 
 interface NewsletterFormProps {
   className?: string
@@ -85,7 +86,7 @@ export default function NewsletterForm({
           'flex gap-2',
           isFooter ? 'flex-col sm:flex-row' : 'flex-row'
         )}>
-          <input
+          <Input
             type="email"
             value={email}
             onChange={(e) => {
@@ -99,25 +100,18 @@ export default function NewsletterForm({
             disabled={status === 'loading' || status === 'success'}
             aria-label="Email address for newsletter"
             className={cn(
-              'flex-1 px-4 py-3 border-2 rounded-xl font-medium',
-              'placeholder:opacity-50',
-              'focus:outline-hidden focus:shadow-xs',
-              'disabled:opacity-50 disabled:cursor-not-allowed',
-              'transition-all duration-200',
+              'flex-1 !py-3 rounded-xl',
               isFooter
-                ? 'border-paper/30 bg-ink text-paper placeholder:text-paper/50 shadow-md'
-                : 'border-ink bg-paper text-ink placeholder:text-ink/50 shadow-md'
+                ? 'border-paper/30 bg-ink text-paper placeholder:text-paper/50'
+                : 'border-ink bg-paper text-ink placeholder:text-ink/50'
             )}
           />
           <Button
             type="submit"
             disabled={status === 'loading' || status === 'success'}
-            variant={isFooter ? 'default' : 'secondary'}
+            variant="default"
             size="lg"
-            className={cn(
-              'whitespace-nowrap',
-              isFooter && 'bg-sun border-sun text-ink hover:bg-transparent hover:text-sun shadow-hard-sun hover:shadow-none'
-            )}
+            className="whitespace-nowrap"
           >
             {status === 'loading' ? 'Joining...' : status === 'success' ? 'Subscribed!' : 'Subscribe'}
           </Button>

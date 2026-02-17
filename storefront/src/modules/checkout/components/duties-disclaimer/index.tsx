@@ -1,22 +1,9 @@
-import { AlertTriangle } from 'lucide-react'
+import { Alert } from '@/components/retroui/Alert'
 
 interface DutiesDisclaimerProps {
-  /**
-   * Disclaimer text from Strapi CMS global settings
-   * Falls back to default text if not provided
-   */
   disclaimerText?: string | null
-  /**
-   * Title for the disclaimer section
-   */
   title?: string
-  /**
-   * Additional CSS classes
-   */
   className?: string
-  /**
-   * Whether to show an icon
-   */
   showIcon?: boolean
 }
 
@@ -33,24 +20,15 @@ export default function DutiesDisclaimer({
   const displayText = disclaimerText || DEFAULT_DISCLAIMER
 
   return (
-    <div
-      className={`bg-sun/20 border-2 border-ink rounded-xl p-3 text-xs ${className}`}
-      role="note"
+    <Alert
+      status="warning"
+      showIcon={showIcon}
+      className={className}
       aria-label="International shipping duties disclaimer"
     >
-      <div className="flex items-start gap-2">
-        {showIcon && (
-          <AlertTriangle
-            className="h-4 w-4 text-ink/70 flex-shrink-0 mt-0.5"
-            aria-hidden="true"
-          />
-        )}
-        <div>
-          <p className="font-bold mb-1">{title}</p>
-          <p className="text-ink/70">{displayText}</p>
-        </div>
-      </div>
-    </div>
+      <p className="font-bold mb-1">{title}</p>
+      <p className="text-ink/70">{displayText}</p>
+    </Alert>
   )
 }
 

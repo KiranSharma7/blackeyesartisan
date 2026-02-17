@@ -6,7 +6,7 @@ import { HttpTypes } from '@medusajs/types'
 import { setShippingMethod } from '@lib/data/cart'
 import { convertToLocale } from '@lib/util/money'
 import { Button } from '@/components/retroui/Button'
-import { Card } from '@/components/retroui/Card'
+import { Radio } from '@/components/retroui/Radio'
 import { cn } from '@lib/util/cn'
 
 interface ShippingMethodSelectProps {
@@ -25,10 +25,6 @@ export default function ShippingMethodSelect({
   const [selectedOptionId, setSelectedOptionId] = useState<string>(
     cart.shipping_methods?.[0]?.shipping_option_id || ''
   )
-
-  const handleSelectOption = (optionId: string) => {
-    setSelectedOptionId(optionId)
-  }
 
   const handleContinue = () => {
     if (!selectedOptionId) return
@@ -58,49 +54,54 @@ export default function ShippingMethodSelect({
 
   return (
     <div className="space-y-4">
-      {shippingOptions.map((option) => {
-        const isSelected = selectedOptionId === option.id
-        const price = option.amount || 0
-        const currencyCode = cart.currency_code || 'usd'
+      <Radio
+        value={selectedOptionId}
+        onValueChange={setSelectedOptionId}
+        className="space-y-3"
+      >
+        {shippingOptions.map((option) => {
+          const isSelected = selectedOptionId === option.id
+          const price = option.amount || 0
+          const currencyCode = cart.currency_code || 'usd'
 
-        return (
-          <Button
-            key={option.id}
-            type="button"
-            onClick={() => handleSelectOption(option.id)}
-            variant={isSelected ? 'secondary' : 'outline'}
-            size="lg"
-            className={cn(
-              'w-full justify-start p-4 h-auto',
-              isSelected && 'shadow-hard-sm'
-            )}
-            data-testid="shipping-option"
-          >
-            <div className="flex justify-between items-center w-full">
-              <div className="text-left">
-                <p className="font-display text-lg uppercase">{option.name}</p>
-                {(option.data as any)?.estimated_days && (
-                  <p className={cn('text-sm', isSelected ? 'opacity-80' : 'text-ink/60')}>
-                    Estimated: {(option.data as any).estimated_days} business days
-                  </p>
-                )}
+          return (
+            <label
+              key={option.id}
+              className={cn(
+                'flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-all',
+                isSelected
+                  ? 'border-ink bg-ink/5 shadow-hard-sm'
+                  : 'border-ink/30 hover:border-ink'
+              )}
+              data-testid="shipping-option"
+            >
+              <Radio.Item value={option.id} />
+              <div className="flex justify-between items-center w-full">
+                <div className="text-left">
+                  <p className="font-display text-lg uppercase">{option.name}</p>
+                  {(option.data as any)?.estimated_days && (
+                    <p className={cn('text-sm', isSelected ? 'opacity-80' : 'text-ink/60')}>
+                      Estimated: {(option.data as any).estimated_days} business days
+                    </p>
+                  )}
+                </div>
+                <p className="font-bold text-lg">
+                  {price === 0
+                    ? 'FREE'
+                    : convertToLocale({
+                        amount: price,
+                        currency_code: currencyCode,
+                      })}
+                </p>
               </div>
-              <p className="font-bold text-lg">
-                {price === 0
-                  ? 'FREE'
-                  : convertToLocale({
-                      amount: price,
-                      currency_code: currencyCode,
-                    })}
-              </p>
-            </div>
-          </Button>
-        )
-      })}
+            </label>
+          )
+        })}
+      </Radio>
 
       <Button
         onClick={handleContinue}
-        variant="secondary"
+        variant="default"
         size="lg"
         className="w-full mt-6"
         disabled={isPending || !selectedOptionId}

@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **CMS**: Strapi
 - **Styling**: Tailwind CSS with custom design system
 - **Payments**: Stripe & PayPal
-- **UI Components**: Medusa UI, Radix UI, Headless UI
+- **UI Components**: RetroUI (custom component library in `src/components/retroui/`)
 - **Image CDN**: Cloudinary
 - **Email**: Resend
 - **Rate Limiting & Cache**: Upstash Redis
@@ -306,7 +306,7 @@ NEXT_PUBLIC_DEMO_MODE                  # Enable/disable demo mode (boolean)
 2. Follow naming convention: `[feature]-component/index.tsx`
 3. Export from module `index.tsx` for clean imports
 4. Use Tailwind + `cn()` utility for class merging
-5. Use Medusa UI or Radix UI for accessible patterns
+5. **ALWAYS use RetroUI components** from `src/components/retroui/` (Button, Card, Input, Select, Dialog, Badge, Text, Label, Accordion, Alert, Drawer, Loader, Radio, Carousel, Textarea, Switch, Checkbox, Progress, Tabs, Menu, Breadcrumb). Never use raw HTML elements (button, input, select, etc.) or other UI libraries when a RetroUI equivalent exists.
 6. Mark as `'use client'` only if needed (interactivity, hooks)
 
 ### Modifying Cart/Checkout Flow

@@ -1,4 +1,4 @@
-import { cn } from '@lib/util/cn'
+import { Loader } from '@/components/retroui/Loader'
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg'
@@ -6,23 +6,5 @@ interface LoadingSpinnerProps {
 }
 
 export default function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) {
-  const sizeClasses = {
-    sm: 'w-5 h-5 border-2',
-    md: 'w-8 h-8 border-3',
-    lg: 'w-12 h-12 border-4',
-  }
-
-  return (
-    <div
-      className={cn(
-        'rounded-full border-ink/20 border-t-acid animate-spin',
-        sizeClasses[size],
-        className
-      )}
-      role="status"
-      aria-label="Loading"
-    >
-      <span className="sr-only">Loading...</span>
-    </div>
-  )
+  return <Loader size={size} className={className} />
 }

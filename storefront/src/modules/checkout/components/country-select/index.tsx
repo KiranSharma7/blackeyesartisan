@@ -1,14 +1,20 @@
 'use client'
 
 import * as React from 'react'
-import { cn } from '@lib/util/cn'
-import { ChevronDown } from 'lucide-react'
+import { Select } from '@/components/retroui/Select'
 
-export interface CountrySelectProps
-  extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
+export interface CountrySelectProps {
   label?: string
   error?: string
+  name?: string
+  id?: string
+  defaultValue?: string
+  value?: string
+  required?: boolean
+  disabled?: boolean
   onCountryChange?: (countryCode: string) => void
+  className?: string
+  'data-testid'?: string
 }
 
 /**
@@ -63,54 +69,54 @@ export const getPhoneCodeForCountry = (countryCode: string): string => {
   return country?.phoneCode || '+1'
 }
 
-const CountrySelect = React.forwardRef<HTMLSelectElement, CountrySelectProps>(
-  ({ className, label, error, id, onCountryChange, ...props }, ref) => {
-    const selectId = id || props.name
+function CountrySelect({
+  label,
+  error,
+  name,
+  defaultValue,
+  value,
+  onCountryChange,
+  'data-testid': dataTestId,
+}: CountrySelectProps) {
+  const [internalValue, setInternalValue] = React.useState(defaultValue || 'us')
+  const currentValue = value !== undefined ? value : internalValue
 
-    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      if (onCountryChange) {
-        onCountryChange(e.target.value)
-      }
-    }
-
-    return (
-      <div className="space-y-2">
-        {label && (
-          <label
-            htmlFor={selectId}
-            className="block text-sm font-bold uppercase text-ink/70"
-          >
-            {label}
-          </label>
-        )}
-        <div className="relative">
-          <select
-            id={selectId}
-            className={cn(
-              'flex h-12 w-full appearance-none rounded-xl border-2 border-ink bg-white px-4 py-2 pr-10 text-base font-medium',
-              'shadow-hard-sm transition-all duration-200',
-              'focus:outline-none focus:ring-2 focus:ring-acid focus:ring-offset-2',
-              'disabled:cursor-not-allowed disabled:opacity-50',
-              error && 'border-acid focus:ring-acid',
-              className
-            )}
-            ref={ref}
-            onChange={handleChange}
-            {...props}
-          >
-            {SHIPPING_COUNTRIES.map((country) => (
-              <option key={country.value} value={country.value}>
-                {country.label}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 text-ink/60 pointer-events-none" />
-        </div>
-        {error && <p className="text-sm font-medium text-acid">{error}</p>}
-      </div>
-    )
+  const handleChange = (newValue: string) => {
+    setInternalValue(newValue)
+    onCountryChange?.(newValue)
   }
-)
-CountrySelect.displayName = 'CountrySelect'
+
+  const selectedCountry = getCountryByCode(currentValue)
+
+  return (
+    <div className="space-y-2">
+      {label && (
+        <label className="block text-sm font-bold uppercase text-ink/70">
+          {label}
+        </label>
+      )}
+      {/* Hidden input to submit form data */}
+      <input type="hidden" name={name} value={currentValue} />
+      <Select value={currentValue} onValueChange={handleChange}>
+        <Select.Trigger
+          className="w-full h-12 rounded-xl shadow-hard-sm"
+          data-testid={dataTestId}
+        >
+          <Select.Value>
+            {selectedCountry?.label || 'Select country'}
+          </Select.Value>
+        </Select.Trigger>
+        <Select.Content>
+          {SHIPPING_COUNTRIES.map((country) => (
+            <Select.Item key={country.value} value={country.value}>
+              {country.label}
+            </Select.Item>
+          ))}
+        </Select.Content>
+      </Select>
+      {error && <p className="text-sm font-medium text-acid">{error}</p>}
+    </div>
+  )
+}
 
 export { CountrySelect }

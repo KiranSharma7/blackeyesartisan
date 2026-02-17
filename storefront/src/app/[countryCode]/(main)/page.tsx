@@ -57,7 +57,7 @@ export default async function HomePage({ params }: HomePageProps) {
           <ProductGrid products={products} countryCode={countryCode} />
           <div className="text-center mt-8">
             <Link href={`/${countryCode}/shop`}>
-              <Button variant="outline" size="lg">
+              <Button variant="default" size="lg">
                 View All
               </Button>
             </Link>
@@ -74,7 +74,7 @@ export default async function HomePage({ params }: HomePageProps) {
                 Shop by <span className="text-acid">Collection</span>
               </h2>
               <Link href={`/${countryCode}/collections`}>
-                <Button variant="ghost" size="sm">
+                <Button variant="default" size="sm">
                   View All &rarr;
                 </Button>
               </Link>
