@@ -1,12 +1,9 @@
 import { Metadata } from 'next'
-import Link from 'next/link'
 import { getRegion } from '@lib/data/regions'
-import { getCollectionsWithProducts } from '@lib/data/collections'
-import CollectionGrid from '@modules/collections/components/collection-grid'
 import HeroSection from '@modules/home/components/hero-section'
 import CategorySection from '@modules/home/components/category-section'
 import BestSellersSection from '@modules/home/components/best-sellers-section'
-import { Button } from '@/components/retroui/Button'
+import ParallaxBanner from '@modules/home/components/parallax-banner'
 
 export const metadata: Metadata = {
   title: 'BlackEyesArtisan | Handcrafted Glass Art',
@@ -30,8 +27,6 @@ export default async function HomePage({ params }: HomePageProps) {
     )
   }
 
-  const collections = await getCollectionsWithProducts(countryCode)
-
   return (
     <>
       {/* Hero Section */}
@@ -43,24 +38,9 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Best Sellers Section — Product Carousel */}
       <BestSellersSection countryCode={countryCode} />
 
-      {/* Collections Section */}
-      {collections && collections.length > 0 && (
-        <section className="py-16">
-          <div className="max-w-site mx-auto px-4 md:px-8">
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="font-brand text-3xl md:text-4xl">
-                Shop by <span className="text-acid">Collection</span>
-              </h2>
-              <Link href={`/${countryCode}/collections`}>
-                <Button variant="default" size="sm">
-                  View All &rarr;
-                </Button>
-              </Link>
-            </div>
-            <CollectionGrid collections={collections} countryCode={countryCode} />
-          </div>
-        </section>
-      )}
+      {/* Parallax Banner — Full-width CTA */}
+      <ParallaxBanner countryCode={countryCode} />
+
 
       {/* Value Props */}
       <section className="py-16 bg-ink/5">
