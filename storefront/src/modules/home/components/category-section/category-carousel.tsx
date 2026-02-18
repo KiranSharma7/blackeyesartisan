@@ -28,14 +28,14 @@ export default function CategoryCarouselClient({
             <div className="flex-[0_0_16px] md:flex-[0_0_calc((100vw-1366px)/2+32px)] lg:flex-[0_0_calc((100vw-1366px)/2+32px)]" />
 
             {/* All Products card — always first */}
-            <Carousel.Slide className="flex-[0_0_72%] sm:flex-[0_0_40%] md:flex-[0_0_28%] lg:flex-[0_0_22%] pl-4 md:pl-6 h-[380px] sm:h-[400px] md:h-[420px]">
+            <Carousel.Slide className="flex-[0_0_72%] sm:flex-[0_0_40%] md:flex-[0_0_28%] lg:flex-[0_0_22%] pl-4 md:pl-6">
               <Link
                 href={`/${countryCode}/shop`}
                 className="group block h-full"
               >
-                <div className="relative h-full rounded-2xl border-2 border-ink bg-ink shadow-hard overflow-hidden transition-all duration-300 hover:shadow-hard-xl hover:-translate-y-1 flex flex-col">
+                <div className="relative rounded-2xl border-2 border-ink bg-ink shadow-hard overflow-hidden transition-all duration-300 hover:shadow-hard-xl hover:-translate-y-1 flex flex-col">
                   {/* Decorative pattern area */}
-                  <div className="relative flex-1 min-h-0 overflow-hidden flex items-center justify-center">
+                  <div className="relative aspect-[4/3] overflow-hidden flex items-center justify-center">
                     {/* Grid pattern background */}
                     <div
                       className="absolute inset-0 opacity-10"
@@ -96,7 +96,7 @@ export default function CategoryCarouselClient({
             {categories.map((category) => (
               <Carousel.Slide
                 key={category.id}
-                className="flex-[0_0_72%] sm:flex-[0_0_40%] md:flex-[0_0_28%] lg:flex-[0_0_22%] pl-4 md:pl-6 h-[380px] sm:h-[400px] md:h-[420px]"
+                className="flex-[0_0_72%] sm:flex-[0_0_40%] md:flex-[0_0_28%] lg:flex-[0_0_22%] pl-4 md:pl-6"
               >
                 <CategoryCard
                   category={category}

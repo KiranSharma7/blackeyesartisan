@@ -1,12 +1,11 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
-import { getProductsList } from '@lib/data/products'
 import { getRegion } from '@lib/data/regions'
 import { getCollectionsWithProducts } from '@lib/data/collections'
-import ProductGrid from '@modules/products/components/product-grid'
 import CollectionGrid from '@modules/collections/components/collection-grid'
 import HeroSection from '@modules/home/components/hero-section'
 import CategorySection from '@modules/home/components/category-section'
+import BestSellersSection from '@modules/home/components/best-sellers-section'
 import { Button } from '@/components/retroui/Button'
 
 export const metadata: Metadata = {
@@ -31,16 +30,7 @@ export default async function HomePage({ params }: HomePageProps) {
     )
   }
 
-  const [productsResult, collections] = await Promise.all([
-    getProductsList({
-      pageParam: 1,
-      queryParams: { limit: 8 },
-      countryCode,
-    }),
-    getCollectionsWithProducts(countryCode),
-  ])
-
-  const products = productsResult.response.products
+  const collections = await getCollectionsWithProducts(countryCode)
 
   return (
     <>
@@ -50,20 +40,8 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Category Section — Header + Carousel */}
       <CategorySection countryCode={countryCode} />
 
-      {/* Featured Products */}
-      <section className="py-16 bg-ink/5">
-        <div className="max-w-site mx-auto px-4 md:px-8">
-          <h2 className="font-brand text-3xl md:text-4xl mb-8">Latest Drops</h2>
-          <ProductGrid products={products} countryCode={countryCode} />
-          <div className="text-center mt-8">
-            <Link href={`/${countryCode}/shop`}>
-              <Button variant="default" size="lg">
-                View All
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Best Sellers Section — Product Carousel */}
+      <BestSellersSection countryCode={countryCode} />
 
       {/* Collections Section */}
       {collections && collections.length > 0 && (

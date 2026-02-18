@@ -21,17 +21,17 @@ export default function CategoryCard({
   return (
     <Link
       href={`/${countryCode}/categories/${category.handle}`}
-      className="group block h-full"
+      className="group block"
     >
-      <div className="relative h-full rounded-2xl border-2 border-ink bg-paper shadow-hard overflow-hidden transition-all duration-300 hover:shadow-hard-xl hover:-translate-y-1 flex flex-col">
-        {/* Image Area — fixed proportion */}
-        <div className="relative flex-1 min-h-0 bg-ink/[0.03] overflow-hidden">
+      <div className="relative rounded-2xl border-2 border-ink bg-paper shadow-hard overflow-hidden transition-all duration-300 hover:shadow-hard-xl hover:-translate-y-1 flex flex-col">
+        {/* Image Area — aspect-square so card height is image-driven */}
+        <div className="relative aspect-[4/3] bg-ink/[0.03] overflow-hidden">
           {category.thumbnail ? (
             <Image
               src={category.thumbnail}
               alt={category.name}
               fill
-              className="object-contain p-6 transition-transform duration-500 group-hover:scale-110"
+              className="object-contain transition-transform duration-500 group-hover:scale-110"
               sizes="(max-width: 640px) 75vw, (max-width: 768px) 42vw, (max-width: 1024px) 28vw, 22vw"
             />
           ) : (
